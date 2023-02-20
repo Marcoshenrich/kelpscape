@@ -1,4 +1,4 @@
-import Floater from "./floater"
+import fish from "./fish"
 import Algea from "./algea"
 
 export default class View {
@@ -6,7 +6,7 @@ export default class View {
     constructor(canvas) {
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
-        this.floaters = this.floaterMaker(10)
+        this.fishes = this.fishMaker(10)
         this.algea = this.algeaMaker(10)
         this.animate()
     }
@@ -16,19 +16,19 @@ export default class View {
 
         this.ctx.fillStyle = 'rgba(225,225,225,0.9)';
         this.ctx.fillRect(0, 0, 1700, 1700)
-        this.drawFloaters()
+        this.drawfishes()
 
         requestAnimationFrame(this.animate.bind(this))
     }
 
-    floaterMaker(floaterNum) {
-        let floaterArr = []
+    fishMaker(fishNum) {
+        let fishArr = []
 
-        while (floaterNum > 0) {
-            floaterArr.push(new Floater(this.ctx))
-            floaterNum--
+        while (fishNum > 0) {
+            fishArr.push(new fish(this.ctx))
+            fishNum--
         }
-        return floaterArr
+        return fishArr
     }
 
     algeaMaker(algeaNum) {
@@ -41,9 +41,9 @@ export default class View {
         return algeaArr
     }
 
-    drawFloaters() {
-        this.floaters.forEach((floater)=>{
-            floater.draw()
+    drawfishes() {
+        this.fishes.forEach((fish)=>{
+            fish.draw()
         })
         this.algea.forEach((algea) => {
             algea.draw()
