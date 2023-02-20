@@ -1,52 +1,43 @@
-import fish from "./fish"
-import Algea from "./algea"
+import Fish from "./fish"
+import Algae from "./algae"
 
 export default class View {
 
     constructor(canvas) {
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
-        this.fishes = this.fishMaker(10)
-        this.algea = this.algeaMaker(10)
+        this.fishes = this.tankPopulator(10, Fish)
+        this.algae = this.tankPopulator(50, Algae)
         this.animate()
     }
 
     animate() {
-        this.ctx.clearRect(0, 0, 700, 700)
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-        this.ctx.fillStyle = 'rgba(225,225,225,0.9)';
-        this.ctx.fillRect(0, 0, 1700, 1700)
+        this.ctx.fillStyle = 'rgba(200,225,255,1)';
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.drawfishes()
 
         requestAnimationFrame(this.animate.bind(this))
     }
 
-    fishMaker(fishNum) {
-        let fishArr = []
 
-        while (fishNum > 0) {
-            fishArr.push(new fish(this.ctx))
-            fishNum--
+    tankPopulator(objnum, className) {
+        let objArr = []
+
+        while (objnum > 0) {
+            objArr.push(new className(this.ctx, this.canvas))
+            objnum--
         }
-        return fishArr
-    }
-
-    algeaMaker(algeaNum) {
-        let algeaArr = []
-
-        while (algeaNum > 0) {
-            algeaArr.push(new Algea(this.ctx))
-            algeaNum--
-        }
-        return algeaArr
+        return objArr
     }
 
     drawfishes() {
         this.fishes.forEach((fish)=>{
             fish.draw()
         })
-        this.algea.forEach((algea) => {
-            algea.draw()
+        this.algae.forEach((algae) => {
+            algae.draw()
         })
     }
 }
