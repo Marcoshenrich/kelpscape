@@ -1,8 +1,11 @@
 export default class Fish {
 
-    constructor(ctx, canvas) {
+    constructor(id, ctx, canvas, view, posMatrix) {
+        this.id = "Fish" + id
         this.ctx = ctx
         this.canvas = canvas
+        this.view = view
+        this.posMatrix = posMatrix
         this.up = [true, false][Math.floor(Math.random() * 2)]
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.leftImg = new Image()
@@ -31,8 +34,13 @@ export default class Fish {
         this.drift()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+        if (this.view.debugging) this.drawMouths()
+    }
+
+    drawMouths() {
+        //debugging function in draw()
         if (!this.right) {
-            this.ctx.fillRect(this.pos[0], this.pos[1] + (this.height/2), 8, 8)
+            this.ctx.fillRect(this.pos[0], this.pos[1] + (this.height / 2), 8, 8)
         } else {
             this.ctx.fillRect(this.pos[0] + (this.width - 8), this.pos[1] + (this.height / 2), 8, 8)
         }

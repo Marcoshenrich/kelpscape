@@ -1,8 +1,11 @@
 export default class Algae {
 
-    constructor(ctx, canvas) {
+    constructor(id, ctx, canvas, view, posMatrix) {
+        this.id = "Algae" + id
         this.ctx = ctx
         this.canvas = canvas
+        this.view = view
+        this.posMatrix = posMatrix
         this.img = new Image()
         this.img.src = './dist/art/algae.png'
         this.height = 8
