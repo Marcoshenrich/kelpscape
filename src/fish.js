@@ -1,11 +1,10 @@
-export default class Fish {
+import Denizen from "./denizen"
+
+export default class Fish extends Denizen {
 
     constructor(id, ctx, canvas, view, posMatrix) {
+        super(ctx, canvas, view, posMatrix)
         this.id = "Fish" + id
-        this.ctx = ctx
-        this.canvas = canvas
-        this.view = view
-        this.posMatrix = posMatrix
         this.up = [true, false][Math.floor(Math.random() * 2)]
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.leftImg = new Image()
@@ -19,6 +18,10 @@ export default class Fish {
         this.pos = this.placer()
         this.mouthSize = 8
         this.mouthPos = this.mouthPlacer()
+        this.movement1 = this.moveSelector()
+        this.movement2 = this.moveSelector()
+        this.moveChangerOne()
+        this.moveChangerTwo()
 
         this.energy = 15
         this.dead = false
@@ -47,10 +50,10 @@ export default class Fish {
     }
 
     draw() {
-        this.drift()
+        this.move()
         this.consumeEnergy()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
-        this.ctx.globalAlpha = this.energy/15
+        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         if (this.view.debugging) this.drawMouths()
         this.ctx.globalAlpha = 1
@@ -59,50 +62,94 @@ export default class Fish {
 
     drawMouths() {
         //debugging function in draw()
-        if (!this.right) {
-            this.ctx.fillRect(this.pos[0], this.pos[1] + (this.height / 2), 8, 8)
+        this.ctx.fillRect(this.mouthPos[0], this.mouthPos[1], this.mouthSize, this.mouthSize)
+  
+    }
+
+    move() {
+        if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
+            this.right = !this.right;
+            this.img = this.imgSelector();
+        }
+        if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
+        this.mouthPos = this.mouthPlacer();
+
+        let changeDirection = Math.floor(Math.random() * 5000);
+        if (changeDirection < 5) [this.reverseSide(), this.reverseUp()][Math.floor(Math.random() * 2)]
+        this.movement1();
+        this.movement2();
+
+    }
+
+
+    movementPatterns = {
+        scan: ()=>{
+            if (this.right) {
+                this.pos[0] += (this.speed / 2)
+            } else {
+                this.pos[0] -= (this.speed / 2)
+            }
+        },
+
+        crissCross: ()=>{
+                this.movementPatterns.scan()
+                this.movementPatterns.bob()
+            },
+
+        bob: () => {
+                if (this.up) {
+                    this.pos[1] += (this.speed / 2)
+                } else {
+                    this.pos[1] -= (this.speed / 2)
+                }
+            }
+    }
+
+    moveSelector = () => {
+        return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
+    }
+
+    moveChangerOne() {
+        this.movement1 = this.moveSelector()
+        setTimeout(()=>{
+            this.moveChangerOne()
+        }, Math.floor(Math.random() * 5000))
+    }
+
+    moveChangerTwo() {
+        this.movement2 = this.moveSelector()
+        setTimeout(() => {
+            this.moveChangerTwo()
+        }, Math.floor(Math.random() * 5000))
+    }
+
+    
+
+    reverseUp() {
+        this.up = !this.up
+    }
+
+    reverseSide() {
+        this.right = !this.right;
+        this.img = this.imgSelector();
+    }
+
+
+
+    scan() {
+        if (this.right) {
+            this.pos[0] += (this.speed/2)
         } else {
-            this.ctx.fillRect(this.pos[0] + (this.width - 8), this.pos[1] + (this.height / 2), 8, 8)
+            this.pos[0] -= (this.speed/2)
         }
     }
 
-    drift() {
-        if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) this.right = !this.right; this.img = this.imgSelector(); this.mouthPos = this.mouthPlacer()
-        if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
+    dash() {
 
-
-        if (this.right) {
-            this.pos[0] += this.speed
-        } else {
-            this.pos[0] -= this.speed
-        }
-
-        if (this.up) {
-            this.pos[1] += this.speed
-        } else {
-            this.pos[1] -= this.speed
-        }
     }
     
     consumeEnergy(){
         this.energy -= .01 * this.speed
-        if (this.energy < 0) this.dead = true
-    }
-
-
-    collisionDetector(pos1, pos2) {
-        // console.log(pos2)
-        let [[pos1x, pos1y], [dim1x, dim1y]] = pos1
-        let [[pos2x, pos2y], [dim2x, dim2y]] = pos2
-
-        if (
-            pos1x < pos2x + dim2x &&
-            pos1x + dim1x > pos2x &&
-            pos1y < pos2y + dim2y &&
-            dim1y + pos1y > pos2y
-        ) {
-            return true
-        }
-        return false
+        if (this.energy < .05) this.dead = true
     }
 }
