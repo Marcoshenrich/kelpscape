@@ -21,6 +21,15 @@ export default class Logic {
         this.fishDieFromNoFood()
         this.fishMeetOtherFish()
         this.eggsDespawnWhenHatched()
+        this.algaeSpawns()
+    }
+
+    algaeSpawns() {
+        let spawnAlgae = (1 === Math.floor(Math.random() * 500))
+        if (spawnAlgae) {
+            this.algaeCount++
+            this.algae[this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this.posMatrix, this)
+        }
     }
 
     eggsDespawnWhenHatched() {
@@ -30,7 +39,6 @@ export default class Logic {
     }
 
     fishMeetOtherFish() {
-
         for (let i = 0; i < Object.values(this.fishes).length; i++) {
             let fish1 = Object.values(this.fishes)[i]
             if (fish1.energy < 10) continue
@@ -72,6 +80,10 @@ export default class Logic {
                 if (eat) {
                     delete this.algae[id]
                     fish.energy = 15
+                    fish.foodEaten++
+                    if (fish.spawn && fish.foodEaten > 4) {
+                        fish.growUp()
+                    }
                 }
 
             }

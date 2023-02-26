@@ -33,8 +33,17 @@ export default class Fish extends Denizen {
 
         this.mating = false
         this.spawn = spawn ? true : false
+        this.foodEaten = 0
 
         
+    }
+
+    growUp() {
+        this.spawn = false
+        this.maxSpeed = .6
+        this.mouthSize = 8
+        this.width = 25
+        this.height = 16
     }
 
     mouthPlacer() {
