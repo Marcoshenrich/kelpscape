@@ -21,7 +21,7 @@ export default class Fishegg extends Denizen {
         setTimeout(()=>{
             this.destroy = true
             this.logic.fishCount += 1
-            this.logic.fishes[this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.posMatrix, this.logic, [this.pos[0], this.pos[1]])
+            this.logic.fishes[this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.posMatrix, this.logic, [this.pos[0], this.pos[1]], "spawn")
         },1000)
     }
 }

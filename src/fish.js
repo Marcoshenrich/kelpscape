@@ -3,7 +3,7 @@ import Fishegg from "./fishegg"
 
 export default class Fish extends Denizen {
 
-    constructor(id, ctx, canvas, view, posMatrix, logic, pos) {
+    constructor(id, ctx, canvas, view, posMatrix, logic, pos, spawn) {
         super(ctx, canvas, view, posMatrix, logic)
 
         this.id = "Fish" + id
@@ -17,10 +17,10 @@ export default class Fish extends Denizen {
         this.mateHeart.src = './dist/art/red-heart.png'
         this.img = this.imgSelector()
         this.speed = (Math.floor(Math.random() * 5) +1 )/10
-        this.width = 25
-        this.height = 16
+        this.width = spawn ? 12 : 25
+        this.height = spawn ? 8 : 16
         this.pos = pos || this.placer()
-        this.mouthSize = 8
+        this.mouthSize = spawn ? 4 : 8
         this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
@@ -32,6 +32,8 @@ export default class Fish extends Denizen {
         this.maxSpeed = .6
 
         this.mating = false
+        this.spawn = spawn ? true : false
+
         
     }
 
