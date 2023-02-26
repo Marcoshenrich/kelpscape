@@ -16,6 +16,19 @@ export default class Logic {
         this.eggs = {}
     }
 
+    coreLoop(){
+        this.fishEatAlgae()
+        this.fishDieFromNoFood()
+        this.fishMeetOtherFish()
+        this.eggsDespawnWhenHatched()
+    }
+
+    eggsDespawnWhenHatched() {
+        for (const [id, egg] of Object.entries(this.eggs)) {
+            if (egg.destroy) delete this.eggs[id]
+        }
+    }
+
     fishMeetOtherFish() {
 
         for (let i = 0; i < Object.values(this.fishes).length; i++) {
@@ -41,8 +54,8 @@ export default class Logic {
 
 
     fishDieFromNoFood() {
-        for (const [key, fish] of Object.entries(this.fishes)) {
-            if (fish.dead) delete this.fishes[key]
+        for (const [id, fish] of Object.entries(this.fishes)) {
+            if (fish.dead) delete this.fishes[id]
         }
     }
 
@@ -54,10 +67,10 @@ export default class Logic {
             if (fish.energy > 12) continue
             if (fish.mating) continue
 
-            for (const [key, algae] of Object.entries(this.algae)) {
+            for (const [id, algae] of Object.entries(this.algae)) {
                 let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
                 if (eat) {
-                    delete this.algae[key]
+                    delete this.algae[id]
                     fish.energy = 15
                 }
 

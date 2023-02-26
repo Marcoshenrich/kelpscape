@@ -29,7 +29,7 @@ export default class Fish extends Denizen {
 
         this.energy = 15
         this.dead = false
-        this.maxSpeed = .6
+        this.maxSpeed = spawn ? .3 : .6
 
         this.mating = false
         this.spawn = spawn ? true : false

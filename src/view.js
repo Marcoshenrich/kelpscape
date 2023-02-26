@@ -30,9 +30,7 @@ export default class View {
         this.ctx.fillText(`Algae: ${ Object.values(this.logic.algae).length }`, 25, 100)
 
         this.drawDenizens()
-        this.logic.fishEatAlgae()
-        this.logic.fishDieFromNoFood()
-        this.logic.fishMeetOtherFish()
+        this.logic.coreLoop()
         if (this.debugging) this.drawMatrix()
         requestAnimationFrame(this.animate.bind(this))
     }
