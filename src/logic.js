@@ -24,10 +24,11 @@ export default class Logic {
                 let fish2 = Object.values(this.fishes)[j]
                 if (fish2.energy < 10) continue
                 if (fish2.mating) continue
-                
+
                 let bump = fish1.collisionDetector([[fish1.pos[0], fish1.pos[1]], [fish1.width, fish1.height]], [[fish2.pos[0], fish2.pos[1]], [fish2.width, fish2.height]])
                 if (bump) {
-                    fish1.mate(fish2)
+                    fish1.mate()
+                    fish2.mate()
                 }
             }
         }

@@ -11,6 +11,8 @@ export default class Fish extends Denizen {
         this.leftImg.src = './dist/art/fishleft.png'
         this.rightImg = new Image()
         this.rightImg.src = './dist/art/fishright.png'
+        this.mateHeart = new Image()
+        this.mateHeart.src = './dist/art/red-heart.png'
         this.img = this.imgSelector()
         this.speed = (Math.floor(Math.random() * 5) +1 )/10
         this.width = 25
@@ -26,6 +28,8 @@ export default class Fish extends Denizen {
         this.energy = 15
         this.dead = false
         this.maxSpeed = .6
+
+        this.mating = false
         
     }
 
@@ -56,6 +60,7 @@ export default class Fish extends Denizen {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+        if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0], this.mouthPos[1] - 5, 15, 15)
         if (this.view.debugging) this.drawMouths()
         this.ctx.globalAlpha = 1
  
@@ -75,12 +80,13 @@ export default class Fish extends Denizen {
         if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
+        if (!this.mating) {
+            let movementSwitch = Math.floor(Math.random()*1000)
+            if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
 
-        let movementSwitch = Math.floor(Math.random()*1000)
-        if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
-
-        this.movement1();
-        this.movement2();
+            this.movement1();
+            this.movement2();
+        }
 
     }
 
@@ -153,5 +159,15 @@ export default class Fish extends Denizen {
     consumeEnergy(){
         this.energy -= .01 * this.speed
         if (this.energy < .05) this.dead = true
+    }
+
+    mate() {
+        this.mating = true
+        this.speed = 0
+        this.energy -= 5
+        setTimeout(()=>{
+            this.speed += .5
+            this.mating = false
+        }, 1500)
     }
 }
