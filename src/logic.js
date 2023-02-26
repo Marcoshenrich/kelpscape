@@ -12,11 +12,32 @@ export default class Logic {
         this.algae = this.tankPopulator(50, Algae)
     }
 
+    fishMeetOtherFish() {
+
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish1 = Object.values(this.fishes)[i]
+            if (fish1.energy < 10) continue
+            if (fish1.mating) continue
+
+            for (let j = 0; j < Object.values(this.fishes).length; j++) {
+                if (i === j) continue
+                let fish2 = Object.values(this.fishes)[j]
+                if (fish2.energy < 10) continue
+                if (fish2.mating) continue
+                
+                let bump = fish1.collisionDetector([[fish1.pos[0], fish1.pos[1]], [fish1.width, fish1.height]], [[fish2.pos[0], fish2.pos[1]], [fish2.width, fish2.height]])
+                if (bump) {
+                    fish1.mate(fish2)
+                }
+            }
+        }
+
+    }
+
 
     fishDieFromNoFood() {
         for (const [key, fish] of Object.entries(this.fishes)) {
             if (fish.dead) delete this.fishes[key]
-            if (fish.dead) console.log("dead")
         }
     }
 
@@ -29,7 +50,6 @@ export default class Logic {
                     delete this.algae[key]
                     fish.energy = 15
                 }
-                console.log(fish.energy)
                 
             }
         })

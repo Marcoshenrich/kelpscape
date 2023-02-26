@@ -31,6 +31,7 @@ export default class View {
         this.drawfishes()
         this.logic.fishEatAlgae()
         this.logic.fishDieFromNoFood()
+        this.logic.fishMeetOtherFish()
         if (this.debugging) this.drawMatrix()
         requestAnimationFrame(this.animate.bind(this))
     }

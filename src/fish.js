@@ -25,6 +25,7 @@ export default class Fish extends Denizen {
 
         this.energy = 15
         this.dead = false
+        this.maxSpeed = .6
         
     }
 
@@ -74,8 +75,10 @@ export default class Fish extends Denizen {
         if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
-        let changeDirection = Math.floor(Math.random() * 5000);
-        if (changeDirection < 5) [this.reverseSide(), this.reverseUp()][Math.floor(Math.random() * 2)]
+
+        let movementSwitch = Math.floor(Math.random()*1000)
+        if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+
         this.movement1();
         this.movement2();
 
@@ -105,6 +108,30 @@ export default class Fish extends Denizen {
             }
     }
 
+    movementSwitches = {
+        reverseUp:() => {
+            this.up = !this.up
+        },
+
+        reverseSide:() => {
+            this.right = !this.right;
+            this.img = this.imgSelector();
+        },
+
+        speedUp:() =>{
+            if (this.speed < this.maxSpeed) this.speed += .1
+        },
+
+        slowDown:() => {
+            if (this.speed > .3)this.speed -= .1
+        },
+
+        dash: () => {
+            this.speed += .5
+            setTimeout(() => this.speed -= .5 ,500)
+        }
+    }
+
     moveSelector = () => {
         return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
     }
@@ -121,31 +148,6 @@ export default class Fish extends Denizen {
         setTimeout(() => {
             this.moveChangerTwo()
         }, Math.floor(Math.random() * 5000))
-    }
-
-    
-
-    reverseUp() {
-        this.up = !this.up
-    }
-
-    reverseSide() {
-        this.right = !this.right;
-        this.img = this.imgSelector();
-    }
-
-
-
-    scan() {
-        if (this.right) {
-            this.pos[0] += (this.speed/2)
-        } else {
-            this.pos[0] -= (this.speed/2)
-        }
-    }
-
-    dash() {
-
     }
     
     consumeEnergy(){
