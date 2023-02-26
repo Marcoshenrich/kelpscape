@@ -48,6 +48,7 @@ export default class Fish {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         if (this.view.debugging) this.drawMouths()
+        // this.collisionDetector()
     }
 
     drawMouths() {
@@ -76,8 +77,21 @@ export default class Fish {
             this.pos[1] -= this.speed
         }
 
-        // this.eat()
     }
 
 
+    collisionDetector(pos1, pos2) {
+        // console.log(pos2)
+        let [[pos1x, pos1y], [dim1x, dim1y]] = pos1
+        let [[pos2x, pos2y], [dim2x, dim2y]] = pos2
+
+        if (
+            pos1x < pos2x + dim2x &&
+            pos1x + dim1x > pos2x &&
+            pos1y < pos2y + dim2y &&
+            dim1y + pos1y > pos2y
+        ) {
+            console.log("eat")
+        }
+    }
 }

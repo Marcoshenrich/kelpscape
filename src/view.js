@@ -20,6 +20,7 @@ export default class View {
         this.ctx.fillStyle = 'rgba(200,225,255,1)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.drawfishes()
+        this.logic.fishEatAlgae()
         if (this.debugging) this.drawMatrix()
         requestAnimationFrame(this.animate.bind(this))
     }
