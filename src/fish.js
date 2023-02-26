@@ -17,6 +17,7 @@ export default class Fish {
         this.width = 25
         this.height = 16
         this.pos = this.placer()
+        
     }
 
     imgSelector() {
