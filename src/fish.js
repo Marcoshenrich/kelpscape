@@ -35,6 +35,9 @@ export default class Fish extends Denizen {
         this.spawn = spawn ? true : false
         this.foodEaten = 0
 
+        this.hunting = false
+        this.nearestFoodCords = []
+
         
     }
 
@@ -74,15 +77,24 @@ export default class Fish extends Denizen {
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0], this.mouthPos[1] - 25, 15, 15)
-        if (this.view.debugging) this.drawMouths()
+        if (this.view.debugging) {
+            this.drawMouths()
+            this.drawId()
+        }
         this.ctx.globalAlpha = 1
  
     }
 
     drawMouths() {
-        //debugging function in draw()
+        //debugging function
         this.ctx.fillRect(this.mouthPos[0], this.mouthPos[1], this.mouthSize, this.mouthSize)
-  
+    }
+
+    drawId() {
+        //debugging function
+        this.ctx.fillStyle = 'rgba(0,0,0,1)';
+        this.ctx.font = "12px serif";
+        this.ctx.fillText(`${this.id}`, this.pos[0], this.pos[1])
     }
 
     move() {
@@ -93,6 +105,11 @@ export default class Fish extends Denizen {
         if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
+        if (this.hunting) {
+            this.moveTowardsFood()
+            return
+        }
+
         if (!this.mating) {
             let movementSwitch = Math.floor(Math.random()*1000)
             if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
@@ -100,6 +117,26 @@ export default class Fish extends Denizen {
             this.movement1();
             this.movement2();
         }
+
+    }
+
+    moveTowardsFood() {
+        console.log(this.id)
+        console.log(this.nearestFoodCords)
+        if (this.mouthPos[0] < this.nearestFoodCords[0]) {
+            this.pos[0] += .3
+        } else {
+            this.pos[0] -= .3 
+        }
+
+        if (this.pos[1] < this.nearestFoodCords[1]) {
+            this.pos[1] += .3
+        } else {
+            this.pos[1] -= .3
+        }
+
+
+
 
     }
 
@@ -187,7 +224,6 @@ export default class Fish extends Denizen {
                 this.logic.eggCount += 1
                 this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [this.pos[0], this.pos[1]], this.ctx, this.canvas, this.view, this.posMatrix, this.logic)
             }
-            console.log(this.logic.eggs)
         }, 1500)
     }
 }

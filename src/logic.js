@@ -20,15 +20,17 @@ export default class Logic {
         this.fishEatAlgae()
         this.fishDieFromNoFood()
         this.fishMeetOtherFish()
+        this.fishHuntWhenHungry()
+        this.fishCanFindSomethingElseToEat()
         this.eggsDespawnWhenHatched()
         this.algaeSpawns()
     }
 
     algaeSpawns() {
-        let spawnAlgae = (1 === Math.floor(Math.random() * 500))
+        let spawnAlgae = (1 === Math.floor(Math.random() * 200))
         if (spawnAlgae) {
             this.algaeCount++
-            this.algae[this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this.posMatrix, this)
+            this.algae["Algae" + this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this.posMatrix, this)
         }
     }
 
@@ -81,6 +83,8 @@ export default class Logic {
                     delete this.algae[id]
                     fish.energy = 15
                     fish.foodEaten++
+                    fish.hunting = false
+                    fish.nearestFoodCords = []
                     if (fish.spawn && fish.foodEaten > 4) {
                         fish.growUp()
                     }
@@ -88,16 +92,53 @@ export default class Logic {
 
             }
         }
-
-        
-        
     }
+
+    fishHuntWhenHungry() {
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (fish.energy > 7) continue
+            if (fish.hunting) continue
+            if (fish.mating) continue
+
+            let nearestFoodCords = []
+            let nearestFoundDistance = Infinity
+            let foodId;
+
+            for (const [id, algae] of Object.entries(this.algae)) {
+                let xDistance = Math.abs(fish.pos[0] - algae.pos[0])
+                let yDistance = Math.abs(fish.pos[1] - algae.pos[1])
+                if ((xDistance + yDistance) < nearestFoundDistance) {
+                    nearestFoundDistance = xDistance + yDistance
+                    nearestFoodCords = algae.pos
+                    foodId = id
+                }
+            }
+            fish.hunting = foodId
+            fish.nearestFoodCords = nearestFoodCords
+        }
+    }
+
+
+    fishCanFindSomethingElseToEat() {
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (!fish.hunting) continue
+            if (!(fish.hunting in this.algae)) {
+                fish.hunting = false
+                fish.nearestFoodCords = []
+            }
+        }
+    }
+
+
+
 
     tankPopulator(objnum, className) {
         let denizenObj = {}
-
+  
         while (objnum > 0) {
-            denizenObj[objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix, this)
+            denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix, this)
             objnum--
         }
         return denizenObj

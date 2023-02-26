@@ -12,7 +12,7 @@ export default class View {
         this.algae = this.logic.algae
         this.eggs = this.logic.eggs
         this.animate()
-        this.debugging = false
+        this.debugging = true
     }
 
     animate() {
@@ -62,7 +62,6 @@ export default class View {
 
         i = 9
         let steppedWidth = this.canvas.width / 10
-        console.log(steppedWidth)
         step = steppedWidth
         while (i > 0) {
             this.ctx.fillRect(step, 0, 1, this.canvas.height)
