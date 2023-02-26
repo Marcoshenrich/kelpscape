@@ -14,15 +14,19 @@ export default class Logic {
 
     }
 
+    collisionDetector() {
+
+    }
+
 
     tankPopulator(objnum, className) {
-        let objArr = []
+        let denizenObj = {}
 
         while (objnum > 0) {
-            objArr.push(new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix))
+            denizenObj[objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix)
             objnum--
         }
-        return objArr
+        return denizenObj
     }
 
     matrixMaker() {

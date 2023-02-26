@@ -17,7 +17,19 @@ export default class Fish {
         this.width = 25
         this.height = 16
         this.pos = this.placer()
+        this.mouthSize = 8
+        this.mouthPos = this.mouthPlacer()
         
+    }
+
+    mouthPlacer() {
+        let mouthPos = []
+        if (!this.right) {
+            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2)]
+        } else {
+            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2)]
+        }
+        return mouthPos
     }
 
     imgSelector() {
@@ -48,8 +60,8 @@ export default class Fish {
     }
 
     drift() {
-        if (this.pos[0] > 700 - this.width || this.pos[0] < 0) this.right = !this.right; this.img = this.imgSelector();
-        if (this.pos[1] > 700 - this.height || this.pos[1] < 0) this.up = !this.up
+        if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) this.right = !this.right; this.img = this.imgSelector(); this.mouthPos = this.mouthPlacer()
+        if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
 
 
         if (this.right) {
@@ -63,6 +75,9 @@ export default class Fish {
         } else {
             this.pos[1] -= this.speed
         }
+
+        // this.eat()
     }
+
 
 }

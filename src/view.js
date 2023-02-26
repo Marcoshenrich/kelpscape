@@ -11,7 +11,7 @@ export default class View {
         this.fishes = this.logic.fishes
         this.algae = this.logic.algae
         this.animate()
-        this.debugging = true
+        this.debugging = false
     }
 
     animate() {
@@ -25,10 +25,10 @@ export default class View {
     }
 
     drawfishes() {
-        this.fishes.forEach((fish)=>{
+        Object.values(this.fishes).forEach((fish)=>{
             fish.draw()
         })
-        this.algae.forEach((algae) => {
+        Object.values(this.algae).forEach((algae) => {
             algae.draw()
         })
     }
