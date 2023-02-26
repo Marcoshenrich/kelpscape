@@ -11,6 +11,8 @@ export default class Algae extends Denizen {
         this.height = 8
         this.width = 8
         this.pos = this.placer()
+        this.bobCoef = Math.floor(Math.random() * 4) + 4
+        this.up = [true, false][Math.floor(Math.random() * 2)]
     }
 
     placer() {
@@ -21,7 +23,28 @@ export default class Algae extends Denizen {
     }
 
     draw() {
+        this.bob()
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+    }
+
+    bob() {
+
+        if (this.up) {
+            this.pos[1] += .1
+            this.bobCoef += .1
+        } else {
+            this.pos[1] -= .1
+            this.bobCoef -= .1
+        }
+
+        if (this.bobCoef > 8) {
+            this.up = false
+        }
+
+        if (this.bobCoef < 0 ) {
+            this.up = true
+        }
+
     }
 
     

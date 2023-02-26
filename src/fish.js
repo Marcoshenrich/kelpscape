@@ -20,6 +20,7 @@ export default class Fish extends Denizen {
         this.width = spawn ? 12 : 25
         this.height = spawn ? 8 : 16
         this.pos = pos || this.placer()
+        this.oldPos = this.pos
         this.mouthSize = spawn ? 4 : 8
         this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
@@ -27,13 +28,17 @@ export default class Fish extends Denizen {
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.energy = 15
+        this.maxEnergy = 20
+        this.energy = this.maxEnergy
+        this.matingThreshold = 15
+        this.matingEnergyCost = 5
         this.dead = false
         this.maxSpeed = spawn ? .3 : .6
 
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
+        this.eatFoodThreshold = 15
 
         this.hunting = false
         this.nearestFoodCords = []
@@ -105,12 +110,13 @@ export default class Fish extends Denizen {
         if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
-        if (this.hunting) {
+        if (this.speed < .01) this.speed = .3
+
+        if (!this.mating && this.hunting) {
             this.moveTowardsFood()
-            return
         }
 
-        if (!this.mating) {
+        if (!this.mating && !this.hunting) {
             let movementSwitch = Math.floor(Math.random()*1000)
             if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
 
@@ -118,26 +124,36 @@ export default class Fish extends Denizen {
             this.movement2();
         }
 
+        // if (!this.mating) this.fishOrienter()
+        // this.oldPos = [this.pos[0], this.pos[1]]
+
+        
+
+    }
+
+    fishOrienter() {
+
+        if (this.oldPos[0] < this.pos[0]) {
+            this.right = true
+            this.img = this.imgSelector();
+        } else {
+            this.right = false
+            this.img = this.imgSelector();
+        }
     }
 
     moveTowardsFood() {
-        console.log(this.id)
-        console.log(this.nearestFoodCords)
         if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            this.pos[0] += .3
+            this.pos[0] += .4
         } else {
-            this.pos[0] -= .3 
+            this.pos[0] -= .4
         }
 
         if (this.pos[1] < this.nearestFoodCords[1]) {
-            this.pos[1] += .3
+            this.pos[1] += .4
         } else {
-            this.pos[1] -= .3
+            this.pos[1] -= .4
         }
-
-
-
-
     }
 
 
@@ -207,18 +223,19 @@ export default class Fish extends Denizen {
     }
     
     consumeEnergy(){
-        this.energy -= .01 * this.speed
+        this.energy -= .005 * this.speed
         if (this.energy < .05) this.dead = true
     }
 
-    mate() {
+    mate(spawnBool) {
         this.mating = true
         this.speed = 0
-        this.energy -= 5
+        this.energy -= this.matingEnergyCost
         setTimeout(()=>{
             this.speed += .5
             this.mating = false
-            let i = Math.floor(Math.random() * 3)
+            if (spawnBool) return
+            let i = Math.floor(Math.random() * 6)
             while (i > 0) {
                 i--
                 this.logic.eggCount += 1

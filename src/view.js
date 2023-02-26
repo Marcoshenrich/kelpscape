@@ -12,7 +12,7 @@ export default class View {
         this.algae = this.logic.algae
         this.eggs = this.logic.eggs
         this.animate()
-        this.debugging = true
+        this.debugging = false
     }
 
     animate() {
@@ -48,26 +48,26 @@ export default class View {
     }
 
     drawMatrix() {
-        // debugging function 
-        this.ctx.fillStyle = 'rgba(0,0,0,1)';
+        // // debugging function 
+        // this.ctx.fillStyle = 'rgba(0,0,0,1)';
 
-        let i = 9
-        let steppedHeight = this.canvas.height/10
-        let step = steppedHeight
-        while (i > 0) {
-            this.ctx.fillRect(0, step, this.canvas.width, 1)
-            step += steppedHeight
-            i--
-        }
+        // let i = 9
+        // let steppedHeight = this.canvas.height/10
+        // let step = steppedHeight
+        // while (i > 0) {
+        //     this.ctx.fillRect(0, step, this.canvas.width, 1)
+        //     step += steppedHeight
+        //     i--
+        // }
 
-        i = 9
-        let steppedWidth = this.canvas.width / 10
-        step = steppedWidth
-        while (i > 0) {
-            this.ctx.fillRect(step, 0, 1, this.canvas.height)
-            step += steppedHeight
-            i--
-        }
+        // i = 9
+        // let steppedWidth = this.canvas.width / 10
+        // step = steppedWidth
+        // while (i > 0) {
+        //     this.ctx.fillRect(step, 0, 1, this.canvas.height)
+        //     step += steppedHeight
+        //     i--
+        // }
     }
 }
 

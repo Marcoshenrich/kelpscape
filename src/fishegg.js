@@ -11,10 +11,11 @@ export default class Fishegg extends Denizen {
         this.img.src = './dist/art/fishEggs.png'
         this.spawn()
         this.destroy = false
+        this.size = Math.floor(Math.random() * 5) + 20
     }
 
     draw() {
-        this.ctx.drawImage(this.img, this.pos[0], this.pos[1], 25, 25)
+        this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.size, this.size)
     }
 
     spawn() {
