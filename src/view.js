@@ -19,6 +19,15 @@ export default class View {
 
         this.ctx.fillStyle = 'rgba(200,225,255,1)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+
+        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
+        this.ctx.fillRect(10, 10, 200, 120)
+
+        this.ctx.fillStyle = 'rgba(250,110,0,1)';
+        this.ctx.font = "36px serif";
+        this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length}`, 25, 50)
+        this.ctx.fillText(`Algae: ${ Object.values(this.logic.algae).length }`, 25, 100)
+
         this.drawfishes()
         this.logic.fishEatAlgae()
         if (this.debugging) this.drawMatrix()
