@@ -1,7 +1,8 @@
 import Denizen from "./denizen"
 import Fish from "./fish"
+import Floater from "./floater"
 
-export default class Fishegg extends Denizen {
+export default class Fishegg extends Floater {
 
     constructor(id, pos, ctx, canvas, view, posMatrix, logic) {
         super(ctx, canvas, view, posMatrix, logic)
@@ -11,11 +12,9 @@ export default class Fishegg extends Denizen {
         this.img.src = './dist/art/fishEggs.png'
         this.spawn()
         this.destroy = false
-        this.size = Math.floor(Math.random() * 5) + 20
-    }
-
-    draw() {
-        this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.size, this.size)
+        this.dims = Math.floor(Math.random() * 5) + 20
+        this.height = this.dims
+        this.width = this.dims
     }
 
     spawn() {
