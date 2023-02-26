@@ -1,9 +1,11 @@
 import Denizen from "./denizen"
+import Fishegg from "./fishegg"
 
 export default class Fish extends Denizen {
 
-    constructor(id, ctx, canvas, view, posMatrix) {
-        super(ctx, canvas, view, posMatrix)
+    constructor(id, ctx, canvas, view, posMatrix, logic, pos) {
+        super(ctx, canvas, view, posMatrix, logic)
+
         this.id = "Fish" + id
         this.up = [true, false][Math.floor(Math.random() * 2)]
         this.right = [true, false][Math.floor(Math.random() * 2)]
@@ -17,7 +19,7 @@ export default class Fish extends Denizen {
         this.speed = (Math.floor(Math.random() * 5) +1 )/10
         this.width = 25
         this.height = 16
-        this.pos = this.placer()
+        this.pos = pos || this.placer()
         this.mouthSize = 8
         this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
@@ -60,7 +62,7 @@ export default class Fish extends Denizen {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
-        if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0], this.mouthPos[1] - 5, 15, 15)
+        if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0], this.mouthPos[1] - 25, 15, 15)
         if (this.view.debugging) this.drawMouths()
         this.ctx.globalAlpha = 1
  
@@ -168,6 +170,13 @@ export default class Fish extends Denizen {
         setTimeout(()=>{
             this.speed += .5
             this.mating = false
+            let i = Math.floor(Math.random() * 3)
+            while (i > 0) {
+                i--
+                this.logic.eggCount += 1
+                this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [this.pos[0], this.pos[1]], this.ctx, this.canvas, this.view, this.posMatrix, this.logic)
+            }
+            console.log(this.logic.eggs)
         }, 1500)
     }
 }

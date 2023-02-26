@@ -8,8 +8,12 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
         this.posMatrix = this.matrixMaker()
-        this.fishes = this.tankPopulator(10, Fish)
-        this.algae = this.tankPopulator(50, Algae)
+        this.fishCount = 10
+        this.fishes = this.tankPopulator(this.fishCount, Fish)
+        this.algaeCount = 50
+        this.algae = this.tankPopulator(this.algaeCount, Algae)
+        this.eggCount = 0
+        this.eggs = {}
     }
 
     fishMeetOtherFish() {
@@ -44,23 +48,31 @@ export default class Logic {
 
 
     fishEatAlgae() {
-        Object.values(this.fishes).forEach((fish)=>{
+
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (fish.energy > 12) continue
+            if (fish.mating) continue
+
             for (const [key, algae] of Object.entries(this.algae)) {
                 let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
                 if (eat) {
                     delete this.algae[key]
                     fish.energy = 15
                 }
-                
+
             }
-        })
+        }
+
+        
+        
     }
 
     tankPopulator(objnum, className) {
         let denizenObj = {}
 
         while (objnum > 0) {
-            denizenObj[objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix)
+            denizenObj[objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix, this)
             objnum--
         }
         return denizenObj

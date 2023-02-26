@@ -10,6 +10,7 @@ export default class View {
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.fishes = this.logic.fishes
         this.algae = this.logic.algae
+        this.eggs = this.logic.eggs
         this.animate()
         this.debugging = false
     }
@@ -28,7 +29,7 @@ export default class View {
         this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length}`, 25, 50)
         this.ctx.fillText(`Algae: ${ Object.values(this.logic.algae).length }`, 25, 100)
 
-        this.drawfishes()
+        this.drawDenizens()
         this.logic.fishEatAlgae()
         this.logic.fishDieFromNoFood()
         this.logic.fishMeetOtherFish()
@@ -36,12 +37,15 @@ export default class View {
         requestAnimationFrame(this.animate.bind(this))
     }
 
-    drawfishes() {
+    drawDenizens() {
         Object.values(this.fishes).forEach((fish)=>{
             fish.draw()
         })
         Object.values(this.algae).forEach((algae) => {
             algae.draw()
+        })
+        Object.values(this.eggs).forEach((egg) => {
+            egg.draw()
         })
     }
 

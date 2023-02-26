@@ -3,8 +3,8 @@ import Denizen from "./denizen"
 
 export default class Algae extends Denizen {
 
-    constructor(id, ctx, canvas, view, posMatrix) {
-        super(ctx, canvas, view, posMatrix)
+    constructor(id, ctx, canvas, view, posMatrix, logic) {
+        super(ctx, canvas, view, posMatrix, logic)
         this.id = "Algae" + id
         this.img = new Image()
         this.img.src = './dist/art/algae.png'
