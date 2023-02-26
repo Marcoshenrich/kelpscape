@@ -20,7 +20,7 @@ export default class Fish {
         this.mouthSize = 8
         this.mouthPos = this.mouthPlacer()
 
-        this.energy = 10
+        this.energy = 15
         this.dead = false
         
     }
@@ -50,7 +50,7 @@ export default class Fish {
         this.drift()
         this.consumeEnergy()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
-        this.ctx.globalAlpha = (this.energy/10) + 0.3
+        this.ctx.globalAlpha = this.energy/15
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         if (this.view.debugging) this.drawMouths()
         this.ctx.globalAlpha = 1
@@ -85,8 +85,7 @@ export default class Fish {
     }
     
     consumeEnergy(){
-        this.energy -= .01
-        console.log(this.energy)
+        this.energy -= .01 * this.speed
         if (this.energy < 0) this.dead = true
     }
 

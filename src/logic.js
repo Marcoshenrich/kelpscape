@@ -16,6 +16,7 @@ export default class Logic {
     fishDieFromNoFood() {
         for (const [key, fish] of Object.entries(this.fishes)) {
             if (fish.dead) delete this.fishes[key]
+            if (fish.dead) console.log("dead")
         }
     }
 
@@ -24,7 +25,12 @@ export default class Logic {
         Object.values(this.fishes).forEach((fish)=>{
             for (const [key, algae] of Object.entries(this.algae)) {
                 let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
-                if (eat) delete this.algae[key]
+                if (eat) {
+                    delete this.algae[key]
+                    fish.energy = 15
+                }
+                console.log(fish.energy)
+                
             }
         })
     }
