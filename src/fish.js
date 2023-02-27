@@ -1,21 +1,19 @@
 import Denizen from "./denizen"
 import Fishegg from "./fishegg"
+import Swimmer from "./swimmer"
 
-export default class Fish extends Denizen {
+
+export default class Fish extends Swimmer {
 
     constructor(id, ctx, canvas, view, posMatrix, logic, pos, spawn) {
         super(ctx, canvas, view, posMatrix, logic)
 
         this.id = "Fish" + id
-        this.up = [true, false][Math.floor(Math.random() * 2)]
-        this.right = [true, false][Math.floor(Math.random() * 2)]
-        this.leftImg = new Image()
+
         this.leftImg.src = './dist/art/fishleft.png'
-        this.rightImg = new Image()
         this.rightImg.src = './dist/art/fishright.png'
         this.mateHeart = new Image()
         this.mateHeart.src = './dist/art/red-heart.png'
-        this.img = this.imgSelector()
         this.speed = (Math.floor(Math.random() * 5) +1 )/10
         this.width = spawn ? 12 : 25
         this.height = spawn ? 8 : 16
@@ -100,131 +98,6 @@ export default class Fish extends Denizen {
         this.ctx.fillStyle = 'rgba(0,0,0,1)';
         this.ctx.font = "12px serif";
         this.ctx.fillText(`${this.id}`, this.pos[0], this.pos[1])
-    }
-
-    move() {
-        if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
-            this.right = !this.right;
-            this.img = this.imgSelector();
-        }
-        if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
-        this.mouthPos = this.mouthPlacer();
-
-        if (this.speed < .01) this.speed = .3
-
-        if (!this.mating && this.hunting) {
-            this.moveTowardsFood()
-        }
-
-        if (!this.mating && !this.hunting) {
-            let movementSwitch = Math.floor(Math.random()*1000)
-            if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
-
-            this.movement1();
-            this.movement2();
-        }
-
-        // if (!this.mating) this.fishOrienter()
-        // this.oldPos = [this.pos[0], this.pos[1]]
-
-        
-
-    }
-
-    fishOrienter() {
-
-        if (this.oldPos[0] < this.pos[0]) {
-            this.right = true
-            this.img = this.imgSelector();
-        } else {
-            this.right = false
-            this.img = this.imgSelector();
-        }
-    }
-
-    moveTowardsFood() {
-        if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            this.pos[0] += .4
-        } else {
-            this.pos[0] -= .4
-        }
-
-        if (this.pos[1] < this.nearestFoodCords[1]) {
-            this.pos[1] += .4
-        } else {
-            this.pos[1] -= .4
-        }
-    }
-
-
-    movementPatterns = {
-        scan: ()=>{
-            if (this.right) {
-                this.pos[0] += (this.speed / 2)
-            } else {
-                this.pos[0] -= (this.speed / 2)
-            }
-        },
-
-        crissCross: ()=>{
-                this.movementPatterns.scan()
-                this.movementPatterns.bob()
-            },
-
-        bob: () => {
-                if (this.up) {
-                    this.pos[1] += (this.speed / 2)
-                } else {
-                    this.pos[1] -= (this.speed / 2)
-                }
-            }
-    }
-
-    movementSwitches = {
-        reverseUp:() => {
-            this.up = !this.up
-        },
-
-        reverseSide:() => {
-            this.right = !this.right;
-            this.img = this.imgSelector();
-        },
-
-        speedUp:() =>{
-            if (this.speed < this.maxSpeed) this.speed += .1
-        },
-
-        slowDown:() => {
-            if (this.speed > .3)this.speed -= .1
-        },
-
-        dash: () => {
-            this.speed += .5
-            setTimeout(() => this.speed -= .5 ,500)
-        }
-    }
-
-    moveSelector = () => {
-        return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
-    }
-
-    moveChangerOne() {
-        this.movement1 = this.moveSelector()
-        setTimeout(()=>{
-            this.moveChangerOne()
-        }, Math.floor(Math.random() * 5000))
-    }
-
-    moveChangerTwo() {
-        this.movement2 = this.moveSelector()
-        setTimeout(() => {
-            this.moveChangerTwo()
-        }, Math.floor(Math.random() * 5000))
-    }
-    
-    consumeEnergy(){
-        this.energy -= .005 * this.speed
-        if (this.energy < .05) this.dead = true
     }
 
     mate(spawnBool) {

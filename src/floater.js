@@ -22,7 +22,6 @@ export default class Floater extends Denizen {
     }
 
     bob() {
-
         if (this.up) {
             this.trackCoef -= this.bobSpeed
             this.pos[1] -= this.bobSpeed
@@ -31,7 +30,6 @@ export default class Floater extends Denizen {
             if (!(this.pos[1] > (this.canvas.height - this.height))) {
                 this.pos[1] += this.bobSpeed
             }
-
         }
 
         if (this.trackCoef > this.bobCoef) {
