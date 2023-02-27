@@ -101,15 +101,15 @@ export default class Swimmer extends Denizen {
 
     moveTowardsFood() {
         if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            this.pos[0] += .4
+            this.pos[0] += this.maxSpeed 
         } else {
-            this.pos[0] -= .4
+            this.pos[0] -= this.maxSpeed
         }
 
         if (this.pos[1] < this.nearestFoodCords[1]) {
-            this.pos[1] += .4
+            this.pos[1] += this.maxSpeed
         } else {
-            this.pos[1] -= .4
+            this.pos[1] -= this.maxSpeed
         }
     }
 

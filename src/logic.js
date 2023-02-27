@@ -1,5 +1,6 @@
 import Fish from "./fish"
 import Algae from "./algae"
+import Shark from "./shark"
 
 export default class Logic {
 
@@ -12,6 +13,8 @@ export default class Logic {
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algaeCount = 50
         this.algae = this.tankPopulator(this.algaeCount, Algae)
+        this.sharkCount = 1
+        this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggCount = 0
         this.eggs = {}
     }
@@ -23,7 +26,52 @@ export default class Logic {
         this.fishHuntWhenHungry()
         this.fishCanFindSomethingElseToEat()
         this.eggsDespawnWhenHatched()
+        this.sharksEatFish()
+        this.sharksHuntWhenHungry()
         this.algaeSpawns()
+    }
+
+    sharksHuntWhenHungry() {
+        for (let i = 0; i < Object.values(this.sharks).length; i++) {
+            let shark = Object.values(this.sharks)[i]
+            if (shark.energy > 40) continue
+            if (shark.hunting) continue
+
+            let nearestFoodCords = []
+            let nearestFoundDistance = Infinity
+            let foodId;
+
+            for (const [id, fish] of Object.entries(this.fishes)) {
+                let xDistance = Math.abs(shark.pos[0] - fish.pos[0])
+                let yDistance = Math.abs(shark.pos[1] - fish.pos[1])
+                if ((xDistance + yDistance) < nearestFoundDistance) {
+                    nearestFoundDistance = xDistance + yDistance
+                    nearestFoodCords = fish.pos
+                    foodId = id
+                }
+            }
+            shark.hunting = foodId
+            shark.nearestFoodCords = nearestFoodCords
+        }
+    }
+
+    sharksEatFish() {
+
+        for (let i = 0; i < Object.values(this.sharks).length; i++) {
+            let shark = Object.values(this.sharks)[i]
+            if (shark.energy > shark.eatFoodThreshold) continue
+            for (const [id, fish] of Object.entries(this.fishes)) {
+                let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
+                if (eat) {
+                    delete this.fishes[id]
+                    shark.energy = shark.maxEnergy
+                    shark.foodEaten++
+                    shark.hunting = false
+                    shark.nearestFoodCords = []
+                }
+
+            }
+        }
     }
 
     algaeSpawns() {
@@ -66,6 +114,9 @@ export default class Logic {
     fishDieFromNoFood() {
         for (const [id, fish] of Object.entries(this.fishes)) {
             if (fish.dead) delete this.fishes[id]
+        }
+        for (const [id, shark] of Object.entries(this.sharks)) {
+            if (shark.dead) delete this.sharks[id]
         }
     }
 

@@ -11,6 +11,7 @@ export default class View {
         this.fishes = this.logic.fishes
         this.algae = this.logic.algae
         this.eggs = this.logic.eggs
+        this.sharks = this.logic.sharks
         this.animate()
         this.debugging = false
     }
@@ -45,6 +46,10 @@ export default class View {
         Object.values(this.eggs).forEach((egg) => {
             egg.draw()
         })
+        Object.values(this.sharks).forEach((shark) => {
+            shark.draw()
+        })
+
     }
 
     drawMatrix() {
