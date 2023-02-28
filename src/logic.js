@@ -30,7 +30,18 @@ export default class Logic {
         this.fishMeetOtherFish()
         this.sharksHuntWhenHungry()
         this.sharksEatFish()
+        this.fishFleeFromSharks()
         this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects])
+    }
+
+    fishFleeFromSharks() {
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (fish.mating) continue
+            if (fish.fleeing) continue
+            this.findNearestPredator(fish, this.sharks)
+        }
+
     }
 
     denizensDie(classObjArr){
@@ -114,7 +125,6 @@ export default class Logic {
                     fish.energy = fish.maxEnergy
                     fish.foodEaten++
                     fish.hunting = false
-                    fish.nearestFoodCords = []
                     if (fish.spawn && fish.foodEaten > 4) {
                         fish.growUp()
                     }
@@ -132,6 +142,28 @@ export default class Logic {
             if (fish.mating) continue
             this.findNearestFood(fish, this.algae)
         }
+    }
+
+    findNearestPredator(prey, predatorSpecies) {
+        let fleeFromCoords = []
+        let nearestFoundDistance = Infinity
+
+            for (const [id, predator] of Object.entries(predatorSpecies)) {
+                let xDistance = Math.abs(prey.pos[0] - predator.pos[0])
+                let yDistance = Math.abs(prey.pos[1] - predator.pos[1])
+                if ((xDistance + yDistance) > prey.fleeDistanceThreshold) return
+                if ((xDistance + yDistance) < nearestFoundDistance) {
+                    nearestFoundDistance = xDistance + yDistance
+                    fleeFromCoords = predator.pos
+                }
+            }
+
+        prey.fleeing = true
+        prey.fleeFromCoords = fleeFromCoords
+        setTimeout(()=>{
+            prey.fleeing = false
+        },1000)
+
     }
 
     findNearestFood(predator, preySpecies) {
@@ -166,8 +198,6 @@ export default class Logic {
             }
         }
     }
-
-
 
 
     tankPopulator(objnum, className) {

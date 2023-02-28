@@ -25,6 +25,10 @@ export default class Swimmer extends Denizen {
 
         if (this.speed < .01) this.speed = .3
 
+        if (this.fleeing) {
+            this.fleeFromPredator()
+        }
+
         if (!this.mating && this.hunting) {
             this.moveTowardsFood()
         }
@@ -39,6 +43,37 @@ export default class Swimmer extends Denizen {
 
         if (!this.mating) this.fishOrienter()
         this.oldPos = [this.pos[0], this.pos[1]]
+    }
+
+    fleeFromPredator() {
+        let [xhigh, xlow, yhigh, ylow] = this.inBounds()
+
+
+        if (this.pos[0] > this.fleeFromCoords[0]) {
+            if (xhigh) this.pos[0] += this.maxSpeed
+        } else {
+            if (xlow) this.pos[0] -= this.maxSpeed
+        }
+
+
+        if (this.pos[1] > this.fleeFromCoords[1]) {
+            if (yhigh) this.pos[1] += this.maxSpeed
+        } else {
+            if (ylow) this.pos[1] -= this.maxSpeed
+        }
+
+    }
+
+    inBounds(){
+        let xhigh = true
+        let xlow = true
+        let yhigh = true
+        let ylow = true
+        if (this.pos[0] < 0) xlow = false
+        if (this.pos[0] > this.canvas.width - this.width) xhigh = false
+        if (this.pos[1] < 0) ylow = false
+        if (this.pos[1] > this.canvas.height - this.height) yhigh = false
+        return [xhigh, xlow, yhigh, ylow]
     }
 
     movementPatterns = {
@@ -100,17 +135,23 @@ export default class Swimmer extends Denizen {
     }
 
     moveTowardsFood() {
+
+        let [xhigh, xlow, yhigh, ylow] = this.inBounds()
+
         if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            this.pos[0] += this.maxSpeed 
+            if (xhigh) this.pos[0] += this.maxSpeed 
         } else {
-            this.pos[0] -= this.maxSpeed
+            if (xlow) this.pos[0] -= this.maxSpeed
         }
 
+
+
         if (this.mouthPos[1] < this.nearestFoodCords[1]) {
-            this.pos[1] += this.maxSpeed
+            if (yhigh) this.pos[1] += this.maxSpeed
         } else {
-            this.pos[1] -= this.maxSpeed
+            if (ylow) this.pos[1] -= this.maxSpeed
         }
+    
     }
 
     moveSelector = () => {
@@ -121,14 +162,14 @@ export default class Swimmer extends Denizen {
         this.movement1 = this.moveSelector()
         setTimeout(() => {
             this.moveChangerOne()
-        }, Math.floor(Math.random() * 5000))
+        }, Math.floor(Math.random() * 3000))
     }
 
     moveChangerTwo() {
         this.movement2 = this.moveSelector()
         setTimeout(() => {
             this.moveChangerTwo()
-        }, Math.floor(Math.random() * 5000))
+        }, Math.floor(Math.random() * 3000))
     }
 
     consumeEnergy() {
