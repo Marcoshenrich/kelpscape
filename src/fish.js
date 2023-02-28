@@ -28,6 +28,7 @@ export default class Fish extends Swimmer {
 
         this.maxEnergy = 20
         this.energy = this.maxEnergy
+        this.energyUseCoef = .005
         this.matingThreshold = 15
         this.matingEnergyCost = 5
         this.dead = false

@@ -1,5 +1,3 @@
-import Fish from "./fish"
-import Algae from "./algae"
 import Logic from "./logic"
 
 export default class View {
@@ -12,6 +10,7 @@ export default class View {
         this.algae = this.logic.algae
         this.eggs = this.logic.eggs
         this.sharks = this.logic.sharks
+        this.effects = this.logic.effects
         this.animate()
         this.debugging = false
     }
@@ -48,6 +47,9 @@ export default class View {
         })
         Object.values(this.sharks).forEach((shark) => {
             shark.draw()
+        })
+        Object.values(this.effects).forEach((effect) => {
+            effect.draw()
         })
 
     }

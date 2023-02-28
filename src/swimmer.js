@@ -37,8 +37,8 @@ export default class Swimmer extends Denizen {
             this.movement2();
         }
 
-        // if (!this.mating) this.fishOrienter()
-        // this.oldPos = [this.pos[0], this.pos[1]]
+        if (!this.mating) this.fishOrienter()
+        this.oldPos = [this.pos[0], this.pos[1]]
     }
 
     movementPatterns = {
@@ -106,7 +106,7 @@ export default class Swimmer extends Denizen {
             this.pos[0] -= this.maxSpeed
         }
 
-        if (this.pos[1] < this.nearestFoodCords[1]) {
+        if (this.mouthPos[1] < this.nearestFoodCords[1]) {
             this.pos[1] += this.maxSpeed
         } else {
             this.pos[1] -= this.maxSpeed
@@ -132,7 +132,7 @@ export default class Swimmer extends Denizen {
     }
 
     consumeEnergy() {
-        this.energy -= .005 * this.speed
+        this.energy -= this.energyUseCoef * this.speed
         if (this.energy < .05) this.dead = true
     }
 

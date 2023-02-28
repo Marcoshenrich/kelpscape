@@ -11,7 +11,7 @@ export default class Shark extends Swimmer {
         this.rightImg.src = './dist/art/sharkright.png'
         this.mateHeart = new Image()
         this.mateHeart.src = './dist/art/red-heart.png'
-        this.speed = (Math.floor(Math.random() * 5) + 1) / 10
+        this.speed = (Math.floor(Math.random() * 5) + 5) / 10
         this.width = spawn ? 20 : 100
         this.height = spawn ? 8 : 41
         this.pos = this.placer()
@@ -23,8 +23,9 @@ export default class Shark extends Swimmer {
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.maxEnergy = 41
+        this.maxEnergy = 30
         this.energy = this.maxEnergy
+        this.energyUseCoef = .025
         this.matingThreshold = 15
         this.matingEnergyCost = 5
         this.dead = false
@@ -33,10 +34,11 @@ export default class Shark extends Swimmer {
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
-        this.eatFoodThreshold = 50
+        this.eatFoodThreshold = 60
 
         this.hunting = false
         this.nearestFoodCords = []
+
     }
 
     growUp() {
@@ -81,8 +83,8 @@ export default class Shark extends Swimmer {
         //     this.drawId()
         // }
 
-        this.drawMouths()
-        this.drawId()
+        // this.drawMouths()
+        // this.drawId()
     
         this.ctx.globalAlpha = 1
 

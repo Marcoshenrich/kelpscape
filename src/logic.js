@@ -1,6 +1,7 @@
 import Fish from "./fish"
 import Algae from "./algae"
 import Shark from "./shark"
+import Effect from "./effect"
 
 export default class Logic {
 
@@ -8,7 +9,7 @@ export default class Logic {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
-        // this.posMatrix = this.matrixMaker()
+        this.effect = new Effect(ctx, canvas, view)
         this.fishCount = 10
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algaeCount = 50
@@ -17,6 +18,8 @@ export default class Logic {
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggCount = 0
         this.eggs = {}
+        this.effectCount = 0
+        this.effects = this.tankPopulator(0, Effect)
     }
 
     coreLoop(){
@@ -29,6 +32,13 @@ export default class Logic {
         this.sharksEatFish()
         this.sharksHuntWhenHungry()
         this.algaeSpawns()
+        this.effectsExpire()
+    }
+
+    effectsExpire() {
+        for (const [id, effect] of Object.entries(this.effects)) {
+            if (effect.effectEnded) delete this.effects[id]
+        }
     }
 
     sharksHuntWhenHungry() {
@@ -68,6 +78,8 @@ export default class Logic {
                     shark.foodEaten++
                     shark.hunting = false
                     shark.nearestFoodCords = []
+                    this.effectCount++
+                    this.effects["Effect" + this.effectCount] = new Effect("bloodSpurt", [shark.mouthPos[0], shark.mouthPos[1]], this.ctx, this.canvas, this.view)
                 }
 
             }
