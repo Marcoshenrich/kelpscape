@@ -11,7 +11,6 @@ export default class Fishegg extends Floater {
         this.img = new Image()
         this.img.src = './dist/art/fishEggs.png'
         this.spawn()
-        this.destroy = false
         this.dims = Math.floor(Math.random() * 5) + 20
         this.height = this.dims
         this.width = this.dims
@@ -19,7 +18,7 @@ export default class Fishegg extends Floater {
 
     spawn() {
         setTimeout(()=>{
-            this.destroy = true
+            this.dead = true
             this.logic.fishCount += 1
             this.logic.fishes[this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.posMatrix, this.logic, [this.pos[0], this.pos[1]], "spawn")
         },10000)

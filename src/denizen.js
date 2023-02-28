@@ -6,6 +6,7 @@ export default class Denizen {
         this.view = view
         this.posMatrix = posMatrix
         this.logic = logic
+        this.dead = false
     }
     
 

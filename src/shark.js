@@ -23,12 +23,11 @@ export default class Shark extends Swimmer {
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.maxEnergy = 30
+        this.maxEnergy = 100
         this.energy = this.maxEnergy
         this.energyUseCoef = .025
         this.matingThreshold = 15
         this.matingEnergyCost = 5
-        this.dead = false
         this.maxSpeed = spawn ? .3 : 1
 
         this.mating = false
@@ -78,13 +77,11 @@ export default class Shark extends Swimmer {
         this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
    
 
-        // if (this.view.debugging) {
-        //     this.drawMouths()
-        //     this.drawId()
-        // }
+        if (this.view.debugging) {
+            this.drawMouths()
+            this.drawId()
+        }
 
-        // this.drawMouths()
-        // this.drawId()
     
         this.ctx.globalAlpha = 1
 

@@ -90,13 +90,13 @@ export default class Swimmer extends Denizen {
 
     fishOrienter() {
 
-        if (this.oldPos[0] < this.pos[0]) {
-            this.right = true
-            this.img = this.imgSelector();
-        } else {
-            this.right = false
-            this.img = this.imgSelector();
-        }
+        // if (this.oldPos[0] < this.pos[0]) {
+        //     this.right = true
+        //     this.img = this.imgSelector();
+        // } else {
+        //     this.right = false
+        //     this.img = this.imgSelector();
+        // }
     }
 
     moveTowardsFood() {

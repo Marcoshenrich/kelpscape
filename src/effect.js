@@ -7,10 +7,10 @@ export default class Effect {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
-        this.effectEnded = false
         this.size = 10
         this.coef1 = 0
         this.coef2 = 0
+        this.dead = false
     }
 
     draw() {
