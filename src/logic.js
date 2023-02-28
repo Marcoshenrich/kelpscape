@@ -2,7 +2,6 @@ import Fish from "./fish"
 import Algae from "./algae"
 import Shark from "./shark"
 import Effect from "./effect"
-import Fishegg from "./fishegg"
 
 export default class Logic {
 
@@ -24,38 +23,21 @@ export default class Logic {
     }
 
     coreLoop(){
-        this.fishEatAlgae()
-        this.fishMeetOtherFish()
+        this.algaeSpawns()
         this.fishHuntWhenHungry()
         this.fishCanFindSomethingElseToEat()
+        this.fishEatAlgae()
+        this.fishMeetOtherFish()
         this.sharksHuntWhenHungry()
         this.sharksEatFish()
-        this.algaeSpawns()
-        this.denizensDie(["fishes", "eggs", "algae", "sharks", "effects"])
-        this.effectsExpire()
+        this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects])
     }
 
-    denizensDie(classnamesArr){
-        for (let classname of classnamesArr) {
-            for (const [id, denizen] of Object.entries(this[classname])) {
-                if (denizen.dead) delete this[classname][id]
+    denizensDie(classObjArr){
+        for (let classObj of classObjArr) {
+            for (const [id, denizen] of Object.entries(classObj)) {
+                if (denizen.dead) delete classObj[id]
             }
-        }
-    }
-
-    fishDieFromNoFood() {
-        for (const [id, fish] of Object.entries(this.fishes)) {
-            if (fish.dead) delete this.fishes[id]
-        }
-        for (const [id, shark] of Object.entries(this.sharks)) {
-            if (shark.dead) delete this.sharks[id]
-        }
-    }
-
-
-    effectsExpire() {
-        for (const [id, effect] of Object.entries(this.effects)) {
-            if (effect.effectEnded) delete this.effects[id]
         }
     }
 
@@ -64,22 +46,7 @@ export default class Logic {
             let shark = Object.values(this.sharks)[i]
             if (shark.energy > 40) continue
             if (shark.hunting) continue
-
-            let nearestFoodCords = []
-            let nearestFoundDistance = Infinity
-            let foodId;
-
-            for (const [id, fish] of Object.entries(this.fishes)) {
-                let xDistance = Math.abs(shark.pos[0] - fish.pos[0])
-                let yDistance = Math.abs(shark.pos[1] - fish.pos[1])
-                if ((xDistance + yDistance) < nearestFoundDistance) {
-                    nearestFoundDistance = xDistance + yDistance
-                    nearestFoodCords = fish.pos
-                    foodId = id
-                }
-            }
-            shark.hunting = foodId
-            shark.nearestFoodCords = nearestFoodCords
+            this.findNearestFood(shark, this.fishes)
         }
     }
 
@@ -163,24 +130,30 @@ export default class Logic {
             if (fish.energy > 7) continue
             if (fish.hunting) continue
             if (fish.mating) continue
-
-            let nearestFoodCords = []
-            let nearestFoundDistance = Infinity
-            let foodId;
-
-            for (const [id, algae] of Object.entries(this.algae)) {
-                let xDistance = Math.abs(fish.pos[0] - algae.pos[0])
-                let yDistance = Math.abs(fish.pos[1] - algae.pos[1])
-                if ((xDistance + yDistance) < nearestFoundDistance) {
-                    nearestFoundDistance = xDistance + yDistance
-                    nearestFoodCords = algae.pos
-                    foodId = id
-                }
-            }
-            fish.hunting = foodId
-            fish.nearestFoodCords = nearestFoodCords
+            this.findNearestFood(fish, this.algae)
         }
     }
+
+    findNearestFood(predator, preySpecies) {
+        let nearestFoodCords = []
+        let nearestFoundDistance = Infinity
+        let foodId;
+
+            for (const [id, prey] of Object.entries(preySpecies)) {
+            let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
+            let yDistance = Math.abs(predator.pos[1] - prey.pos[1])
+
+            if ((xDistance + yDistance) < nearestFoundDistance) {
+                nearestFoundDistance = xDistance + yDistance
+                nearestFoodCords = prey.pos
+                foodId = id
+            }
+        }
+
+        predator.hunting = foodId
+        predator.nearestFoodCords = nearestFoodCords
+    }
+    
 
 
     fishCanFindSomethingElseToEat() {

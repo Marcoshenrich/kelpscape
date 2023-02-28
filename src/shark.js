@@ -23,7 +23,7 @@ export default class Shark extends Swimmer {
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.maxEnergy = 100
+        this.maxEnergy = 20
         this.energy = this.maxEnergy
         this.energyUseCoef = .025
         this.matingThreshold = 15
