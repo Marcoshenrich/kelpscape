@@ -73,7 +73,7 @@ export default class Logic {
         let spawnAlgae = (1 === Math.floor(Math.random() * 200))
         if (spawnAlgae) {
             this.algaeCount++
-            this.algae["Algae" + this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this.posMatrix, this)
+            this.algae["Algae" + this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this)
         }
     }
 
@@ -174,20 +174,10 @@ export default class Logic {
         let denizenObj = {}
   
         while (objnum > 0) {
-            denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this.posMatrix, this)
+            denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this)
             objnum--
         }
         return denizenObj
-    }
-
-    matrixMaker() {
-        let matrix = {}
-        let i = 100
-        while (i > 0) {
-            matrix[i] = new Set()
-            i--
-        }
-        return matrix
     }
 
 }

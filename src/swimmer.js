@@ -2,8 +2,8 @@ import Denizen from "./denizen"
 
 export default class Swimmer extends Denizen {
 
-    constructor(ctx, canvas, view, posMatrix, logic) {
-        super(ctx, canvas, view, posMatrix, logic)
+    constructor(ctx, canvas, view, logic) {
+        super(ctx, canvas, view, logic)
         this.up = [true, false][Math.floor(Math.random() * 2)]
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.leftImg = new Image()

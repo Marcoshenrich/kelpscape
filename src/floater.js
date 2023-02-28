@@ -3,8 +3,8 @@ import Denizen from "./denizen"
 
 export default class Floater extends Denizen {
 
-    constructor(ctx, canvas, view, posMatrix, logic) {
-        super(ctx, canvas, view, posMatrix, logic)
+    constructor(ctx, canvas, view, logic) {
+        super(ctx, canvas, view, logic)
         this.bobCoef = Math.floor(Math.random() * 10) + 4
         this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
         this.trackCoef = 0

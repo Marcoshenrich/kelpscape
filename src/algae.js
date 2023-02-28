@@ -4,8 +4,8 @@ import Floater from "./floater"
 
 export default class Algae extends Floater {
 
-    constructor(id, ctx, canvas, view, posMatrix, logic) {
-        super(ctx, canvas, view, posMatrix, logic)
+    constructor(id, ctx, canvas, view, logic) {
+        super(ctx, canvas, view, logic)
         this.id = "Algae" + id
         this.img = new Image()
         this.img.src = './dist/art/algae.png'

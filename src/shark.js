@@ -3,8 +3,8 @@ import Swimmer from "./swimmer"
 
 export default class Shark extends Swimmer {
 
-    constructor(id, ctx, canvas, view, posMatrix, logic, spawn) {
-        super(ctx, canvas, view, posMatrix, logic)
+    constructor(id, ctx, canvas, view, logic, spawn) {
+        super(ctx, canvas, view, logic)
         this.id = "Shark" + id
 
         this.leftImg.src = './dist/art/sharkleft.png'

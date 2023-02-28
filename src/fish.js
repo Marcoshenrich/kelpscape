@@ -5,8 +5,8 @@ import Swimmer from "./swimmer"
 
 export default class Fish extends Swimmer {
 
-    constructor(id, ctx, canvas, view, posMatrix, logic, pos, spawn) {
-        super(ctx, canvas, view, posMatrix, logic)
+    constructor(id, ctx, canvas, view, logic, pos, spawn) {
+        super(ctx, canvas, view, logic)
 
         this.id = "Fish" + id
 
@@ -112,7 +112,7 @@ export default class Fish extends Swimmer {
             while (i > 0) {
                 i--
                 this.logic.eggCount += 1
-                this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [this.pos[0], this.pos[1]], this.ctx, this.canvas, this.view, this.posMatrix, this.logic)
+                this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [this.pos[0], this.pos[1]], this.ctx, this.canvas, this.view, this.logic)
             }
         }, 1500)
     }

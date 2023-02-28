@@ -1,10 +1,9 @@
 export default class Denizen {
 
-    constructor(ctx, canvas, view, posMatrix, logic) {
+    constructor(ctx, canvas, view, logic) {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
-        this.posMatrix = posMatrix
         this.logic = logic
         this.dead = false
     }
