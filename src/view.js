@@ -5,6 +5,8 @@ export default class View {
     constructor(canvas) {
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
+        this.background = new Image()
+        this.background.src = './dist/art/background.jpeg'
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.fishes = this.logic.fishes
         this.algae = this.logic.algae
@@ -18,7 +20,10 @@ export default class View {
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
-        this.ctx.fillStyle = 'rgba(200,225,255,1)';
+
+        this.ctx.drawImage(this.background,0,0, this.canvas.width, this.canvas.height)
+
+        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
 
         this.ctx.fillStyle = 'rgba(0,0,0,.3)';
