@@ -33,6 +33,8 @@ export default class Fish extends Swimmer {
         this.matingEnergyCost = 5
         this.maxSpeed = spawn ? .3 : .6
 
+        this.energyVal = spawn ? 5 : 20
+
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
@@ -55,6 +57,7 @@ export default class Fish extends Swimmer {
         this.mouthSize = 8
         this.width = 25
         this.height = 16
+        this.energyVal = 20
     }
 
     mouthPlacer() {

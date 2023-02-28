@@ -16,6 +16,7 @@ export default class Algae extends Floater {
         this.bobSpeed = (Math.floor(Math.random() * 3) +.1)/30
         this.trackCoef = 0
         this.up = [true, false][Math.floor(Math.random() * 2)]
+        this.energyVal = 5
     }
 
     placer() {

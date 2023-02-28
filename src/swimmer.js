@@ -15,6 +15,9 @@ export default class Swimmer extends Denizen {
         return this.right ? this.rightImg : this.leftImg
     }
 
+    //maybe refactor so that moving left and right is an intrinsic state, and the switch happens accordingly to movement 
+    // one issue is that the mouthpos changes, which is partially causing the bug
+
     move() {
         if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
             this.right = !this.right;
@@ -27,10 +30,12 @@ export default class Swimmer extends Denizen {
 
         if (this.fleeing) {
             this.fleeFromPredator()
+            return
         }
 
         if (!this.mating && this.hunting) {
             this.moveTowardsFood()
+            return
         }
 
         if (!this.mating && !this.hunting) {

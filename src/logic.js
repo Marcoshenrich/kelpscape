@@ -14,7 +14,7 @@ export default class Logic {
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algaeCount = 50
         this.algae = this.tankPopulator(this.algaeCount, Algae)
-        this.sharkCount = 1
+        this.sharkCount = 2
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggCount = 0
         this.eggs = {}
@@ -69,7 +69,7 @@ export default class Logic {
                 let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
                 if (eat) {
                     fish.dead = true
-                    shark.energy = shark.maxEnergy
+                    shark.energy += fish.energyVal
                     shark.foodEaten++
                     shark.hunting = false
                     this.effectCount++
@@ -122,7 +122,7 @@ export default class Logic {
                 let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
                 if (eat) {
                     algae.dead = true
-                    fish.energy = fish.maxEnergy
+                    fish.energy += algae.energyVal
                     fish.foodEaten++
                     fish.hunting = false
                     if (fish.spawn && fish.foodEaten > 4) {
@@ -151,17 +151,18 @@ export default class Logic {
             for (const [id, predator] of Object.entries(predatorSpecies)) {
                 let xDistance = Math.abs(prey.pos[0] - predator.pos[0])
                 let yDistance = Math.abs(prey.pos[1] - predator.pos[1])
-                if ((xDistance + yDistance) > prey.fleeDistanceThreshold) return
+                if ((xDistance + yDistance) > prey.fleeDistanceThreshold) continue
                 if ((xDistance + yDistance) < nearestFoundDistance) {
                     nearestFoundDistance = xDistance + yDistance
                     fleeFromCoords = predator.pos
                 }
             }
-
+        if (nearestFoundDistance === Infinity) return
         prey.fleeing = true
         prey.fleeFromCoords = fleeFromCoords
         setTimeout(()=>{
             prey.fleeing = false
+            prey.fleeFromCoords = []
         },1000)
 
     }
