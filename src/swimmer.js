@@ -36,13 +36,17 @@ export default class Swimmer extends Denizen {
 
         if (this.speed < .01) this.speed = .3
 
+        this.oldPos = [this.pos[0], this.pos[1]]
+
         if (!this.mating && this.hunting) {
             this.moveTowardsFood()
+            this.fishOrienter()
             return
         }
 
         if (this.fleeing) {
             this.fleeFromPredator()
+            this.fishOrienter()
             return
         }
 
@@ -52,10 +56,10 @@ export default class Swimmer extends Denizen {
 
             this.movement1();
             this.movement2();
+            this.fishOrienter()
         }
 
-        if (!this.mating) this.fishOrienter()
-        this.oldPos = [this.pos[0], this.pos[1]]
+
     }
 
     fleeFromPredator() {
@@ -152,12 +156,17 @@ export default class Swimmer extends Denizen {
     }
 
     fishOrienter() {
+        if (this.recentlySwitchedDirections) return
         if (this.oldPos[0] < this.pos[0]) {
             this.right = true
             this.img = this.imgSelector();
+            this.recentlySwitchedDirections = true
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 350)
         } else {
             this.right = false
             this.img = this.imgSelector();
+            this.recentlySwitchedDirections = true
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 350)
         }
     }
 
