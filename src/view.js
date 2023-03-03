@@ -14,14 +14,11 @@ export default class View {
         this.sharks = this.logic.sharks
         this.effects = this.logic.effects
         this.seaweed = this.logic.seaweed
-        this.gameFrame = 0
-        this.staggerFrame = 20
         this.animate()
         this.debugging = false
     }
 
     animate() {
-        this.gameFrame++
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
 
@@ -60,7 +57,7 @@ export default class View {
             effect.draw()
         })
         Object.values(this.seaweed).forEach((seaweed) => {
-            seaweed.draw(this.ctx, this.gameFrame, this.staggerFrame)
+            seaweed.draw()
         })
 
     }
