@@ -9,6 +9,7 @@ export default class Swimmer extends Denizen {
         this.leftImg = new Image()
         this.rightImg = new Image()
         this.img = this.imgSelector()
+        this.recentlySwitchedDirections = false
     }
 
     imgSelector() {
@@ -18,23 +19,33 @@ export default class Swimmer extends Denizen {
     //maybe refactor so that moving left and right is an intrinsic state, and the switch happens accordingly to movement 
     // one issue is that the mouthpos changes, which is partially causing the bug
 
+    switchDirections() {
+        if (this.recentlySwitchedDirections) return
+        this.right = !this.right;
+        this.img = this.imgSelector();
+        this.recentlySwitchedDirections = true
+        setTimeout(() => { this.recentlySwitchedDirections = false },350)
+    }
+
+    
+
+
     move() {
         if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
-            this.right = !this.right;
-            this.img = this.imgSelector();
+            this.switchDirections()
         }
         if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
         if (this.speed < .01) this.speed = .3
 
-        if (this.fleeing) {
-            this.fleeFromPredator()
+        if (!this.mating && this.hunting) {
+            this.moveTowardsFood()
             return
         }
 
-        if (!this.mating && this.hunting) {
-            this.moveTowardsFood()
+        if (this.fleeing) {
+            this.fleeFromPredator()
             return
         }
 
@@ -55,16 +66,31 @@ export default class Swimmer extends Denizen {
 
 
         if (this.pos[0] > this.fleeFromCoords[0]) {
-            if (xhigh) this.pos[0] += this.maxSpeed
+            if (xhigh) {
+                this.pos[0] += this.maxSpeed
+            }else {
+                this.pos[0] = this.canvas.width - this.width
+            }
         } else {
-            if (xlow) this.pos[0] -= this.maxSpeed
+            if (xlow) {
+                this.pos[0] -= this.maxSpeed
+            } else {
+                this.pos[0] = 0
+            }
         }
 
-
         if (this.pos[1] > this.fleeFromCoords[1]) {
-            if (yhigh) this.pos[1] += this.maxSpeed
+            if (yhigh) {
+                this.pos[1] += this.maxSpeed
+            } else {
+                this.pos[1] = this.canvas.height - this.height
+            }
         } else {
-            if (ylow) this.pos[1] -= this.maxSpeed
+            if (ylow) {
+                this.pos[1] -= this.maxSpeed
+            } else {
+                this.pos[1] = 0
+            }
         }
 
     }
@@ -129,14 +155,13 @@ export default class Swimmer extends Denizen {
     }
 
     fishOrienter() {
-
-        // if (this.oldPos[0] < this.pos[0]) {
-        //     this.right = true
-        //     this.img = this.imgSelector();
-        // } else {
-        //     this.right = false
-        //     this.img = this.imgSelector();
-        // }
+        if (this.oldPos[0] < this.pos[0]) {
+            this.right = true
+            this.img = this.imgSelector();
+        } else {
+            this.right = false
+            this.img = this.imgSelector();
+        }
     }
 
     moveTowardsFood() {

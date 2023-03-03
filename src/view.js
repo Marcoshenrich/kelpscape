@@ -36,7 +36,6 @@ export default class View {
 
         this.drawDenizens()
         this.logic.coreLoop()
-        if (this.debugging) this.drawMatrix()
         requestAnimationFrame(this.animate.bind(this))
     }
 
@@ -57,29 +56,6 @@ export default class View {
             effect.draw()
         })
 
-    }
-
-    drawMatrix() {
-        // // debugging function 
-        // this.ctx.fillStyle = 'rgba(0,0,0,1)';
-
-        // let i = 9
-        // let steppedHeight = this.canvas.height/10
-        // let step = steppedHeight
-        // while (i > 0) {
-        //     this.ctx.fillRect(0, step, this.canvas.width, 1)
-        //     step += steppedHeight
-        //     i--
-        // }
-
-        // i = 9
-        // let steppedWidth = this.canvas.width / 10
-        // step = steppedWidth
-        // while (i > 0) {
-        //     this.ctx.fillRect(step, 0, 1, this.canvas.height)
-        //     step += steppedHeight
-        //     i--
-        // }
     }
 }
 

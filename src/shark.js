@@ -25,7 +25,7 @@ export default class Shark extends Swimmer {
 
         this.maxEnergy = 100
         this.energy = this.maxEnergy
-        this.energyUseCoef = .025
+        this.energyUseCoef = .015
         this.matingThreshold = 15
         this.matingEnergyCost = 5
         this.maxSpeed = spawn ? .3 : 1
