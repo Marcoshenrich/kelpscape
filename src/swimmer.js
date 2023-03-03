@@ -27,9 +27,6 @@ export default class Swimmer extends Denizen {
         setTimeout(() => { this.recentlySwitchedDirections = false },350)
     }
 
-    
-
-
     move() {
         if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
             this.switchDirections()

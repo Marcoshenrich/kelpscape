@@ -2,6 +2,7 @@ import Fish from "./fish"
 import Algae from "./algae"
 import Shark from "./shark"
 import Effect from "./effect"
+import Seaweed from "./seaweed"
 
 export default class Logic {
 
@@ -20,6 +21,7 @@ export default class Logic {
         this.eggs = {}
         this.effectCount = 0
         this.effects = this.tankPopulator(0, Effect)
+        this.seaweed = {x: new Seaweed(this.ctx, this.canvas, this.view, this)}
     }
 
     coreLoop(){
