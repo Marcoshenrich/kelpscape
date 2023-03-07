@@ -28,10 +28,10 @@ export default class Swimmer extends Denizen {
     }
 
     move() {
-        if (this.pos[0] > this.canvas.width - this.width || this.pos[0] < 0) {
+        if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) {
             this.switchDirections()
         }
-        if (this.pos[1] > this.canvas.height - this.height || this.pos[1] < 0) this.up = !this.up
+        if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
         this.mouthPos = this.mouthPlacer();
 
         if (this.speed < .01) this.speed = .3
@@ -70,7 +70,7 @@ export default class Swimmer extends Denizen {
             if (xhigh) {
                 this.pos[0] += this.maxSpeed
             }else {
-                this.pos[0] = this.canvas.width - this.width
+                this.pos[0] = this.arenaWidth - this.width
             }
         } else {
             if (xlow) {
@@ -84,7 +84,7 @@ export default class Swimmer extends Denizen {
             if (yhigh) {
                 this.pos[1] += this.maxSpeed
             } else {
-                this.pos[1] = this.canvas.height - this.height
+                this.pos[1] = this.arenaHeight - this.height
             }
         } else {
             if (ylow) {
@@ -102,9 +102,9 @@ export default class Swimmer extends Denizen {
         let yhigh = true
         let ylow = true
         if (this.pos[0] < 0) xlow = false
-        if (this.pos[0] > this.canvas.width - this.width) xhigh = false
+        if (this.pos[0] > this.arenaWidth - this.width) xhigh = false
         if (this.pos[1] < 0) ylow = false
-        if (this.pos[1] > this.canvas.height - this.height) yhigh = false
+        if (this.pos[1] > this.arenaHeight - this.height) yhigh = false
         return [xhigh, xlow, yhigh, ylow]
     }
 

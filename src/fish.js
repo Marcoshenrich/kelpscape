@@ -47,7 +47,6 @@ export default class Fish extends Swimmer {
         this.fleeing = false
         this.fleeFromCoords = []
 
-
         
     }
 
@@ -76,8 +75,8 @@ export default class Fish extends Swimmer {
     
     placer() {
         let pos = []
-        pos[0] = Math.floor(Math.random() * (this.canvas.width - this.width))
-        pos[1] = Math.floor(Math.random() * (this.canvas.height - this.height)) 
+        pos[0] = Math.floor(Math.random() * (this.arenaWidth- this.width))
+        pos[1] = Math.floor(Math.random() * (this.arenaHeight - this.height)) 
         return pos
     }
 
@@ -86,7 +85,7 @@ export default class Fish extends Swimmer {
         this.consumeEnergy()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
-        this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0], this.mouthPos[1] - 25, 15, 15)
         if (this.view.debugging) {
             this.drawMouths()

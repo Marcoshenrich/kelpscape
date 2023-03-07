@@ -7,6 +7,14 @@ export default class View {
         this.ctx = this.canvas.getContext('2d')
         this.background = new Image()
         this.background.src = './dist/art/background.jpeg'
+
+        this.arenaCoef = 2
+        this.arenaWidth = this.canvas.width * this.arenaCoef
+        this.arenaHeight = this.canvas.height * this.arenaCoef
+        this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
+        this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
+
+
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.fishes = this.logic.fishes
         this.algae = this.logic.algae
@@ -15,20 +23,8 @@ export default class View {
         this.effects = this.logic.effects
         this.seaweed = this.logic.seaweed
 
-
-        this.arenaCoef = 2
-        this.arenaWidth = this.canvas.width * this.arenaCoef
-        this.arenaHeight = this.canvas.height * this.arenaCoef
-        this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
-
-
-
-
         this.animate()
         this.debugging = false
-
-
-
 
     }
 
@@ -109,20 +105,19 @@ export default class View {
 
   
 
-        let desiredX = this.backgroundPos[0] + xSpeed;
-        let desiredY = this.backgroundPos[1] + ySpeed;
+        let desiredX = this.offset[0] + xSpeed;
+        let desiredY = this.offset[1] + ySpeed;
 
-        this.backgroundPos[0] += xSpeed;
-        this.backgroundPos[1] += ySpeed;
+        this.offset[0] += xSpeed;
+        this.offset[1] += ySpeed;
 
-        console.log(desiredX)
-        console.log(desiredY)
+        if (desiredX >= 0) this.offset[0] = 0;
+        if (desiredX <= (-this.arenaWidth + this.canvas.width)) this.offset[0] = (-this.arenaWidth + this.canvas.width);
+        if (desiredY >= 0) this.offset[1] = 0;
+        if (desiredY <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight+ this.canvas.height);
 
-        if (desiredX >= 0) this.backgroundPos[0] = 0;
-        if (desiredX <= (-this.arenaWidth + this.canvas.width)) this.backgroundPos[0] = (-this.arenaWidth + this.canvas.width);
-        if (desiredY >= 0) this.backgroundPos[1] = 0;
-        if (desiredY <= (-this.arenaHeight + this.canvas.height)) this.backgroundPos[1] = (-this.arenaHeight+ this.canvas.height);
-
+        this.backgroundPos[0] = this.offset[0];
+        this.backgroundPos[1] = this.offset[1];
 
     }
 
