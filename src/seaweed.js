@@ -1,16 +1,15 @@
 import Denizen from "./denizen";
 
 export default class Seaweed extends Denizen {
-    constructor(id, ctx, canvas, view, logic) {
+    constructor(id, ctx, canvas, view, logic, {pos}) {
         super(ctx, canvas, view, logic)
         this.id = id
         this.width = 60 
         this.height = 80 
         this.sizeCoef = Math.floor(Math.random() * 15)
-
-        this.pos = []
-        this.pos[0] = Math.floor(Math.random() * this.arenaWidth - this.width/2)
-        this.pos[1] = this.arenaHeight - this.height - Math.floor(Math.random() * 200)
+        this.pos = [pos[0] + Math.floor(Math.random() * 10), (this.arenaHeight - this.height) - ((id - 1) * 25)]
+        // this.pos[0] = Math.floor(Math.random() * this.arenaWidth - this.width/2)
+        // this.pos[1] = this.arenaHeight - this.height - Math.floor(Math.random() * 200)
 
         this.img = new Image()
         this.img.src = './dist/art/seaweed.png'
@@ -49,6 +48,7 @@ export default class Seaweed extends Denizen {
     }
 
     draw() {
+
         let position = Math.floor((this.gameFrame / this.staggerFrame) % this.animations[this.animationState].loc.length)
         let frameX = this.width * position;
         let frameY = this.animations[this.animationState].loc[position].y

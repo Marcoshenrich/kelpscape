@@ -21,7 +21,7 @@ export default class View {
         this.eggs = this.logic.eggs
         this.sharks = this.logic.sharks
         this.effects = this.logic.effects
-        this.seaweed = this.logic.seaweed
+        this.seaweedClusters = this.logic.seaweedClusters
 
         this.animate()
         this.debugging = false
@@ -137,8 +137,8 @@ export default class View {
         Object.values(this.effects).forEach((effect) => {
             effect.draw()
         })
-        Object.values(this.seaweed).forEach((seaweed) => {
-            seaweed.draw()
+        Object.values(this.seaweedClusters).forEach((seaweedCluster) => {
+            seaweedCluster.draw()
         })
 
     }

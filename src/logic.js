@@ -4,6 +4,7 @@ import Shark from "./shark"
 import Effect from "./effect"
 import Seaweed from "./seaweed"
 import Input from "./input"
+import SeaweedCluster from "./seaweedCluster"
 
 export default class Logic {
 
@@ -13,9 +14,9 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
         this.effect = new Effect(ctx, canvas, view)
-        this.fishCount = 10
+        this.fishCount = 20
         this.fishes = this.tankPopulator(this.fishCount, Fish)
-        this.algaeCount = 50
+        this.algaeCount = 100
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharkCount = 2
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
@@ -23,8 +24,8 @@ export default class Logic {
         this.eggs = {}
         this.effectCount = 0
         this.effects = this.tankPopulator(0, Effect)
-        this.seaweedCount = 1
-        this.seaweed = this.tankPopulator(this.seaweedCount, Seaweed)
+        this.seaweedClusterCount = 10
+        this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
     }
 
     coreLoop(){
@@ -74,7 +75,7 @@ export default class Logic {
                 let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
                 if (eat) {
                     fish.dead = true
-                    shark.energy += fish.energyVal
+                    shark.energy = shark.maxEnergy
                     shark.foodEaten++
                     shark.hunting = false
                     this.effectCount++
@@ -96,8 +97,8 @@ export default class Logic {
     fishMeetOtherFish() {
         for (let i = 0; i < Object.values(this.fishes).length; i++) {
             let fish1 = Object.values(this.fishes)[i]
-            if (fish1.energy < fish1.matingThreshold) continue
             if (fish1.spawn || fish1.mating) continue
+            if (fish1.energy < fish1.matingThreshold) continue
 
             for (let j = 0; j < Object.values(this.fishes).length; j++) {
                 if (i === j) continue
@@ -206,11 +207,11 @@ export default class Logic {
     }
 
 
-    tankPopulator(objnum, className) {
+    tankPopulator(objnum, className, options) {
         let denizenObj = {}
-  
+
         while (objnum > 0) {
-            denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this)
+            denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this, options)
             objnum--
         }
         return denizenObj
