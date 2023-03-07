@@ -16,7 +16,6 @@ export default class Seaweed extends Denizen {
         this.img.src = './dist/art/seaweed.png'
         this.aniStateNames = ["sway1", "sway2", "swish", "swoosh"]
         this.animationState = this.aniStateNames[Math.floor(Math.random() * 2)]
-        console.log(this.animationState)
         this.animations = [];
 
         //what if seaweed clusters could grow? and then be eaten by something over time.

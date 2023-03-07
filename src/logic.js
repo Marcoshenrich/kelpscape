@@ -3,10 +3,12 @@ import Algae from "./algae"
 import Shark from "./shark"
 import Effect from "./effect"
 import Seaweed from "./seaweed"
+import Input from "./input"
 
 export default class Logic {
 
     constructor(ctx, canvas, view) {
+        this.input = new Input()
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
@@ -21,7 +23,7 @@ export default class Logic {
         this.eggs = {}
         this.effectCount = 0
         this.effects = this.tankPopulator(0, Effect)
-        this.seaweedCount = 400
+        this.seaweedCount = 1
         this.seaweed = this.tankPopulator(this.seaweedCount, Seaweed)
     }
 
