@@ -27,10 +27,10 @@ export default class Effect {
 
     bloodSpurt() {
         this.ctx.fillStyle = 'rgba(255,0,0,1)';
-        this.ctx.fillRect(this.pos[0] + this.coef1, this.pos[1] + this.coef2, this.size, this.size)
-        this.ctx.fillRect(this.pos[0] + this.coef1, this.pos[1] - this.coef2, this.size, this.size)
-        this.ctx.fillRect(this.pos[0] - this.coef1, this.pos[1] + this.coef2, this.size, this.size)
-        this.ctx.fillRect(this.pos[0] - this.coef1, this.pos[1] - this.coef2, this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + this.coef1 + this.view.offset[0], this.pos[1] + this.coef2 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + this.coef1 + this.view.offset[0], this.pos[1] - this.coef2 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] - this.coef1 + this.view.offset[0], this.pos[1] + this.coef2 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] - this.coef1 + this.view.offset[0], this.pos[1] - this.coef2 + this.view.offset[1], this.size, this.size)
         this.coef1 += .7
         this.coef2 += .7
         this.size -= .3

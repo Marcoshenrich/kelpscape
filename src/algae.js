@@ -21,8 +21,8 @@ export default class Algae extends Floater {
 
     placer() {
         let pos = []
-        pos[0] = Math.floor(Math.random() * this.canvas.width) - this.height
-        pos[1] = Math.floor(Math.random() * this.canvas.height / 2) + (this.canvas.height / 2) - this.width
+        pos[0] = Math.floor(Math.random() * this.arenaWidth) - this.width
+        pos[1] = Math.floor(Math.random() * this.arenaHeight / 2) + (this.arenaHeight / 2) - this.height
         return pos
     }
 

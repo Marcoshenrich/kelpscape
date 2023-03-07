@@ -13,7 +13,7 @@ export default class Floater extends Denizen {
 
     draw() {
         this.bob()
-        this.ctx.drawImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
             this.ctx.font = "12px serif";
