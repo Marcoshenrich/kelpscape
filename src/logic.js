@@ -5,6 +5,7 @@ import Effect from "./effect"
 import Seaweed from "./seaweed"
 import Input from "./input"
 import SeaweedCluster from "./seaweedCluster"
+import DeadCreature from "./deadCreature"
 
 export default class Logic {
 
