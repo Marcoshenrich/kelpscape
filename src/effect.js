@@ -13,7 +13,7 @@ export default class Effect {
         this.dead = false
     }
 
-    draw() {
+    coreloop() {
         switch(this.type) {
             case "bloodSpurt":
                 this.bloodSpurt()

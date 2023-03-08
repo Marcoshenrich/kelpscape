@@ -30,7 +30,7 @@ export default class Logic {
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatureCount = 0
         this.deadCreatures = {}
-        this.crabCount = 1
+        this.crabCount = 20
         this.crabs = this.tankPopulator(this.crabCount, Crab)
     }
 
@@ -217,7 +217,6 @@ export default class Logic {
         let denizenObj = {}
 
         while (objnum > 0) {
-            console.log({ className, objnum, ctx: this.ctx, canvas: this.canvas, view: this.view, logic:this, options });
             denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this, options)
             objnum--
         }

@@ -14,9 +14,9 @@ export default class SeaweedCluster {
         this.seaweed = this.logic.tankPopulator(this.seaweedCount, Seaweed, {pos: this.pos})
     }
 
-    draw() {
+    coreloop() {
         Object.values(this.seaweed).forEach((seaweed) => {
-            seaweed.draw()
+            seaweed.coreloop()
         }) 
     }
 

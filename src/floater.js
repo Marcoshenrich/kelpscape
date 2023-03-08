@@ -11,7 +11,7 @@ export default class Floater extends Denizen {
         this.up = [true, false][Math.floor(Math.random() * 2)]
     }
 
-    draw() {
+    coreloop() {
         this.bob()
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.view.debugging) {

@@ -13,7 +13,7 @@ export default class DeadCreature extends Denizen {
         this.typeSelector()
     }
 
-    draw() {
+    coreloop() {
         if (this.pos[1] < this.arenaHeight - this.height) this.pos[1] += this.driftSpeed
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
     }

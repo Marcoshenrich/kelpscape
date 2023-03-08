@@ -79,12 +79,16 @@ export default class Fish extends Swimmer {
         return pos
     }
 
-    draw() {
+    coreloop() {
         this.move()
         this.consumeEnergy()
         if (this.dead) this.becomeCorpse()
+        this.draw()
+    }
+
+    draw() {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
-        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
+        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1] - this.width, 15, 15)
         if (this.view.debugging) {
@@ -92,7 +96,6 @@ export default class Fish extends Swimmer {
             this.drawId()
         }
         this.ctx.globalAlpha = 1
- 
     }
 
     drawMouths() {

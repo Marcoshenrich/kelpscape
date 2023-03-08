@@ -47,7 +47,7 @@ export default class Seaweed extends Denizen {
         });
     }
 
-    draw() {
+    coreloop() {
 
         let position = Math.floor((this.gameFrame / this.staggerFrame) % this.animations[this.animationState].loc.length)
         let frameX = this.width * position;

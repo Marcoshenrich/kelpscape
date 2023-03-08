@@ -11,6 +11,15 @@ export default class Swimmer extends Denizen {
         this.rightImg = new Image()
         this.img = this.imgSelector()
         this.recentlySwitchedDirections = false
+        this.movementSwitchTimer()
+        this.timeToSwitchMovement = false
+    }
+
+    movementSwitchTimer() {
+        setTimeout(()=>{
+            this.timeToSwitchMovement = true
+            this.movementSwitchTimer()
+        },Math.floor(Math.random() * 25000) + 7000)
     }
 
     imgSelector() {
@@ -52,8 +61,10 @@ export default class Swimmer extends Denizen {
         }
 
         if (!this.mating && !this.hunting) {
-            let movementSwitch = Math.floor(Math.random() * 1000)
-            if (movementSwitch === 1) Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+            if (this.timeToSwitchMovement){
+                Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+                this.timeToSwitchMovement = false
+            }    
 
             this.movement1();
             this.movement2();

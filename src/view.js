@@ -94,7 +94,7 @@ export default class View {
     drawDenizens() {
         this.allDenizensArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
-                denizen.draw()
+                denizen.coreloop()
             })
         })
     }

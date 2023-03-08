@@ -69,7 +69,7 @@ export default class Shark extends Swimmer {
         return pos
     }
 
-    draw() {
+    coreloop() {
         this.move()
         this.consumeEnergy()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
