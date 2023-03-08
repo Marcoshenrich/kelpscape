@@ -23,8 +23,9 @@ export default class View {
         this.effects = this.logic.effects
         this.seaweedClusters = this.logic.seaweedClusters
         this.deadCreatures = this.logic.deadCreatures
+        this.crabs = this.logic.crabs
 
-        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.deadCreatures]
+        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures]
 
         this.animate()
         this.debugging = false

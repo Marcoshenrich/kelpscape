@@ -6,6 +6,7 @@ import Seaweed from "./seaweed"
 import Input from "./input"
 import SeaweedCluster from "./seaweedCluster"
 import DeadCreature from "./deadCreature"
+import Crab from "./crab"
 
 export default class Logic {
 
@@ -29,6 +30,8 @@ export default class Logic {
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatureCount = 0
         this.deadCreatures = {}
+        this.crabCount = 1
+        this.crabs = this.tankPopulator(this.crabCount, Crab)
     }
 
     coreLoop(){
@@ -40,7 +43,7 @@ export default class Logic {
         this.sharksHuntWhenHungry()
         this.sharksEatFish()
         this.fishFleeFromSharks()
-        this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects])
+        this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
     }
 
     fishFleeFromSharks() {
@@ -214,6 +217,7 @@ export default class Logic {
         let denizenObj = {}
 
         while (objnum > 0) {
+            console.log({ className, objnum, ctx: this.ctx, canvas: this.canvas, view: this.view, logic:this, options });
             denizenObj[className.name + objnum] = new className(objnum, this.ctx, this.canvas, this.view, this, options)
             objnum--
         }

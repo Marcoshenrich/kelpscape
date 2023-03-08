@@ -6,9 +6,9 @@ export default class Denizen {
         this.view = view
         this.logic = logic
         this.dead = false
-        this.arenaHeight = this.logic.view.arenaHeight
-        this.arenaWidth = this.logic.view.arenaWidth
-        this.offset = this.logic.view.offset
+        this.arenaHeight = this.view.arenaHeight
+        this.arenaWidth = this.view.arenaWidth
+        this.offset = this.view.offset
     }
     
 
