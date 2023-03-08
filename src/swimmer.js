@@ -1,4 +1,5 @@
 import Denizen from "./denizen"
+import DeadCreature from "./deadCreature"
 
 export default class Swimmer extends Denizen {
 
@@ -211,6 +212,12 @@ export default class Swimmer extends Denizen {
     consumeEnergy() {
         this.energy -= this.energyUseCoef * this.speed
         if (this.energy < .05) this.dead = true
+    }
+
+    becomeCorpse() {
+        this.logic.deadCreatureCount++
+        this.logic.deadCreatures[this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, "Fish")
+
     }
 
 

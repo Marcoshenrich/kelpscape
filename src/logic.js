@@ -27,6 +27,8 @@ export default class Logic {
         this.effects = this.tankPopulator(0, Effect)
         this.seaweedClusterCount = 10
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
+        this.deadCreatureCount = 0
+        this.deadCreatures = {}
     }
 
     coreLoop(){

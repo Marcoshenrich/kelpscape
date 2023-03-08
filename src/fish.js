@@ -1,4 +1,3 @@
-import Denizen from "./denizen"
 import Fishegg from "./fishegg"
 import Swimmer from "./swimmer"
 
@@ -83,6 +82,7 @@ export default class Fish extends Swimmer {
     draw() {
         this.move()
         this.consumeEnergy()
+        if (this.dead) this.becomeCorpse()
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy +3) /10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
