@@ -2,10 +2,8 @@ import Fish from "./fish"
 import Algae from "./algae"
 import Shark from "./shark"
 import Effect from "./effect"
-import Seaweed from "./seaweed"
 import Input from "./input"
 import SeaweedCluster from "./seaweedCluster"
-import DeadCreature from "./deadCreature"
 import Crab from "./crab"
 
 export default class Logic {

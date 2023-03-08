@@ -9,6 +9,7 @@ export default class SeaweedCluster {
         this.logic = logic
 
 
+
         this.pos = [Math.floor( Math.random() * this.view.arenaWidth), 0]
         this.seaweedCount = Math.floor(Math.random() * 5) + 10
         this.seaweed = this.logic.tankPopulator(this.seaweedCount, Seaweed, {pos: this.pos})
@@ -21,6 +22,7 @@ export default class SeaweedCluster {
     }
 
 
+ 
 
 }
 

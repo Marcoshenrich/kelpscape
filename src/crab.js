@@ -13,9 +13,20 @@ export default class Crab extends Swimmer {
         this.pos = [Math.floor(Math.random() * this.arenaWidth - this.width), this.arenaHeight - this.height]
         this.speed = Math.floor(Math.random() * 4)/10
         this.maxSpeed = .4
+        this.up = false
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.recentlySwitchedDirections = false
         this.climbSeaweed = false
+        this.seaweedSpots = this.seaweedFinder()
+
+    }
+
+    seaweedFinder() {
+        let seaweedPos = []
+        Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
+            seaweedPos.push(seaweedCluster.pos[0] + Object.values(seaweedCluster.seaweed)[0].width/2)
+        })
+        return seaweedPos
     }
 
     movementSwitchTimer() {
@@ -36,6 +47,15 @@ export default class Crab extends Swimmer {
     }
 
     move() {
+        //find a way so that this isn't running all the time
+        if (this.seaweedSpots.includes(Math.floor(this.pos[0])) ) {
+            this.up = true
+        }
+
+        if(this.up) {
+           this.pos[1] -= this.speed
+           return 
+        }
 
         if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) {
             this.switchDirections()
@@ -48,7 +68,6 @@ export default class Crab extends Swimmer {
         }
 
         if (this.timeToSwitchMovement) {
-            console.log("move Time")
             Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
             this.timeToSwitchMovement = false
         }
@@ -58,22 +77,22 @@ export default class Crab extends Swimmer {
     movementSwitches = {
 
         reverseSide: () => {
-            console.log(this)
+            this.right = !this.right;
+        },
+
+        reverseSide2: () => {
             this.right = !this.right;
         },
 
         speedUp: () => {
-            console.log(this)
             if (this.speed < this.maxSpeed) this.speed += .05
         },
 
         slowDown: () => {
-            console.log(this)
             if (this.speed > .1) this.speed -= .05
         },
 
         chill: () => {
-            console.log(this)
             this.speed = 0
             setTimeout(()=>{
                 this.speed = .3
