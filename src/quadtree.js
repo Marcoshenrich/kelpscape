@@ -78,7 +78,7 @@ export default class Quadtree {
 
     queryRange(range) {
         const foundDenizens = [];
-
+    
         if (!this.bounds.intersects(range)) {
             return foundDenizens;
         }

@@ -1,4 +1,5 @@
 
+import Effect from "./effect"
 import Swimmer from "./swimmer"
 
 export default class Shark extends Swimmer {
@@ -33,10 +34,17 @@ export default class Shark extends Swimmer {
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
-        this.eatFoodThreshold = 60
+        this.huntingThreshold = 99
+        this.eatFoodThreshold = 99
+        // this.eatFoodThreshold = 60
 
         this.hunting = false
         this.nearestFoodCords = []
+
+        this.afterIEatCB = () => {
+            this.logic.effectCount++
+            this.logic.effects["Effect" + this.logic.effectCount] = new Effect("bloodSpurt", [this.mouthPos[0], this.mouthPos[1]], this.logic.ctx, this.logic.canvas, this.logic.view)
+        }
 
     }
 
@@ -72,6 +80,8 @@ export default class Shark extends Swimmer {
     coreloop() {
         this.move()
         this.consumeEnergy()
+        if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
+
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)

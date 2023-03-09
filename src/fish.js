@@ -37,8 +37,11 @@ export default class Fish extends Swimmer {
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
-        this.eatFoodThreshold = 15
-        this.huntingThreshold = 7
+        // this.eatFoodThreshold = 15
+        // this.huntingThreshold = 7
+
+        this.eatFoodThreshold = 19
+        this.huntingThreshold = 19
 
         this.hunting = false
         this.nearestFoodCords = []
@@ -47,6 +50,11 @@ export default class Fish extends Swimmer {
         this.fleeing = false
         this.fleeFromCoords = []
 
+        this.afterIEatCB = () => {
+            if (this.spawn && this.foodEaten > 4) {
+                this.growUp()
+            }
+        }
         
     }
 

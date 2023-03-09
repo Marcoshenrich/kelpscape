@@ -5,6 +5,8 @@ import Effect from "./effect"
 import Input from "./input"
 import SeaweedCluster from "./seaweedCluster"
 import Crab from "./crab"
+import { Rectangle } from "./quadtree"
+
 
 export default class Logic {
 
@@ -41,14 +43,17 @@ export default class Logic {
 
 
     assignFoodWeb() {
-        Fish.prototype.preySpecies = [this.algae]
-        Shark.prototype.preySpecies = [this.fishes]
+        Fish.prototype.preySpecies = [Algae]
+        Fish.prototype.preySpeciesArr = [this.algae]
+        Shark.prototype.preySpecies = [Fish]
+        Shark.prototype.preySpeciesArr = [this.fishes]
+
     }
 
     coreLoop(){
         this.denizensHuntWhenHungry()
         // this.fishCanFindSomethingElseToEat()
-        this.fishEatAlgae()
+        this.denizensWithMouthsEatPrey()
         // this.fishMeetOtherFish()
         // this.sharksHuntWhenHungry()
         // this.sharksEatFish()
@@ -69,7 +74,7 @@ export default class Logic {
         let foodId;
 
         let allPreyArr = []
-        predator.preySpecies.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
+        predator.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
 
         for (const prey of allPreyArr) {
             let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
@@ -86,34 +91,52 @@ export default class Logic {
         predator.nearestFoodCords = nearestFoodCords
     }
 
-    fishEatAlgae() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
-            if (fish.energy > fish.eatFoodThreshold) continue
-            if (fish.mating) continue
+    denizensWithMouthsEatPrey() {
+        let predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
 
-            console.log(this.view.quadtree.queryRange({ x: fish.mouthPos[0], y: fish.mouthPos[1], height: fish.mouthSize, width: fish.mouthSize }))
+        for (let i = 0; i < predatorsWithMouthsArr.length; i++) {
+            let predator = predatorsWithMouthsArr[i]
+            if (predator.energy > predator.eatFoodThreshold) continue
+            if (predator.mating) continue
 
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize))
 
+            for (let j = 0; j < collisionArray.length; j++) {
+                for (let k = 0; k < predator.preySpecies.length; k++) {
+                    if (collisionArray[j] instanceof predator.preySpecies[k])  {
+                        let prey = collisionArray[j]
 
-
-
-
-            // for (const [id, algae] of Object.entries(this.algae)) {
-            //     let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
-            //     if (eat) {
-            //         algae.dead = true
-            //         fish.energy= (fish.energy + algae.energyVal) > fish.maxEnergy ? fish.maxEnergy : algae.energyVal
-            //         fish.foodEaten++
-            //         fish.hunting = false
-            //         if (fish.spawn && fish.foodEaten > 4) {
-            //             fish.growUp()
-            //         }
-            //     }
-
-            // }
+                        prey.dead = true
+                        predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : prey.energyVal
+                        predator.foodEaten++
+                        predator.hunting = false
+                        predator.afterIEatCB()
+                    }
+                }
+            }
         }
     }
+
+    sharksEatFish() {
+        for (let i = 0; i < Object.values(this.sharks).length; i++) {
+            let shark = Object.values(this.sharks)[i]
+            if (shark.energy > shark.eatFoodThreshold) continue
+            for (const [id, fish] of Object.entries(this.fishes)) {
+                let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
+                if (eat) {
+                    fish.dead = true
+                    shark.energy = shark.maxEnergy
+                    shark.foodEaten++
+                    shark.hunting = false
+
+
+                    
+                }
+
+            }
+        }
+    }
+
 
     fishFleeFromSharks() {
         for (let i = 0; i < Object.values(this.fishes).length; i++) {
@@ -134,24 +157,6 @@ export default class Logic {
     }
 
 
-    sharksEatFish() {
-        for (let i = 0; i < Object.values(this.sharks).length; i++) {
-            let shark = Object.values(this.sharks)[i]
-            if (shark.energy > shark.eatFoodThreshold) continue
-            for (const [id, fish] of Object.entries(this.fishes)) {
-                let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
-                if (eat) {
-                    fish.dead = true
-                    shark.energy = shark.maxEnergy
-                    shark.foodEaten++
-                    shark.hunting = false
-                    this.effectCount++
-                    this.effects["Effect" + this.effectCount] = new Effect("bloodSpurt", [shark.mouthPos[0], shark.mouthPos[1]], this.ctx, this.canvas, this.view)
-                }
-
-            }
-        }
-    }
 
     algaeSpawns() {
         setTimeout(()=>{
