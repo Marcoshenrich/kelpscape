@@ -1,4 +1,5 @@
 import Logic from "./logic"
+import Quadtree, { Rectangle } from "./quadtree"
 
 export default class View {
 
@@ -27,10 +28,26 @@ export default class View {
 
         this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures]
 
+        this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
+        this.quadtree = new Quadtree(this.bounds, 10, this);
+        this.populateQuad()
         this.animate()
         this.debugging = false
 
+
+
     }
+
+    populateQuad() {
+
+        for (let i = 0; i < 1000; i++) {
+            this.quadtree.insert({x: i, y: i})
+        }
+
+    }
+
+
+
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
@@ -38,6 +55,7 @@ export default class View {
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()
+        this.quadtree.draw()
         this.logic.coreLoop()
         requestAnimationFrame(this.animate.bind(this))
     }
