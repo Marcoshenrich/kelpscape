@@ -38,6 +38,7 @@ export default class Fish extends Swimmer {
         this.spawn = spawn ? true : false
         this.foodEaten = 0
         this.eatFoodThreshold = 15
+        this.huntingThreshold = 7
 
         this.hunting = false
         this.nearestFoodCords = []
@@ -83,6 +84,7 @@ export default class Fish extends Swimmer {
         this.move()
         this.consumeEnergy()
         if (this.dead) this.becomeCorpse()
+        if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
         this.draw()
     }
 

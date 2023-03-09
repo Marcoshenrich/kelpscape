@@ -15,6 +15,8 @@ export default class Swimmer extends Denizen {
         this.timeToSwitchMovement = false
     }
 
+
+
     movementSwitchTimer() {
         setTimeout(()=>{
             this.timeToSwitchMovement = true

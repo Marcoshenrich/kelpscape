@@ -13,37 +13,106 @@ export default class Logic {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
-        this.effect = new Effect(ctx, canvas, view)
-        this.fishCount = 500
-        this.fishes = this.tankPopulator(this.fishCount, Fish)
+
+        this.fishCount = 20
         this.algaeCount = 100
-        this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharkCount = 2
-        this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggCount = 0
-        this.eggs = {}
         this.effectCount = 0
-        this.effects = this.tankPopulator(0, Effect)
         this.seaweedClusterCount = 10
-        this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatureCount = 0
-        this.deadCreatures = {}
         this.crabCount = 20
+
+        this.fishes = this.tankPopulator(this.fishCount, Fish)
+        this.algae = this.tankPopulator(this.algaeCount, Algae)
+        this.sharks = this.tankPopulator(this.sharkCount, Shark)
+        this.eggs = {}
+        this.effects = this.tankPopulator(0, Effect)
+        this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
+        this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
 
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
+        
+        this.hungryDenizenArr = []
+        this.assignFoodWeb() 
+    }
+
+
+    assignFoodWeb() {
+        Fish.prototype.preySpecies = [this.algae]
+        Shark.prototype.preySpecies = [this.fishes]
     }
 
     coreLoop(){
-        // this.fishHuntWhenHungry()
+        this.denizensHuntWhenHungry()
         // this.fishCanFindSomethingElseToEat()
-        // this.fishEatAlgae()
+        this.fishEatAlgae()
         // this.fishMeetOtherFish()
         // this.sharksHuntWhenHungry()
         // this.sharksEatFish()
         // this.fishFleeFromSharks()
         this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
+    }
+
+    denizensHuntWhenHungry() {
+        while (this.hungryDenizenArr.length) {
+            let hungryDenizen = this.hungryDenizenArr.pop()
+            this.findNearestFood(hungryDenizen)
+        }
+    }
+
+    findNearestFood(predator) {
+        let nearestFoodCords = []
+        let nearestFoundDistance = Infinity
+        let foodId;
+
+        let allPreyArr = []
+        predator.preySpecies.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
+
+        for (const prey of allPreyArr) {
+            let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
+            let yDistance = Math.abs(predator.pos[1] - prey.pos[1])
+
+            if ((xDistance + yDistance) < nearestFoundDistance) {
+                nearestFoundDistance = xDistance + yDistance
+                nearestFoodCords = prey.pos
+                foodId = prey.id
+            }
+        }
+
+        predator.hunting = foodId
+        predator.nearestFoodCords = nearestFoodCords
+    }
+
+    fishEatAlgae() {
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (fish.energy > fish.eatFoodThreshold) continue
+            if (fish.mating) continue
+
+            console.log(this.view.quadtree.queryRange({ x: fish.mouthPos[0], y: fish.mouthPos[1], height: fish.mouthSize, width: fish.mouthSize }))
+
+
+
+
+
+
+            // for (const [id, algae] of Object.entries(this.algae)) {
+            //     let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
+            //     if (eat) {
+            //         algae.dead = true
+            //         fish.energy= (fish.energy + algae.energyVal) > fish.maxEnergy ? fish.maxEnergy : algae.energyVal
+            //         fish.foodEaten++
+            //         fish.hunting = false
+            //         if (fish.spawn && fish.foodEaten > 4) {
+            //             fish.growUp()
+            //         }
+            //     }
+
+            // }
+        }
     }
 
     fishFleeFromSharks() {
@@ -64,14 +133,6 @@ export default class Logic {
         }
     }
 
-    sharksHuntWhenHungry() {
-        for (let i = 0; i < Object.values(this.sharks).length; i++) {
-            let shark = Object.values(this.sharks)[i]
-            if (shark.energy > 40) continue
-            if (shark.hunting) continue
-            this.findNearestFood(shark, this.fishes)
-        }
-    }
 
     sharksEatFish() {
         for (let i = 0; i < Object.values(this.sharks).length; i++) {
@@ -123,38 +184,6 @@ export default class Logic {
     }
 
 
-    fishEatAlgae() {
-
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
-            if (fish.energy > fish.eatFoodThreshold) continue
-            if (fish.mating) continue
-
-            for (const [id, algae] of Object.entries(this.algae)) {
-                let eat = fish.collisionDetector([fish.mouthPos, [fish.mouthSize, fish.mouthSize]], [algae.pos, [algae.height, algae.width]])
-                if (eat) {
-                    algae.dead = true
-                    fish.energy += algae.energyVal
-                    fish.foodEaten++
-                    fish.hunting = false
-                    if (fish.spawn && fish.foodEaten > 4) {
-                        fish.growUp()
-                    }
-                }
-
-            }
-        }
-    }
-
-    fishHuntWhenHungry() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
-            if (fish.energy > 7) continue
-            if (fish.hunting) continue
-            if (fish.mating) continue
-            this.findNearestFood(fish, this.algae)
-        }
-    }
 
     findNearestPredator(prey, predatorSpecies) {
         let fleeFromCoords = []
@@ -179,25 +208,6 @@ export default class Logic {
 
     }
 
-    findNearestFood(predator, preySpecies) {
-        let nearestFoodCords = []
-        let nearestFoundDistance = Infinity
-        let foodId;
-
-            for (const [id, prey] of Object.entries(preySpecies)) {
-            let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
-            let yDistance = Math.abs(predator.pos[1] - prey.pos[1])
-
-            if ((xDistance + yDistance) < nearestFoundDistance) {
-                nearestFoundDistance = xDistance + yDistance
-                nearestFoodCords = prey.pos
-                foodId = id
-            }
-        }
-
-        predator.hunting = foodId
-        predator.nearestFoodCords = nearestFoodCords
-    }
     
 
 
