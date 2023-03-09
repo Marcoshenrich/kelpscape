@@ -1,3 +1,4 @@
+import Fishegg from "./fishegg";
 
 
 
@@ -6,7 +7,7 @@ export default class Quadtree {
     constructor(bounds, capacity, view) {
         this.bounds = bounds;
         this.capacity = capacity;
-        this.points = [];
+        this.denizens = [];
         this.nodes = [];
         this.ctx = view.ctx
         this.view = view
@@ -14,7 +15,6 @@ export default class Quadtree {
 
 
     draw(){
-        console.log(this.ctx)
         this.ctx.fillStyle = 'rgba(0,0,0,.5)';
         this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], this.bounds.width, 1)
         this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], 1, this.bounds.height)
@@ -23,21 +23,21 @@ export default class Quadtree {
         }
     }
 
-    insert(point) {
+    insert(denizen) {
         if (this.nodes.length) {
             for (const node of this.nodes) {
-                if (node.insert(point)) {
+                if (node.insert(denizen)) {
                     return true;
                 }
             }
         }
         
-        if (!this.bounds.contains(point)) {
+        if (!this.bounds.contains(denizen)) {
             return false;
         }
 
-        if (this.points.length < this.capacity) {
-            this.points.push(point);
+        if (this.denizens.length < this.capacity) {
+            this.denizens.push(denizen);
             return true;
         }
 
@@ -46,7 +46,7 @@ export default class Quadtree {
         }
 
         for (const node of this.nodes) {
-            if (node.insert(point)) {
+            if (node.insert(denizen)) {
                 return true;
             }
         }
@@ -67,33 +67,33 @@ export default class Quadtree {
 
         this.nodes = [nw, ne, sw, se];
 
-        for (const point of this.points) {
+        for (const denizen of this.denizens) {
             for (const node of this.nodes) {
-                node.insert(point);
+                node.insert(denizen);
             }
         }
 
-        this.points = [];
+        this.denizens = [];
     }
 
     queryRange(range) {
-        const foundPoints = [];
+        const foundDenizens = [];
 
         if (!this.bounds.intersects(range)) {
-            return foundPoints;
+            return foundDenizens;
         }
 
-        for (const point of this.points) {
-            if (range.contains(point)) {
-                foundPoints.push(point);
+        for (const denizen of this.denizens) {
+            if (range.contains(denizen)) {
+                foundDenizens.push(denizen);
             }
         }
 
         for (const node of this.nodes) {
-            foundPoints.push(...node.queryRange(range));
+            foundDenizens.push(...node.queryRange(range));
         }
 
-        return foundPoints;
+        return foundDenizens;
     }
 }
 
@@ -105,12 +105,16 @@ export class Rectangle {
         this.height = height;
     }
 
-    contains(point) {
+
+    contains(denizen) {
+        let [x,y] = denizen.pos
+        if (denizen.constructor.name == "Fishegg") console.log([x, y])
+
         return (
-            point.x >= this.x &&
-            point.x <= this.x + this.width &&
-            point.y >= this.y &&
-            point.y <= this.y + this.height
+            x >= this.x &&
+            x <= this.x + this.width &&
+            y >= this.y &&
+            y <= this.y + this.height
         );
     }
 

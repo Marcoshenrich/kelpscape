@@ -27,7 +27,8 @@ export default class Floater extends Denizen {
             this.pos[1] -= this.bobSpeed
         } else {
             this.trackCoef += this.bobSpeed
-            if (!(this.pos[1] > (this.canvas.height - this.height))) {
+            
+            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
                 this.pos[1] += this.bobSpeed
             }
         }

@@ -39,7 +39,7 @@ export default class Crab extends Swimmer {
     coreloop() {
         this.move()
         this.draw()
-    }
+    }  
 
 
     draw(){

@@ -122,7 +122,7 @@ export default class Fish extends Swimmer {
             while (i > 0) {
                 i--
                 this.logic.eggCount += 1
-                this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [this.pos[0], this.pos[1]], this.ctx, this.canvas, this.view, this.logic)
+                this.logic.eggs[this.logic.eggCount] = new Fishegg(this.logic.eggCount, [Math.floor(this.pos[0]), Math.floor(this.pos[1])], this.ctx, this.canvas, this.view, this.logic)
             }
         }, 1500)
     }

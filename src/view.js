@@ -26,10 +26,10 @@ export default class View {
         this.deadCreatures = this.logic.deadCreatures
         this.crabs = this.logic.crabs
 
-        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures]
+        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
-        this.quadtree = new Quadtree(this.bounds, 10, this);
+        this.quadtree = {}
         this.populateQuad()
         this.animate()
         this.debugging = false
@@ -39,10 +39,12 @@ export default class View {
     }
 
     populateQuad() {
-
-        for (let i = 0; i < 1000; i++) {
-            this.quadtree.insert({x: i, y: i})
-        }
+        this.quadtree = new Quadtree(this.bounds, 2, this);
+        this.allDenizensArr.forEach((denizenObj)=>{
+            Object.values(denizenObj).forEach((denizen) => {
+                this.quadtree.insert(denizen)
+            })
+        })
 
     }
 
@@ -50,6 +52,7 @@ export default class View {
 
 
     animate() {
+        this.populateQuad() 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updateCamera(this.logic.input.keys) 
         this.drawBackround()
