@@ -34,9 +34,8 @@ export default class Shark extends Swimmer {
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
-        this.huntingThreshold = 99
-        this.eatFoodThreshold = 99
-        // this.eatFoodThreshold = 60
+        this.huntingThreshold = 60
+        this.eatFoodThreshold = 70
 
         this.hunting = false
         this.nearestFoodCords = []

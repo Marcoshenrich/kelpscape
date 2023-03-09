@@ -37,9 +37,6 @@ export default class Fish extends Swimmer {
         this.mating = false
         this.spawn = spawn ? true : false
         this.foodEaten = 0
-        // this.eatFoodThreshold = 15
-        // this.huntingThreshold = 7
-
         this.eatFoodThreshold = 19
         this.huntingThreshold = 19
 
@@ -117,7 +114,7 @@ export default class Fish extends Swimmer {
         //debugging function
         this.ctx.fillStyle = 'rgba(0,0,0,1)';
         this.ctx.font = "12px serif";
-        this.ctx.fillText(`${this.id}`, this.pos[0], this.pos[1])
+        this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] +  this.offset[1])
     }
 
     mate(spawnBool) {

@@ -39,6 +39,13 @@ export default class Logic {
         
         this.hungryDenizenArr = []
         this.assignFoodWeb() 
+
+        this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
+
+    }
+
+    reAssignDataObjs() {
+        this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
     }
 
 
@@ -52,13 +59,31 @@ export default class Logic {
 
     coreLoop(){
         this.denizensHuntWhenHungry()
-        // this.fishCanFindSomethingElseToEat()
+        this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
         // this.fishMeetOtherFish()
         // this.sharksHuntWhenHungry()
         // this.sharksEatFish()
         // this.fishFleeFromSharks()
-        this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
+        this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
+        this.reAssignDataObjs()
+    }
+
+    denizensWithMouthsCanFindSomethingElseToEat() {
+        for (let i = 0; i < this.predatorsWithMouthsArr.length; i++) {
+            let predator = this.predatorsWithMouthsArr[i]
+            if (!predator.hunting) continue
+
+            let foundBool;
+            for (let j = 0; j < predator.preySpeciesArr.length; j++) {
+                const preySpeciesObj = predator.preySpeciesArr[j];
+                if (predator.hunting in preySpeciesObj) foundBool = true
+            
+            }
+            if (foundBool) continue
+            predator.hunting = false
+            predator.nearestFoodCords = []
+        }
     }
 
     denizensHuntWhenHungry() {
@@ -92,10 +117,9 @@ export default class Logic {
     }
 
     denizensWithMouthsEatPrey() {
-        let predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
 
-        for (let i = 0; i < predatorsWithMouthsArr.length; i++) {
-            let predator = predatorsWithMouthsArr[i]
+        for (let i = 0; i < this.predatorsWithMouthsArr.length; i++) {
+            let predator = this.predatorsWithMouthsArr[i]
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
@@ -117,27 +141,6 @@ export default class Logic {
         }
     }
 
-    sharksEatFish() {
-        for (let i = 0; i < Object.values(this.sharks).length; i++) {
-            let shark = Object.values(this.sharks)[i]
-            if (shark.energy > shark.eatFoodThreshold) continue
-            for (const [id, fish] of Object.entries(this.fishes)) {
-                let eat = shark.collisionDetector([shark.mouthPos, [shark.mouthSize, shark.mouthSize]], [fish.pos, [fish.height, fish.width]])
-                if (eat) {
-                    fish.dead = true
-                    shark.energy = shark.maxEnergy
-                    shark.foodEaten++
-                    shark.hunting = false
-
-
-                    
-                }
-
-            }
-        }
-    }
-
-
     fishFleeFromSharks() {
         for (let i = 0; i < Object.values(this.fishes).length; i++) {
             let fish = Object.values(this.fishes)[i]
@@ -148,7 +151,7 @@ export default class Logic {
 
     }
 
-    denizensDie(classObjArr){
+    deleteDeadDenizens(classObjArr){
         for (let classObj of classObjArr) {
             for (const [id, denizen] of Object.entries(classObj)) {
                 if (denizen.dead) delete classObj[id]
@@ -216,16 +219,6 @@ export default class Logic {
     
 
 
-    fishCanFindSomethingElseToEat() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
-            if (!fish.hunting) continue
-            if (!(fish.hunting in this.algae)) {
-                fish.hunting = false
-                fish.nearestFoodCords = []
-            }
-        }
-    }
 
 
     tankPopulator(objnum, className, options) {
