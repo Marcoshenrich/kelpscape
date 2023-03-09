@@ -108,8 +108,6 @@ export class Rectangle {
 
     contains(denizen) {
         let [x,y] = denizen.pos
-        if (denizen.constructor.name == "Fishegg") console.log([x, y])
-
         return (
             x >= this.x &&
             x <= this.x + this.width &&

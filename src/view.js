@@ -33,13 +33,14 @@ export default class View {
         this.populateQuad()
         this.animate()
         this.debugging = false
+        this.gameFrame = 0
 
 
 
     }
 
     populateQuad() {
-        this.quadtree = new Quadtree(this.bounds, 2, this);
+        this.quadtree = new Quadtree(this.bounds, 6, this);
         this.allDenizensArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
                 this.quadtree.insert(denizen)
@@ -52,7 +53,8 @@ export default class View {
 
 
     animate() {
-        this.populateQuad() 
+        this.gameFrame++ 
+        if (this.gameFrame % 100 === 0) this.populateQuad() 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updateCamera(this.logic.input.keys) 
         this.drawBackround()

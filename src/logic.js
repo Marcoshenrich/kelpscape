@@ -14,7 +14,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
         this.effect = new Effect(ctx, canvas, view)
-        this.fishCount = 20
+        this.fishCount = 500
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algaeCount = 100
         this.algae = this.tankPopulator(this.algaeCount, Algae)
@@ -30,17 +30,19 @@ export default class Logic {
         this.deadCreatures = {}
         this.crabCount = 20
         this.crabs = this.tankPopulator(this.crabCount, Crab)
+
+        this.algaeSpawnIncrement = 2000
+        this.algaeSpawns()
     }
 
     coreLoop(){
-        this.algaeSpawns()
-        this.fishHuntWhenHungry()
-        this.fishCanFindSomethingElseToEat()
-        this.fishEatAlgae()
-        this.fishMeetOtherFish()
-        this.sharksHuntWhenHungry()
-        this.sharksEatFish()
-        this.fishFleeFromSharks()
+        // this.fishHuntWhenHungry()
+        // this.fishCanFindSomethingElseToEat()
+        // this.fishEatAlgae()
+        // this.fishMeetOtherFish()
+        // this.sharksHuntWhenHungry()
+        // this.sharksEatFish()
+        // this.fishFleeFromSharks()
         this.denizensDie([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
     }
 
@@ -91,11 +93,11 @@ export default class Logic {
     }
 
     algaeSpawns() {
-        let spawnAlgae = (1 === Math.floor(Math.random() * 200))
-        if (spawnAlgae) {
+        setTimeout(()=>{
             this.algaeCount++
             this.algae["Algae" + this.algaeCount] = new Algae(this.algaeCount, this.ctx, this.canvas, this.view, this)
-        }
+            this.algaeSpawns()
+        }, Math.floor(Math.random() * this.algaeSpawnIncrement) + this.algaeSpawnIncrement)
     }
 
     fishMeetOtherFish() {
