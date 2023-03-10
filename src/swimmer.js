@@ -18,9 +18,10 @@ export default class Swimmer extends Denizen {
     coreloop() {
         this.move()
         this.consumeEnergy()
+        this.draw()
+        if (this.view.gameFrame % 10 !== 0) return
         if (this.dead) this.becomeCorpse()
         this.behaviorChanger()
-        this.draw()
     }
 
 

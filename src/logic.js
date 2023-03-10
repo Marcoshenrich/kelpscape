@@ -23,7 +23,7 @@ export default class Logic {
         this.effectCount = 0
         this.seaweedClusterCount = 10
         this.deadCreatureCount = 0
-        this.crabCount = 20
+        this.crabCount = 12
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
@@ -60,6 +60,7 @@ export default class Logic {
     }
 
     coreLoop(){
+        if (this.view.gameFrame % 10 !== 0) return
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()

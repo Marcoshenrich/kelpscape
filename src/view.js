@@ -41,7 +41,7 @@ export default class View {
     }
 
     populateQuad() {
-        this.quadtree = new Quadtree(this.bounds, 3, this);
+        this.quadtree = new Quadtree(this.bounds, 6, this);
         this.allDenizensinQuadArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
                 this.quadtree.insert(denizen)

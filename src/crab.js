@@ -16,17 +16,29 @@ export default class Crab extends Swimmer {
         this.up = false
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.recentlySwitchedDirections = false
-        this.climbSeaweed = false
+
+        this.timeToClimbSeaweed = false
+        this.onSeaweed = false
+
         this.seaweedSpots = this.seaweedFinder()
+        this.climbSeaweedTimer()
 
     }
 
+
+    climbSeaweedTimer() {
+        setTimeout(() => {
+            this.timeToClimbSeaweed = !this.timeToClimbSeaweed
+            this.climbSeaweedTimer()
+        }, Math.floor(Math.random() * this.timeToClimbSeaweed ? 6000 : 30000))
+    }
+
     seaweedFinder() {
-        let seaweedPos = []
+        let seaweedSpots = {}
         Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
-            seaweedPos.push(seaweedCluster.pos[0] + Object.values(seaweedCluster.seaweed)[0].width/2)
+            seaweedSpots[(seaweedCluster.pos[0] + Object.values(seaweedCluster.seaweed)[0].width / 2)] = seaweedCluster
         })
-        return seaweedPos
+        return seaweedSpots
     }
 
     movementSwitchTimer() {
@@ -46,16 +58,8 @@ export default class Crab extends Swimmer {
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
     }
 
-    move() {
-        //find a way so that this isn't running all the time
-        // if (this.seaweedSpots.includes(Math.floor(this.pos[0])) ) {
-        //     this.up = true
-        // }
 
-        if(this.up) {
-           this.pos[1] -= this.speed
-           return 
-        }
+    travelLand() {
 
         if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) {
             this.switchDirections()
@@ -64,7 +68,51 @@ export default class Crab extends Swimmer {
         if (this.right) {
             this.pos[0] += this.speed
         } else {
-            this.pos[0] -= this.speed 
+            this.pos[0] -= this.speed
+        }
+    }
+
+
+    climbSeaweed(climbBool) {
+        if (climbBool) {
+            if (this.pos[1] < this.onSeaweed.tallestPoint + this.height || this.pos[1] > this.arenaHeight - this.height) {
+                this.switchDirections()
+            }
+
+            if (!this.right) {
+                this.pos[1] += this.speed
+            } else {
+                this.pos[1] -= this.speed
+            }
+            return
+        }
+
+        this.pos[1] += this.speed
+        if (this.pos[1] > this.arenaHeight - this.height) {
+            this.onSeaweed = false
+        }
+    }
+
+
+
+
+
+
+
+    move() {
+        if (!this.onSeaweed && this.timeToClimbSeaweed && (Math.floor(this.pos[0]) in this.seaweedSpots) ) {
+            this.onSeaweed = this.seaweedSpots[Math.floor(this.pos[0])]
+        }
+
+        if (this.onSeaweed && !this.timeToClimbSeaweed) {
+            this.climbSeaweed(false)
+            return
+        }
+
+        if (this.onSeaweed) {
+            this.climbSeaweed(true)
+        } else {
+            this.travelLand()
         }
 
         if (this.timeToSwitchMovement) {
