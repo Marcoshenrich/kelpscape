@@ -16,7 +16,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 87
+        this.fishCount = 20
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
@@ -79,7 +79,8 @@ export default class Logic {
             let collisionArray = this.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height))
             let foundMate;
             for (const bumpedDenizen of collisionArray) {
-                if (bachelorFish.constructor !== bumpedDenizen.constructor &&
+                if (bachelorFish.id !== bumpedDenizen.id &&
+                    bachelorFish.constructor === bumpedDenizen.constructor &&
                     bumpedDenizen.seekingMate) {
                         foundMate = bumpedDenizen
                         break

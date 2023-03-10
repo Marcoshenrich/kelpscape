@@ -61,8 +61,8 @@ export default class View {
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()
-        this.quadtree.draw()
         this.logic.coreLoop()
+        if (this.debugging) this.quadtree.draw()
         requestAnimationFrame(this.animate.bind(this))
     }
 

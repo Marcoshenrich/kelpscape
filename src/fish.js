@@ -34,7 +34,7 @@ export default class Fish extends Swimmer {
         this.energyVal = spawn ? 5 : 20
 
         this.mating = false
-        this.mateThreshold = 15
+        this.mateThreshold = 10
 
         this.seekingMate = false
 
@@ -119,8 +119,7 @@ export default class Fish extends Swimmer {
         setTimeout(()=>{
             this.speed += .5
             this.mating = false
-
-            if (!spawnBool) return
+            if (spawnBool) return
             let i = Math.floor(Math.random() * 6)
             while (i > 0) {
                 i--
