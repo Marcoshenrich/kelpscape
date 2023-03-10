@@ -15,7 +15,27 @@ export default class Swimmer extends Denizen {
         this.timeToSwitchMovement = false
     }
 
+    coreloop() {
+        this.move()
+        this.consumeEnergy()
+        if (this.dead) this.becomeCorpse()
+        this.behaviorChanger()
+        this.draw()
+    }
 
+
+    behaviorChanger() {
+        if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
+       
+        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {
+            this.logic.matingDenizensObj[this.id] = this
+            this.seekingMate = true
+        } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
+            delete this.logic.matingDenizensObj[this.id]
+            this.seekingMate = false
+        }
+
+    }
 
     movementSwitchTimer() {
         setTimeout(()=>{

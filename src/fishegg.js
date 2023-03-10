@@ -18,7 +18,7 @@ export default class Fishegg extends Floater {
 
     miniRandomizer() {
         //to prevent pos collisions in the quad tree - if more than bucket limit share exact same pos, it recurses and breaks
-        return Math.floor(Math.random() * 10000) / 100000
+        return Math.floor(Math.random() * 1000) / 1000
     }
 
     spawn() {

@@ -40,6 +40,8 @@ export default class Logic {
         this.hungryDenizenArr = []
         this.assignFoodWeb() 
 
+        this.matingDenizensObj = {}
+
         this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
 
     }
@@ -61,12 +63,38 @@ export default class Logic {
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
-        // this.fishMeetOtherFish()
+        this.denizensMate()
         // this.sharksHuntWhenHungry()
         // this.sharksEatFish()
         // this.fishFleeFromSharks()
         this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
         this.reAssignDataObjs()
+    }
+
+    denizensMate() {
+        let matingDenizenArr = Object.values(this.matingDenizensObj)
+        for (let i = 0; i < matingDenizenArr.length; i++) {
+            let bachelorFish = matingDenizenArr[i]
+
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height))
+            let foundMate;
+            for (const bumpedDenizen of collisionArray) {
+                if (bachelorFish.constructor !== bumpedDenizen.constructor &&
+                    bumpedDenizen.seekingMate) {
+                        foundMate = bumpedDenizen
+                        break
+                    }
+            }
+            if (foundMate) {
+                bachelorFish.mate(true)
+                bachelorFish.seekingMate = false
+                delete this.matingDenizensObj[bachelorFish.id]
+
+                foundMate.mate()
+                foundMate.seekingMate = false
+                delete this.matingDenizensObj[foundMate.id]
+            }
+        }
     }
 
     denizensWithMouthsCanFindSomethingElseToEat() {
@@ -129,7 +157,7 @@ export default class Logic {
                 for (let k = 0; k < predator.preySpecies.length; k++) {
                     if (collisionArray[j] instanceof predator.preySpecies[k])  {
                         let prey = collisionArray[j]
-
+                        if (prey.dead) continue
                         prey.dead = true
                         predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : predator.energy + prey.energyVal
                         predator.foodEaten++
@@ -169,27 +197,6 @@ export default class Logic {
         }, Math.floor(Math.random() * this.algaeSpawnIncrement) + this.algaeSpawnIncrement)
     }
 
-    fishMeetOtherFish() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish1 = Object.values(this.fishes)[i]
-            if (fish1.spawn || fish1.mating) continue
-            if (fish1.energy < fish1.matingThreshold) continue
-
-            for (let j = 0; j < Object.values(this.fishes).length; j++) {
-                if (i === j) continue
-                let fish2 = Object.values(this.fishes)[j]
-                if (fish2.energy < fish2.matingThreshold) continue
-                if (fish2.spawn || fish2.mating) continue
-
-                let bump = fish1.collisionDetector([[fish1.pos[0], fish1.pos[1]], [fish1.width, fish1.height]], [[fish2.pos[0], fish2.pos[1]], [fish2.width, fish2.height]])
-                if (bump) {
-                    fish1.mate(true)
-                    fish2.mate()
-                }
-            }
-        }
-
-    }
 
 
 

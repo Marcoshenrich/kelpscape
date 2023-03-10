@@ -24,6 +24,9 @@ export default class Shark extends Swimmer {
         this.moveChangerOne()
         this.moveChangerTwo()
 
+        this.seekingMate = false
+        this.mateThreshold = 70
+
         this.maxEnergy = 100
         this.energy = this.maxEnergy
         this.energyUseCoef = .005
@@ -76,24 +79,17 @@ export default class Shark extends Swimmer {
         return pos
     }
 
-    coreloop() {
-        this.move()
-        this.consumeEnergy()
-        if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
 
+    draw() {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
-   
 
         if (this.view.debugging) {
             this.drawMouths()
             this.drawId()
         }
-
-    
         this.ctx.globalAlpha = 1
-
     }
 
     drawMouths() {
@@ -106,6 +102,10 @@ export default class Shark extends Swimmer {
         this.ctx.fillStyle = 'rgba(0,0,0,1)';
         this.ctx.font = "12px serif";
         this.ctx.fillText(`${this.energy}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+    }
+
+    mate(){
+        
     }
 
 }
