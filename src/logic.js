@@ -64,11 +64,63 @@ export default class Logic {
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
         this.denizensMate()
-        // this.sharksHuntWhenHungry()
-        // this.sharksEatFish()
-        // this.fishFleeFromSharks()
+        this.fishFleeFromSharks()
         this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
         this.reAssignDataObjs()
+    }
+
+    fishFleeFromSharks() {
+        for (let i = 0; i < Object.values(this.fishes).length; i++) {
+            let fish = Object.values(this.fishes)[i]
+            if (fish.mating) continue
+            if (fish.fleeing) continue
+            this.findNearestPredator(fish, Shark)
+        }
+
+    }
+
+    findNearestPredator(prey, predatorSpeciesClass) {
+        let nearbyDenizenArray = this.view.quadtree.queryRange(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ))
+        let closePredator;
+        for (const nearbyDenizen of nearbyDenizenArray) {
+            if (nearbyDenizen instanceof predatorSpeciesClass) {
+                closePredator = nearbyDenizen
+                break
+            }
+        }
+
+        if (!closePredator) return
+
+        prey.fleeing = true
+        prey.fleeFromCoords = closePredator.pos
+
+        setTimeout(() => {
+            prey.fleeing = false
+            prey.fleeFromCoords = []
+        }, 1000)
+    }
+
+    findNearestFood(predator) {
+        let nearestFoodCords = []
+        let nearestFoundDistance = Infinity
+        let foodId;
+
+        let allPreyArr = []
+        predator.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
+
+        for (const prey of allPreyArr) {
+            let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
+            let yDistance = Math.abs(predator.pos[1] - prey.pos[1])
+
+            if ((xDistance + yDistance) < nearestFoundDistance) {
+                nearestFoundDistance = xDistance + yDistance
+                nearestFoodCords = prey.pos
+                foodId = prey.id
+            }
+        }
+
+        predator.hunting = foodId
+        predator.nearestFoodCords = nearestFoodCords
     }
 
     denizensMate() {
@@ -122,28 +174,6 @@ export default class Logic {
         }
     }
 
-    findNearestFood(predator) {
-        let nearestFoodCords = []
-        let nearestFoundDistance = Infinity
-        let foodId;
-
-        let allPreyArr = []
-        predator.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
-
-        for (const prey of allPreyArr) {
-            let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
-            let yDistance = Math.abs(predator.pos[1] - prey.pos[1])
-
-            if ((xDistance + yDistance) < nearestFoundDistance) {
-                nearestFoundDistance = xDistance + yDistance
-                nearestFoodCords = prey.pos
-                foodId = prey.id
-            }
-        }
-
-        predator.hunting = foodId
-        predator.nearestFoodCords = nearestFoodCords
-    }
 
     denizensWithMouthsEatPrey() {
 
@@ -170,16 +200,6 @@ export default class Logic {
         }
     }
 
-    fishFleeFromSharks() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
-            if (fish.mating) continue
-            if (fish.fleeing) continue
-            this.findNearestPredator(fish, this.sharks)
-        }
-
-    }
-
     deleteDeadDenizens(classObjArr){
         for (let classObj of classObjArr) {
             for (const [id, denizen] of Object.entries(classObj)) {
@@ -199,30 +219,6 @@ export default class Logic {
     }
 
 
-
-
-    findNearestPredator(prey, predatorSpecies) {
-        let fleeFromCoords = []
-        let nearestFoundDistance = Infinity
-
-            for (const [id, predator] of Object.entries(predatorSpecies)) {
-                let xDistance = Math.abs(prey.pos[0] - predator.pos[0])
-                let yDistance = Math.abs(prey.pos[1] - predator.pos[1])
-                if ((xDistance + yDistance) > prey.fleeDistanceThreshold) continue
-                if ((xDistance + yDistance) < nearestFoundDistance) {
-                    nearestFoundDistance = xDistance + yDistance
-                    fleeFromCoords = predator.pos
-                }
-            }
-        if (nearestFoundDistance === Infinity) return
-        prey.fleeing = true
-        prey.fleeFromCoords = fleeFromCoords
-        setTimeout(()=>{
-            prey.fleeing = false
-            prey.fleeFromCoords = []
-        },1000)
-
-    }
 
     
 

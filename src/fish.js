@@ -1,4 +1,5 @@
 import Fishegg from "./fishegg"
+import { Rectangle } from "./quadtree"
 import Swimmer from "./swimmer"
 
 
@@ -44,6 +45,7 @@ export default class Fish extends Swimmer {
 
         this.hunting = false
         this.nearestFoodCords = []
+
 
         this.fleeDistanceThreshold = 200
         this.fleeing = false
