@@ -26,7 +26,7 @@ export default class Shark extends Swimmer {
 
         this.maxEnergy = 100
         this.energy = this.maxEnergy
-        this.energyUseCoef = .015
+        this.energyUseCoef = .005
         this.matingThreshold = 15
         this.matingEnergyCost = 5
         this.maxSpeed = spawn ? .3 : 1
@@ -98,14 +98,14 @@ export default class Shark extends Swimmer {
 
     drawMouths() {
         //debugging function
-        this.ctx.fillRect(this.mouthPos[0], this.mouthPos[1], this.mouthSize, this.mouthSize)
+        this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
     }
 
     drawId() {
         //debugging function
         this.ctx.fillStyle = 'rgba(0,0,0,1)';
         this.ctx.font = "12px serif";
-        this.ctx.fillText(`${this.energy}`, this.pos[0], this.pos[1])
+        this.ctx.fillText(`${this.energy}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
     }
 
 }

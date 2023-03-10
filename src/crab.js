@@ -48,9 +48,9 @@ export default class Crab extends Swimmer {
 
     move() {
         //find a way so that this isn't running all the time
-        if (this.seaweedSpots.includes(Math.floor(this.pos[0])) ) {
-            this.up = true
-        }
+        // if (this.seaweedSpots.includes(Math.floor(this.pos[0])) ) {
+        //     this.up = true
+        // }
 
         if(this.up) {
            this.pos[1] -= this.speed

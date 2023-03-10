@@ -26,13 +26,14 @@ export default class View {
         this.deadCreatures = this.logic.deadCreatures
         this.crabs = this.logic.crabs
 
-        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
+        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures]
+        this.allDenizensinQuadArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}
         this.populateQuad()
         this.animate()
-        this.debugging = true
+        this.debugging = false
         this.gameFrame = 0
 
 
@@ -40,8 +41,8 @@ export default class View {
     }
 
     populateQuad() {
-        this.quadtree = new Quadtree(this.bounds, 6, this);
-        this.allDenizensArr.forEach((denizenObj)=>{
+        this.quadtree = new Quadtree(this.bounds, 3, this);
+        this.allDenizensinQuadArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
                 this.quadtree.insert(denizen)
             })

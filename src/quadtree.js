@@ -15,9 +15,9 @@ export default class Quadtree {
 
 
     draw(){
-        this.ctx.fillStyle = 'rgba(0,0,0,.5)';
-        this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], this.bounds.width, 1)
-        this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], 1, this.bounds.height)
+        this.ctx.fillStyle = 'rgba(255,0,0,.5)';
+        this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], this.bounds.width, 2)
+        this.ctx.fillRect(this.bounds.x + this.view.offset[0], this.bounds.y + this.view.offset[1], 2, this.bounds.height)
         for (const node of this.nodes) {
             node.draw()
         }

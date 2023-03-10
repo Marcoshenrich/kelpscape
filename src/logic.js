@@ -16,7 +16,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 20
+        this.fishCount = 87
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
@@ -74,13 +74,13 @@ export default class Logic {
             let predator = this.predatorsWithMouthsArr[i]
             if (!predator.hunting) continue
 
-            let foundBool;
+            let preyStillAlive;
             for (let j = 0; j < predator.preySpeciesArr.length; j++) {
-                const preySpeciesObj = predator.preySpeciesArr[j];
-                if (predator.hunting in preySpeciesObj) foundBool = true
-            
+                if (predator.hunting in predator.preySpeciesArr[j]) preyStillAlive = true  
+                if (preyStillAlive) break    
             }
-            if (foundBool) continue
+
+            if (preyStillAlive) continue    
             predator.hunting = false
             predator.nearestFoodCords = []
         }
@@ -131,7 +131,7 @@ export default class Logic {
                         let prey = collisionArray[j]
 
                         prey.dead = true
-                        predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : prey.energyVal
+                        predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : predator.energy + prey.energyVal
                         predator.foodEaten++
                         predator.hunting = false
                         predator.afterIEatCB()
