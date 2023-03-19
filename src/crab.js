@@ -29,9 +29,9 @@ export default class Crab extends Swimmer {
         this.scavenging = false
         this.consumptionRate = .05
 
-        this.maxEnergy = 10
+        this.maxEnergy = 1
         this.energy = this.maxEnergy
-        this.energyUseCoef = .005
+        this.energyUseCoef = .05
         this.matingThreshold = 6
         this.matingEnergyCost = 1
     }
@@ -67,30 +67,43 @@ export default class Crab extends Swimmer {
         }
         this.consumeEnergy()
         this.draw()
-        if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead) this.becomeCorpse()
+        // if (this.view.gameFrame % 10 !== 0) return
+        console.log(this.dead)
+        if (this.dead) {
+
+            console.log("in crab corpse loop")
+            this.becomeCorpse()
+        }
     }  
 
     scavenge() {
         this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate]) 
         this.scavenging.energyVal -= this.consumptionRate
         if (this.scavenging.dead) this.scavenging = false
-        console.log("crab go yum")
     }
 
     becomeCorpse() {
         this.logic.deadCreatureCount++
-        this.logic.deadCreatures[this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
+        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
+        console.log(this.logic.deadCreatures)
     }
 
     consumeEnergy() {
         this.energy -= this.energyUseCoef * this.speed
+        console.log(this.energy)
         if (this.energy < .01) this.dead = true
     }
 
 
     draw(){
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        if (this.view.debugging) {
+            this.ctx.fillStyle = 'rgba(255,255,255,1)';
+            this.ctx.font = "12px serif";
+            this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+            this.ctx.fillText(`[${Math.floor(this.pos[0])},${Math.floor(this.pos[1])}]`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - this.height)
+        }
+        
     }
 
 

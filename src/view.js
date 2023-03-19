@@ -33,7 +33,7 @@ export default class View {
         this.quadtree = {}
         this.populateQuad()
         this.animate()
-        this.debugging = false
+        this.debugging = true
         this.gameFrame = 0
 
 
@@ -55,7 +55,8 @@ export default class View {
 
     animate() {
         this.gameFrame++ 
-        if (this.gameFrame % 100 === 0) this.populateQuad() 
+        // if (this.gameFrame % 100 === 0) this.populateQuad() 
+        this.populateQuad() 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updateCamera(this.logic.input.keys) 
         this.drawBackround()

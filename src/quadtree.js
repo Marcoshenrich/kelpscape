@@ -76,8 +76,35 @@ export default class Quadtree {
         this.denizens = [];
     }
 
-    queryRange(range) {
+    queryType(denizenClass, debugbool) {
         const foundDenizens = [];
+
+        for (const denizen of this.denizens) {
+            if (denizen.constructor === denizenClass) {
+                foundDenizens.push(denizen);
+            }
+        }
+
+        for (const node of this.nodes) {
+            foundDenizens.push(...node.queryType(denizenClass));
+        }
+
+        if (debugbool) {
+            foundDenizens.forEach((denizen)=>{
+                this.view.ctx.fillRect(denizen.pos[0] + this.view.offset[0], denizen.pos[1] + this.view.offset[1], denizen.width, denizen.height)
+
+            })
+        }
+
+        return foundDenizens;
+    }
+
+    queryRange(range, debugbool) {
+        const foundDenizens = [];
+
+        if (debugbool) {
+            this.view.ctx.fillRect(range.x + this.view.offset[0], range.y + this.view.offset[1], range.width, range.height)
+        }
     
         if (!this.bounds.intersects(range)) {
             return foundDenizens;
@@ -90,7 +117,7 @@ export default class Quadtree {
         }
 
         for (const node of this.nodes) {
-            foundDenizens.push(...node.queryRange(range));
+            foundDenizens.push(...node.queryRange(range, debugbool));
         }
 
         return foundDenizens;

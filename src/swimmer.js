@@ -250,7 +250,7 @@ export default class Swimmer extends Denizen {
 
     becomeCorpse() {
         this.logic.deadCreatureCount++
-        this.logic.deadCreatures[this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: (this.spawn ? "Spawn": "Fish")})
+        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: (this.spawn ? "Spawn": "Fish")})
     }
 
 

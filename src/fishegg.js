@@ -25,7 +25,7 @@ export default class Fishegg extends Floater {
         setTimeout(()=>{
             this.dead = true
             this.logic.fishCount += 1
-            this.logic.fishes[this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]], "spawn")
+            this.logic.fishes["Fish" + this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]], "spawn")
         },10000)
     }
 }

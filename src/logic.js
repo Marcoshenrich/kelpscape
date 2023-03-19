@@ -24,7 +24,7 @@ export default class Logic {
         this.effectCount = 0
         this.seaweedClusterCount = 10
         this.deadCreatureCount = 0
-        this.crabCount = 12
+        this.crabCount = 4
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
@@ -65,15 +65,24 @@ export default class Logic {
     }
 
     coreLoop(){
-        if (this.view.gameFrame % 10 !== 0) return
+        // if (this.view.gameFrame % 10 !== 0) return
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
         this.denizensMate()
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
+        this.deadCreatureDebugLoop()
         this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs, this.deadCreatures])
         this.reAssignDataObjs()
+    }
+
+    deadCreatureDebugLoop() {
+        for (let i = 0; i < Object.values(this.deadCreatures).length; i++) {
+            let deadc = Object.values(this.deadCreatures)[i]
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(deadc.pos[0], deadc.pos[1], deadc.width, deadc.height))
+            // console.log(collisionArray);
+        }
     }
 
     scavengersEatDeadCreatures() {
@@ -81,10 +90,13 @@ export default class Logic {
             let scavenger = this.scavengersArr[i]
             if (scavenger.scavenging) continue
             if (scavenger.mating) continue
+            const deadCreatures = this.view.quadtree.queryType(DeadCreature, true)
+            const crabs = this.view.quadtree.queryType(Crab)
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height))
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height),scavenger.id)
+
             for (let j = 0; j < collisionArray.length; j++) {
-                if (collisionArray[j] instanceof DeadCreature) console.log(collisionArray[j])
+
                 if (!(collisionArray[j] instanceof DeadCreature)) continue
                 let deadCreature = collisionArray[j]
                 scavenger.scavenging = deadCreature
