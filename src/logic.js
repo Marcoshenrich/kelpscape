@@ -6,6 +6,7 @@ import Input from "./input"
 import SeaweedCluster from "./seaweedCluster"
 import Crab from "./crab"
 import { Rectangle } from "./quadtree"
+import DeadCreature from "./deadCreature"
 
 
 export default class Logic {
@@ -56,6 +57,8 @@ export default class Logic {
         Fish.prototype.preySpeciesArr = [this.algae]
         Shark.prototype.preySpecies = [Fish]
         Shark.prototype.preySpeciesArr = [this.fishes]
+        Crab.prototype.preySpecies = [DeadCreature]
+        Crab.prototype.preySpeciesArr = [this.deadCreatures]
 
     }
 
@@ -158,8 +161,10 @@ export default class Logic {
 
             let preyStillAlive;
             for (let j = 0; j < predator.preySpeciesArr.length; j++) {
-                if (predator.hunting in predator.preySpeciesArr[j]) preyStillAlive = true  
-                if (preyStillAlive) break    
+                if (predator.hunting in predator.preySpeciesArr[j]) {
+                    preyStillAlive = true  
+                    break
+                }
             }
 
             if (preyStillAlive) continue    

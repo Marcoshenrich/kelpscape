@@ -33,6 +33,12 @@ export default class DeadCreature extends Denizen {
                 this.height = 16
                 break
 
+            case "Crab":
+                this.img.src = './dist/art/crabdead.png'
+                this.width = 30
+                this.height = 15
+                break
+
             default: 
                 this.img.src = './dist/art/fishdead.png'
         }

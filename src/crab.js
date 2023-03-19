@@ -1,5 +1,7 @@
+import DeadCreature from "./deadCreature";
 import Denizen from "./denizen";
 import Swimmer from "./swimmer";
+
 
 export default class Crab extends Swimmer {
 
@@ -16,6 +18,7 @@ export default class Crab extends Swimmer {
         this.up = false
         this.right = [true, false][Math.floor(Math.random() * 2)]
         this.recentlySwitchedDirections = false
+        this.dead = false
 
         this.timeToClimbSeaweed = false
         this.onSeaweed = false
@@ -23,6 +26,11 @@ export default class Crab extends Swimmer {
         this.seaweedSpots = this.seaweedFinder()
         this.climbSeaweedTimer()
 
+        this.maxEnergy = 10
+        this.energy = this.maxEnergy
+        this.energyUseCoef = .005
+        this.matingThreshold = 6
+        this.matingEnergyCost = 1
     }
 
 
@@ -50,8 +58,20 @@ export default class Crab extends Swimmer {
 
     coreloop() {
         this.move()
+        this.consumeEnergy()
         this.draw()
+        if (this.dead) this.becomeCorpse()
     }  
+
+    becomeCorpse() {
+        this.logic.deadCreatureCount++
+        this.logic.deadCreatures[this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
+    }
+
+    consumeEnergy() {
+        this.energy -= this.energyUseCoef * this.speed
+        if (this.energy < .01) this.dead = true
+    }
 
 
     draw(){
