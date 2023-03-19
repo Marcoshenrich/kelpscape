@@ -32,7 +32,8 @@ export default class Logic {
         this.eggs = {}
         this.effects = this.tankPopulator(0, Effect)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
-        this.deadCreatures = {}
+        // this.deadCreatures = {}
+        this.deadCreatures = this.tankPopulator(4, DeadCreature)
         this.crabs = this.tankPopulator(this.crabCount, Crab)
 
         this.algaeSpawnIncrement = 2000
@@ -44,6 +45,7 @@ export default class Logic {
         this.matingDenizensObj = {}
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
+        this.scavengersArr = [...Object.values(this.crabs)]
 
     }
 
@@ -69,8 +71,25 @@ export default class Logic {
         this.denizensWithMouthsEatPrey()
         this.denizensMate()
         this.fishFleeFromSharks()
-        this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs])
+        this.scavengersEatDeadCreatures()
+        this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs, this.deadCreatures])
         this.reAssignDataObjs()
+    }
+
+    scavengersEatDeadCreatures() {
+        for (let i = 0; i < this.scavengersArr.length; i++) {
+            let scavenger = this.scavengersArr[i]
+            if (scavenger.scavenging) continue
+            if (scavenger.mating) continue
+
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height))
+            for (let j = 0; j < collisionArray.length; j++) {
+                if (collisionArray[j] instanceof DeadCreature) console.log(collisionArray[j])
+                if (!(collisionArray[j] instanceof DeadCreature)) continue
+                let deadCreature = collisionArray[j]
+                scavenger.scavenging = deadCreature
+            }
+        }
     }
 
     fishFleeFromSharks() {
@@ -182,7 +201,6 @@ export default class Logic {
 
 
     denizensWithMouthsEatPrey() {
-
         for (let i = 0; i < this.predatorsWithMouthsArr.length; i++) {
             let predator = this.predatorsWithMouthsArr[i]
             if (predator.energy > predator.eatFoodThreshold) continue

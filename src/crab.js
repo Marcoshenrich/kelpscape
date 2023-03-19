@@ -26,6 +26,9 @@ export default class Crab extends Swimmer {
         this.seaweedSpots = this.seaweedFinder()
         this.climbSeaweedTimer()
 
+        this.scavenging = false
+        this.consumptionRate = .05
+
         this.maxEnergy = 10
         this.energy = this.maxEnergy
         this.energyUseCoef = .005
@@ -57,11 +60,23 @@ export default class Crab extends Swimmer {
     }
 
     coreloop() {
-        this.move()
+        if (this.scavenging) {
+            this.scavenge()
+        } else {
+            this.move()
+        }
         this.consumeEnergy()
         this.draw()
+        if (this.view.gameFrame % 10 !== 0) return
         if (this.dead) this.becomeCorpse()
     }  
+
+    scavenge() {
+        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate]) 
+        this.scavenging.energyVal -= this.consumptionRate
+        if (this.scavenging.dead) this.scavenging = false
+        console.log("crab go yum")
+    }
 
     becomeCorpse() {
         this.logic.deadCreatureCount++
