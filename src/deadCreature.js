@@ -22,12 +22,13 @@ export default class DeadCreature extends Denizen {
     }
 
     draw() {
+        this.ctx.globalAlpha = this.energyVal > 5 ? 1 : (this.energyVal + 5) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
             this.ctx.font = "12px serif";
-            this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+            this.ctx.fillText(`${this.energyVal}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillText(`[${Math.floor(this.pos[0])},${Math.floor(this.pos[1])}]`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - this.height)
 
         }

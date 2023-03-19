@@ -92,6 +92,7 @@ export default class Logic {
                 if (!(collisionArray[j] instanceof DeadCreature)) continue
                 let deadCreature = collisionArray[j]
                 scavenger.scavenging = deadCreature
+                scavenger.speed = 0
             }
         }
     }

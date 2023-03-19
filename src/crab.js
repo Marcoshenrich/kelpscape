@@ -27,11 +27,11 @@ export default class Crab extends Swimmer {
         this.climbSeaweedTimer()
 
         this.scavenging = false
-        this.consumptionRate = .05
+        this.consumptionRate = .005
 
         this.maxEnergy = 10
         this.energy = this.maxEnergy
-        this.energyUseCoef = .005
+        this.energyUseCoef = .0005
         this.matingThreshold = 6
         this.matingEnergyCost = 1
     }
@@ -76,7 +76,10 @@ export default class Crab extends Swimmer {
     scavenge() {
         this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate]) 
         this.scavenging.energyVal -= this.consumptionRate
-        if (this.scavenging.dead) this.scavenging = false
+        if (this.scavenging.dead) {
+            this.speed = .3
+            this.scavenging = false
+        }
     }
 
     becomeCorpse() {
@@ -93,6 +96,7 @@ export default class Crab extends Swimmer {
 
 
     draw(){
+        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
@@ -109,6 +113,8 @@ export default class Crab extends Swimmer {
         if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) {
             this.switchDirections()
         }
+
+        if (this.pos[1] + this.height > this.arenaHeight) this.pos[1] = this.arenaHeight - this.height 
 
         if (this.right) {
             this.pos[0] += this.speed

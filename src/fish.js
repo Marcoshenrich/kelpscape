@@ -25,7 +25,7 @@ export default class Fish extends Swimmer {
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.maxEnergy = 20
+        this.maxEnergy = 1
         this.energy = this.maxEnergy
         this.energyUseCoef = .005
         this.matingThreshold = 15
