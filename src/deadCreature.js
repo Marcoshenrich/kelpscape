@@ -4,8 +4,7 @@ export default class DeadCreature extends Denizen {
     constructor(id, ctx, canvas, view, logic, pos, options) {
         super(ctx, canvas, view, logic)
         this.id = "DeadCreature" + id
-        // this.pos = [pos[0], pos[1]]
-        this.pos = [Math.floor(Math.random() * 1000),1200]
+        this.pos = [pos[0], pos[1]]
         this.driftSpeed = .2
         this.img = new Image()
         this.type = options && options.type || "Fish"
@@ -48,7 +47,7 @@ export default class DeadCreature extends Denizen {
             case "Fish":
                 this.img.src = './dist/art/fishdead.png'
                 this.width = 25
-                this.height = 16
+                this.height = 15
                 this.energyVal = 10
                 break
 

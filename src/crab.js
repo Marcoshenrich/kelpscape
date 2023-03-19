@@ -29,9 +29,9 @@ export default class Crab extends Swimmer {
         this.scavenging = false
         this.consumptionRate = .05
 
-        this.maxEnergy = 1
+        this.maxEnergy = 10
         this.energy = this.maxEnergy
-        this.energyUseCoef = .05
+        this.energyUseCoef = .005
         this.matingThreshold = 6
         this.matingEnergyCost = 1
     }
@@ -68,10 +68,7 @@ export default class Crab extends Swimmer {
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        console.log(this.dead)
         if (this.dead) {
-
-            console.log("in crab corpse loop")
             this.becomeCorpse()
         }
     }  
@@ -85,13 +82,13 @@ export default class Crab extends Swimmer {
     becomeCorpse() {
         this.logic.deadCreatureCount++
         this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
-        console.log(this.logic.deadCreatures)
     }
 
     consumeEnergy() {
+
         this.energy -= this.energyUseCoef * this.speed
-        console.log(this.energy)
         if (this.energy < .01) this.dead = true
+
     }
 
 
