@@ -34,9 +34,8 @@ class Rock extends Denizen {
 
             case "med":
                 this.img.src = './dist/art/rocks/med_rock.png'
-                this.width = 25
-                this.height = 15
-                this.energyVal = 10
+                this.width = rand(80, 40)
+                this.height = this.width * .6
                 break
 
             case "small_green":
