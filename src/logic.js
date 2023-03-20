@@ -82,10 +82,8 @@ export default class Logic {
             let scavenger = this.scavengersArr[i]
             if (scavenger.scavenging) continue
             if (scavenger.mating) continue
-            const deadCreatures = this.view.quadtree.queryType(DeadCreature, true)
-            const crabs = this.view.quadtree.queryType(Crab)
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height),scavenger.id)
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), scavenger)
        
             for (let j = 0; j < collisionArray.length; j++) {
 
@@ -108,7 +106,7 @@ export default class Logic {
     }
 
     findNearestPredator(prey, predatorSpeciesClass) {
-        let nearbyDenizenArray = this.view.quadtree.queryRange(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ))
+        let nearbyDenizenArray = this.view.quadtree.queryRange(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ), prey)
         let closePredator;
         for (const nearbyDenizen of nearbyDenizenArray) {
             if (nearbyDenizen instanceof predatorSpeciesClass) {
@@ -156,11 +154,10 @@ export default class Logic {
         for (let i = 0; i < matingDenizenArr.length; i++) {
             let bachelorFish = matingDenizenArr[i]
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height))
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), bachelorFish)
             let foundMate;
             for (const bumpedDenizen of collisionArray) {
-                if (bachelorFish.id !== bumpedDenizen.id &&
-                    bachelorFish.constructor === bumpedDenizen.constructor &&
+                if (bachelorFish.constructor === bumpedDenizen.constructor &&
                     bumpedDenizen.seekingMate) {
                         foundMate = bumpedDenizen
                         break
@@ -211,12 +208,14 @@ export default class Logic {
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize))
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), predator)
 
+            // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
                 for (let k = 0; k < predator.preySpecies.length; k++) {
                     if (collisionArray[j] instanceof predator.preySpecies[k])  {
                         let prey = collisionArray[j]
+
                         if (prey.dead) continue
                         prey.dead = true
                         predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : predator.energy + prey.energyVal
@@ -232,7 +231,11 @@ export default class Logic {
     deleteDeadDenizens(classObjArr){
         for (let classObj of classObjArr) {
             for (const [id, denizen] of Object.entries(classObj)) {
-                if (denizen.dead) delete classObj[id]
+                if (denizen.dead) {
+                    denizen.clearCallbacksOnDeath()
+                    delete classObj[id]
+
+                }
             }
         }
     }
@@ -252,7 +255,7 @@ export default class Logic {
     deadCreatureDebugLoop() {
         for (let i = 0; i < Object.values(this.deadCreatures).length; i++) {
             let deadc = Object.values(this.deadCreatures)[i]
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(deadc.pos[0], deadc.pos[1], deadc.width, deadc.height))
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(deadc.pos[0], deadc.pos[1], deadc.width, deadc.height), deadc)
         }
     }
 

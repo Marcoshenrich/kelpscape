@@ -9,6 +9,8 @@ export default class Denizen {
         this.arenaHeight = this.view.arenaHeight
         this.arenaWidth = this.view.arenaWidth
         this.offset = this.view.offset
+
+        this.clearOnDeath = []
     }
     
 
@@ -25,6 +27,12 @@ export default class Denizen {
             return true
         }
         return false
+    }
+
+    clearCallbacksOnDeath() {
+        this.clearOnDeath.forEach((timerId)=>{
+            clearTimeout(timerId)
+        })
     }
 
 }

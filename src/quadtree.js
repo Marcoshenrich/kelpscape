@@ -98,7 +98,7 @@ export default class Quadtree {
         return foundDenizens;
     }
 
-    queryRange(range, debugbool) {
+    queryRange(range, opDenizen) {
         const foundDenizens = [];
 
         // if (debugbool) {
@@ -110,13 +110,22 @@ export default class Quadtree {
         }
 
         for (const denizen of this.denizens) {
-            if (range.contains(denizen)) {
+            if (range.contains(denizen) && opDenizen.id !== denizen.id) {
                 foundDenizens.push(denizen);
             }
         }
 
+        // contains method checks for point collision, I want it to check for rectangle collision, but I couldn't get it to work. 
+
+        // for (const denizen of this.denizens) {
+        //     if (range.intersects({x: denizen.pos[0], y: denizen.pos[1], width: denizen.width, height: denizen.height}, this.view)) {
+        //         foundDenizens.push(denizen);
+        //     }
+        // }
+
+
         for (const node of this.nodes) {
-            foundDenizens.push(...node.queryRange(range, debugbool));
+            foundDenizens.push(...node.queryRange(range, opDenizen));
         }
 
         return foundDenizens;
@@ -142,7 +151,22 @@ export class Rectangle {
         );
     }
 
-    intersects(range) {
+    intersects(range, view) {
+
+        // if (view) {
+        //     // view.ctx.globalAlpha = .1;
+        //     // view.ctx.fillStyle = 'rgba(255,0,0,.1)';
+        //     // view.ctx.fillRect(this.x + view.offset[0], this.y + view.offset[1], this.width, this.height)
+        //     // view.ctx.globalAlpha = 1;
+
+        //     // console.log({ x: range.x + view.offset[0], y: range.y + view.offset[1], width: range.width, height: range.height })
+        //     view.ctx.globalAlpha = .1;
+        //     view.ctx.fillStyle = 'rgba(0,200,255,.1)';
+        //     view.ctx.fillRect(range.x + view.offset[0], range.y + view.offset[1], range.width, range.height)
+        //     view.ctx.globalAlpha = 1;
+        // }
+
+
         return !(
             range.x - range.width > this.x + this.width ||
             range.x + range.width < this.x - this.width ||

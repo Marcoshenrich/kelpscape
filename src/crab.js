@@ -41,7 +41,7 @@ export default class Crab extends Swimmer {
         setTimeout(() => {
             this.timeToClimbSeaweed = !this.timeToClimbSeaweed
             this.climbSeaweedTimer()
-        }, Math.floor(Math.random() * this.timeToClimbSeaweed ? 6000 : 30000))
+        }, Math.floor(Math.random() * this.timeToClimbSeaweed ? 600000 : 300000))
     }
 
     seaweedFinder() {
