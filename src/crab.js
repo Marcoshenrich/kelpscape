@@ -34,6 +34,11 @@ export default class Crab extends Swimmer {
         this.energyUseCoef = .0005
         this.matingThreshold = 6
         this.matingEnergyCost = 1
+
+        this.trapHeight = 6
+        this.trapWidth = 30
+        this.trapPos = this.pos
+        this.trappedPrey = false
     }
 
 
@@ -60,11 +65,14 @@ export default class Crab extends Swimmer {
     }
 
     coreloop() {
-        if (this.scavenging) {
+        if (this.trappedPrey) {
+            this.munchOnPreyAlive()
+        } else if (this.scavenging) {
             this.scavenge()
-        } else {
-            this.move()
         }
+
+        if (!this.scavenging) this.move()
+
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
@@ -72,6 +80,15 @@ export default class Crab extends Swimmer {
             this.becomeCorpse()
         }
     }  
+
+    munchOnPreyAlive() {
+        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate])
+        this.trappedPrey.energy -= this.consumptionRate
+        if (this.trappedPrey.dead) {
+            this.speed = .3
+            this.trappedPrey = false
+        }
+    }
 
     scavenge() {
         this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate]) 
@@ -101,9 +118,13 @@ export default class Crab extends Swimmer {
     draw(){
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.ctx.globalAlpha = 1
+
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
             this.ctx.font = "12px serif";
+
+            
             this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillText(`[${Math.floor(this.pos[0])},${Math.floor(this.pos[1])}]`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - this.height)
         }

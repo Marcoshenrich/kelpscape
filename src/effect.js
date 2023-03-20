@@ -1,7 +1,8 @@
 
 
 export default class Effect {
-    constructor(type, pos, ctx, canvas, view) {
+    constructor(id, type, pos, ctx, canvas, view) {
+        this.id = "Effect" + id
         this.type = type
         this.pos = pos
         this.ctx = ctx
@@ -36,8 +37,12 @@ export default class Effect {
         this.size -= .3
         if (this.size < 0) {
             this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
+            this.view.logic.recentlyDeadDenizens.push(this)
         }
+    }
+
+    clearCallbacksOnDeath(){
+        //prevents breaking on logic deathloop
     }
 
 }

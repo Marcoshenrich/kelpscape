@@ -18,7 +18,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 20
+        this.fishCount = 40
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
@@ -47,8 +47,32 @@ export default class Logic {
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs)]
+        this.trappersArr = [...Object.values(this.crabs)]
         this.recentlyDeadDenizens = []
 
+    }
+
+
+    trappersTrapFish() {
+        for (let i = 0; i < this.trappersArr.length; i++) {	
+            let trapper = this.trappersArr[i]
+            if (trapper.trappedPrey) continue
+            if (trapper.mating) continue
+
+            let collisionArray = this.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
+
+            // pretty inneficient -> should look up predators directly
+            for (let j = 0; j < collisionArray.length; j++) {
+                    let prey = collisionArray[j]
+                    if (prey instanceof Fish && prey.spawn) {
+                        if (prey.dead) continue
+                        prey.trapped = trapper
+                        prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
+                        trapper.trappedPrey = prey
+   
+                    }
+            }
+        }
     }
 
     reAssignDataObjs() {
@@ -62,8 +86,8 @@ export default class Logic {
         Fish.prototype.preySpeciesArr = [this.algae]
         Shark.prototype.preySpecies = [Fish]
         Shark.prototype.preySpeciesArr = [this.fishes]
-        Crab.prototype.preySpecies = [DeadCreature]
-        Crab.prototype.preySpeciesArr = [this.deadCreatures]
+        Crab.prototype.preySpecies = [Fish]
+        Crab.prototype.preySpeciesArr = [this.fishes]
     }
 
     assignSpeciesObjects() {
@@ -82,6 +106,7 @@ export default class Logic {
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
+        this.trappersTrapFish()
         this.denizensMate()
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
@@ -247,23 +272,9 @@ export default class Logic {
         while (this.recentlyDeadDenizens.length) {
             let deadDenizen = this.recentlyDeadDenizens.pop()
             deadDenizen.clearCallbacksOnDeath()
-            console.log(deadDenizen)
-            console.log(deadDenizen.speciesObject)
             delete deadDenizen.speciesObject[deadDenizen.id]
         }
-        
-        // for (let classObj of classObjArr) {
-
-        //     for (const [id, denizen] of Object.entries(classObj)) {
-        //         if (denizen.dead) {
-        //             denizen.clearCallbacksOnDeath()
-        //             delete classObj[id]
-        //         }
-        //     }
-        // }
     }
-
-
 
     algaeSpawns() {
         setTimeout(()=>{
@@ -273,18 +284,12 @@ export default class Logic {
         }, Math.floor(Math.random() * this.algaeSpawnIncrement) + this.algaeSpawnIncrement)
     }
 
-
-
     deadCreatureDebugLoop() {
         for (let i = 0; i < Object.values(this.deadCreatures).length; i++) {
             let deadc = Object.values(this.deadCreatures)[i]
             let collisionArray = this.view.quadtree.queryRange(new Rectangle(deadc.pos[0], deadc.pos[1], deadc.width, deadc.height), deadc)
         }
     }
-
-    
-
-
 
 
     tankPopulator(objnum, className, options) {

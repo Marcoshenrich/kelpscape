@@ -11,6 +11,8 @@ export default class Denizen {
         this.offset = this.view.offset
 
         this.clearOnDeath = []
+        this.trapped = false
+        this.trappedPosDelta = []
     }
     
 
