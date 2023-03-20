@@ -8,7 +8,7 @@ import Crab from "./crab"
 import { Rectangle } from "./quadtree"
 import DeadCreature from "./deadCreature"
 import Fishegg from "./fishegg"
-
+import Rock from "./rock"
 
 export default class Logic {
 
@@ -26,6 +26,7 @@ export default class Logic {
         this.seaweedClusterCount = 10
         this.deadCreatureCount = 0
         this.crabCount = 10
+        this.rockCount = 10
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
@@ -35,6 +36,7 @@ export default class Logic {
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
+        this.rocks = this.tankPopulator(this.rockCount, Rock)
 
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()

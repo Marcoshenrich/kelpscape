@@ -25,8 +25,9 @@ export default class View {
         this.seaweedClusters = this.logic.seaweedClusters
         this.deadCreatures = this.logic.deadCreatures
         this.crabs = this.logic.crabs
+        this.rocks = this.logic.rocks
 
-        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures]
+        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.rocks]
         this.allDenizensinQuadArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
