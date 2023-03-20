@@ -86,7 +86,8 @@ export default class Logic {
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
         // this.deadCreatureDebugLoop()
-        this.deleteDeadDenizens([this.fishes,this.algae,this.sharks,this.eggs,this.effects, this.crabs, this.deadCreatures])
+        this.deleteDeadDenizens()
+
         this.reAssignDataObjs()
     }
 
@@ -246,6 +247,8 @@ export default class Logic {
         while (this.recentlyDeadDenizens.length) {
             let deadDenizen = this.recentlyDeadDenizens.pop()
             deadDenizen.clearCallbacksOnDeath()
+            console.log(deadDenizen)
+            console.log(deadDenizen.speciesObject)
             delete deadDenizen.speciesObject[deadDenizen.id]
         }
         
