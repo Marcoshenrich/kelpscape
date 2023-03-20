@@ -34,7 +34,10 @@ export default class Effect {
         this.coef1 += .7
         this.coef2 += .7
         this.size -= .3
-        if (this.size < 0) this.dead = true
+        if (this.size < 0) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
     }
 
 }

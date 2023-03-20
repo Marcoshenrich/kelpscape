@@ -90,7 +90,10 @@ export default class Crab extends Swimmer {
     consumeEnergy() {
 
         this.energy -= this.energyUseCoef * this.speed
-        if (this.energy < .01) this.dead = true
+        if (this.energy < .01) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
 
     }
 

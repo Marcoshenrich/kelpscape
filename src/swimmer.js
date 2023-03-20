@@ -245,7 +245,10 @@ export default class Swimmer extends Denizen {
 
     consumeEnergy() {
         this.energy -= this.energyUseCoef * this.speed
-        if (this.energy < .05) this.dead = true
+        if (this.energy < .05) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
     }
 
     becomeCorpse() {

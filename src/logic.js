@@ -7,6 +7,7 @@ import SeaweedCluster from "./seaweedCluster"
 import Crab from "./crab"
 import { Rectangle } from "./quadtree"
 import DeadCreature from "./deadCreature"
+import Fishegg from "./fishegg"
 
 
 export default class Logic {
@@ -39,12 +40,14 @@ export default class Logic {
         this.algaeSpawns()
         
         this.hungryDenizenArr = []
-        this.assignFoodWeb() 
+        this.assignFoodWeb()
+        this.assignSpeciesObjects() 
 
         this.matingDenizensObj = {}
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs)]
+        this.recentlyDeadDenizens = []
 
     }
 
@@ -61,7 +64,17 @@ export default class Logic {
         Shark.prototype.preySpeciesArr = [this.fishes]
         Crab.prototype.preySpecies = [DeadCreature]
         Crab.prototype.preySpeciesArr = [this.deadCreatures]
+    }
 
+    assignSpeciesObjects() {
+        Fish.prototype.speciesObject = this.fishes
+        Algae.prototype.speciesObject = this.algae
+        Shark.prototype.speciesObject = this.sharks
+        Fishegg.prototype.speciesObject = this.eggs
+        Effect.prototype.speciesObject = this.effects
+        SeaweedCluster.prototype.speciesObject = this.seaweedClusters
+        DeadCreature.prototype.speciesObject = this.deadCreatures
+        Crab.prototype.speciesObject = this.crabs
     }
 
     coreLoop(){
@@ -218,6 +231,7 @@ export default class Logic {
 
                         if (prey.dead) continue
                         prey.dead = true
+                        this.recentlyDeadDenizens.push(prey)
                         predator.energy = (predator.energy + prey.energyVal) > predator.maxEnergy ? predator.maxEnergy : predator.energy + prey.energyVal
                         predator.foodEaten++
                         predator.hunting = false
@@ -228,16 +242,22 @@ export default class Logic {
         }
     }
 
-    deleteDeadDenizens(classObjArr){
-        for (let classObj of classObjArr) {
-            for (const [id, denizen] of Object.entries(classObj)) {
-                if (denizen.dead) {
-                    denizen.clearCallbacksOnDeath()
-                    delete classObj[id]
-
-                }
-            }
+    deleteDeadDenizens(){
+        while (this.recentlyDeadDenizens.length) {
+            let deadDenizen = this.recentlyDeadDenizens.pop()
+            deadDenizen.clearCallbacksOnDeath()
+            delete deadDenizen.speciesObject[deadDenizen.id]
         }
+        
+        // for (let classObj of classObjArr) {
+
+        //     for (const [id, denizen] of Object.entries(classObj)) {
+        //         if (denizen.dead) {
+        //             denizen.clearCallbacksOnDeath()
+        //             delete classObj[id]
+        //         }
+        //     }
+        // }
     }
 
 

@@ -18,7 +18,11 @@ export default class DeadCreature extends Denizen {
     coreloop() {
         if (this.pos[1] < this.arenaHeight - this.height) this.pos[1] += this.driftSpeed
         this.draw()
-        if (this.energyVal < 0) this.dead = true
+        if (this.energyVal < 0) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+
+        }
     }
 
     draw() {
