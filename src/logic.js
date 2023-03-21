@@ -26,7 +26,7 @@ export default class Logic {
         this.seaweedClusterCount = 10
         this.deadCreatureCount = 0
         this.crabCount = 10
-        this.rockCount = 10
+        this.rockCount = 20
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)

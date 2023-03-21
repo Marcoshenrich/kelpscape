@@ -1,8 +1,8 @@
 
 
 
-export const rand = (ceil, floor) => {
-    if (!floor) return Math.floor(Math.random() * ceil)
+export const rand = (floor, ceil) => {
+    if (!ceil) return Math.floor(Math.random() * floor)
     return Math.floor(Math.random() * (ceil - floor)) + floor + 1
 }
 
