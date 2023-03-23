@@ -130,6 +130,27 @@ export default class Quadtree {
 
         return foundDenizens;
     }
+
+    findOverlaps(range, opDenizen) {
+        const foundDenizens = [];
+
+        if (!this.bounds.intersects(range)) {
+            return foundDenizens;
+        }
+
+        for (const denizen of this.denizens) {
+            if (opDenizen.id !== denizen.id && range.overlaps(denizen)) {
+                foundDenizens.push(denizen);
+            }
+        }
+
+
+        for (const node of this.nodes) {
+            foundDenizens.push(...node.findOverlaps(range, opDenizen));
+        }
+
+        return foundDenizens;
+    }
 }
 
 export class Rectangle {
@@ -140,9 +161,20 @@ export class Rectangle {
         this.height = height;
     }
 
+    overlaps(denizen) {
+        let recA = { left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height }
+        let recB = { left: denizen.pos[0], right: denizen.pos[0] + denizen.width, top: denizen.pos[1], bottom: denizen.pos[1] + denizen.height }
+        return this.recOverlapCheck(recA, recB) || this.recOverlapCheck(recB, recA)
+    }
+
+
+    recOverlapCheck(a, b) {
+        return ((b.left <= a.right) && (b.right >= a.left) && (b.top <= a.bottom) && (b.bottom >= a.top))
+    }
+
 
     contains(denizen) {
-        let [x,y] = denizen.pos
+        let [x, y] = denizen.pos
         return (
             x >= this.x &&
             x <= this.x + this.width &&

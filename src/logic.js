@@ -64,7 +64,7 @@ export default class Logic {
             if (trapper.trappedPrey) continue
             if (trapper.mating) continue
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
 
 
             // pretty inneficient -> should look up predators directly
