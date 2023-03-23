@@ -6,6 +6,11 @@ export const rand = (floor, ceil) => {
     return Math.floor(Math.random() * (ceil - floor)) + floor + 1
 }
 
+export const miniRandomizer = () => {
+    //to prevent pos collisions in the quad tree - if more than bucket limit share exact same pos, it recurses and breaks
+    return Math.floor(Math.random() * 1000) / 1000
+}
+
 const tester = (ceil, floor) => {
     let resArr = []
 

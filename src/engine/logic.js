@@ -1,5 +1,6 @@
 import Input from "./input"
 import { Rectangle } from "./quadtree"
+import FishBaby from "../denizens/fishbaby"
 import Fish from "../denizens/fish"
 import Algae from "../denizens/algae"
 import Shark from "../denizens/shark"
@@ -13,12 +14,14 @@ import Rock from "../environment/rock"
 export default class Logic {
 
     constructor(ctx, canvas, view) {
+
         this.input = new Input()
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
 
         this.fishCount = 40
+        this.fishBabyCount = 0
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
@@ -29,6 +32,7 @@ export default class Logic {
         this.rockCount = 20
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
+        this.fishBabies = {}
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggs = {}
@@ -47,7 +51,7 @@ export default class Logic {
 
         this.matingDenizensObj = {}
 
-        this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
+        this.predatorsWithMouthsArr = [...Object.values(this.fishBabies), ...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs)]
         this.trappersArr = [...Object.values(this.crabs)]
         this.recentlyDeadDenizens = []
@@ -55,8 +59,9 @@ export default class Logic {
     }
 
 
+
+
     trappersTrapFishAndEggs() {
-        // this.view.quadtree.queryType(Fishegg, true)
         for (let i = 0; i < this.trappersArr.length; i++) {	
             let trapper = this.trappersArr[i]
             if (trapper.trappedPrey) continue
@@ -64,17 +69,17 @@ export default class Logic {
 
             let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
 
-
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
-                    let prey = collisionArray[j]
-                    if ((prey instanceof Fish && prey.spawn) || prey instanceof Fishegg) {
+                let prey = collisionArray[j]
+                for (let k = 0; k < trapper.preySpecies.length; k++) {
+                    if (prey instanceof trapper.preySpecies[k]) {
                         if (prey.dead) continue
                         prey.trapped = trapper
                         prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
                         trapper.trappedPrey = prey
-   
                     }
+                }
             }
         }
     }
@@ -84,18 +89,21 @@ export default class Logic {
         this.scavengersArr = [...Object.values(this.crabs)]
     }
 
-
+    
     assignFoodWeb() {
         Fish.prototype.preySpecies = [Algae]
         Fish.prototype.preySpeciesArr = [this.algae]
-        Shark.prototype.preySpecies = [Fish]
-        Shark.prototype.preySpeciesArr = [this.fishes]
-        Crab.prototype.preySpecies = [Fish]
-        Crab.prototype.preySpeciesArr = [this.fishes]
+        FishBaby.prototype.preySpecies = [Algae]
+        FishBaby.prototype.preySpeciesArr = [this.algae]
+        Shark.prototype.preySpecies = [Fish, FishBaby]
+        Shark.prototype.preySpeciesArr = [this.fishes, this.fishBabies]
+        Crab.prototype.preySpecies = [FishBaby]
+        Crab.prototype.preySpeciesArr = [this.fishBabies]
     }
 
     assignSpeciesObjects() {
         Fish.prototype.speciesObject = this.fishes
+        FishBaby.prototype.speciesObject = this.fishBabies
         Algae.prototype.speciesObject = this.algae
         Shark.prototype.speciesObject = this.sharks
         Fishegg.prototype.speciesObject = this.eggs

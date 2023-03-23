@@ -4,6 +4,7 @@ import Quadtree, { Rectangle } from "./quadtree"
 export default class View {
 
     constructor(canvas) {
+        
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
         this.background = new Image()
@@ -18,6 +19,7 @@ export default class View {
 
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.fishes = this.logic.fishes
+        this.fishBabies = this.logic.fishBabies
         this.algae = this.logic.algae
         this.eggs = this.logic.eggs
         this.sharks = this.logic.sharks
@@ -27,8 +29,8 @@ export default class View {
         this.crabs = this.logic.crabs
         this.rocks = this.logic.rocks
 
-        this.allDenizensArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.rocks]
-        this.allDenizensinQuadArr = [this.fishes, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
+        this.allDenizensArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.rocks]
+        this.allDenizensinQuadArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}
@@ -40,6 +42,7 @@ export default class View {
 
 
     }
+
 
     populateQuad() {
         this.quadtree = new Quadtree(this.bounds, 6, this);

@@ -1,14 +1,14 @@
 
-import Fish from "./fish"
 import Floater from "./floater"
-import { rand } from "../engine/utils"
+import { rand, miniRandomizer } from "../engine/utils"
+import FishBaby from "./fishbaby"
 
 export default class Fishegg extends Floater {
 
     constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
         this.id = "Fishegg" + id
-        this.pos = [pos[0] + this.miniRandomizer(), pos[1] + this.miniRandomizer()]
+        this.pos = [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()]
 
         this.img = new Image()
         this.img.src = './dist/art/fishEggs.png'
@@ -18,18 +18,14 @@ export default class Fishegg extends Floater {
         this.width = this.dims
     }
 
-    miniRandomizer() {
-        //to prevent pos collisions in the quad tree - if more than bucket limit share exact same pos, it recurses and breaks
-        return Math.floor(Math.random() * 1000) / 1000
-    }
 
     spawn() {
         let timerId = setTimeout(()=>{
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
-            this.logic.fishCount += 1
-            this.logic.fishes["Fish" + this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]], "spawn")
-        },20000)
+            this.logic.fishBabyCount += 1
+            this.logic.fishes["FishBaby" + this.logic.fishBabyCount] = new FishBaby(this.logic.fishBabyCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
+        },rand(15000,25000))
 
         this.clearOnDeath.push(timerId)
     }

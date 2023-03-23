@@ -4,20 +4,20 @@ import Swimmer from "./swimmer"
 
 export default class Fish extends Swimmer {
 
-    constructor(id, ctx, canvas, view, logic, pos, spawn) {
+    constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
-        this.spawn = !!spawn
+        this.spawn = false
         this.id = "Fish" + id
         this.leftImg.src = './dist/art/fishleft.png'
         this.rightImg.src = './dist/art/fishright.png'
         this.mateHeart = new Image()
         this.mateHeart.src = './dist/art/red-heart.png'
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
-        this.width = spawn ? 12 : 25
-        this.height = spawn ? 8 : 16
+        this.width = 25
+        this.height = 16
         this.pos = pos || this.placer()
         this.oldPos = this.pos
-        this.mouthSize = spawn ? 4 : 8
+        this.mouthSize = 8
         this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
@@ -29,9 +29,9 @@ export default class Fish extends Swimmer {
         this.energyUseCoef = .005
         this.matingThreshold = 15
         this.matingEnergyCost = 5
-        this.maxSpeed = spawn ? .3 : .6
+        this.maxSpeed = .6
 
-        this.energyVal = spawn ? 5 : 20
+        this.energyVal = 20
 
         this.mating = false
         this.mateThreshold = 10
@@ -51,20 +51,9 @@ export default class Fish extends Swimmer {
         this.fleeFromCoords = []
 
         this.afterIEatCB = () => {
-            if (this.spawn && this.foodEaten > 4) {
-                this.growUp()
-            }
+            //nothing required, spawn grow up separately
         }
         
-    }
-
-    growUp() {
-        this.spawn = false
-        this.maxSpeed = .6
-        this.mouthSize = 8
-        this.width = 25
-        this.height = 16
-        this.energyVal = 20
     }
 
     mouthPlacer() {
