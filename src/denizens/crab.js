@@ -104,18 +104,20 @@ export default class Crab extends Swimmer {
         this.mating = true
         this.speed = 0
         this.energy -= this.matingEnergyCost
+        if (!spawnBool) this.img.src = './dist/art/crabdad.png'
     
         setTimeout(() => {
-            this.speed += .4
+            this.speed += .2
             this.mating = false
             if (spawnBool) return
-            let i = Math.floor(Math.random() * 6)
+            this.img.src = './dist/art/crab.png'
+            let i = Math.floor(Math.random() * 3) + 1
             while (i > 0) {
                 i--
                 this.logic.crabBabyCount += 1
-                this.logic.crabBabies["crabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
             }
-        }, 1)
+        }, 20000)
     }
 
     consumeFod(foodSource, foodType) {

@@ -116,6 +116,7 @@ export default class Logic {
     }
 
     coreLoop(){
+
         // if (this.view.gameFrame % 10 !== 0) return
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
@@ -126,7 +127,6 @@ export default class Logic {
         this.scavengersEatDeadCreatures()
         // this.deadCreatureDebugLoop()
         this.deleteDeadDenizens()
-
         this.reAssignDataObjs()
     }
 
