@@ -15,7 +15,7 @@ export default class SeaweedCluster {
     }
 
     tallestPointFinder() {
-        return Object.values(this.seaweed)[0].pos[1]
+        return Object.values(this.seaweed)[0].pos[1] + 10
     }
 
     coreloop() {

@@ -1,14 +1,14 @@
-import Fish from "./fish"
-import Algae from "./algae"
-import Shark from "./shark"
-import Effect from "./effect"
 import Input from "./input"
-import SeaweedCluster from "./seaweedCluster"
-import Crab from "./crab"
 import { Rectangle } from "./quadtree"
-import DeadCreature from "./deadCreature"
-import Fishegg from "./fishegg"
-import Rock from "./rock"
+import Fish from "../denizens/fish"
+import Algae from "../denizens/algae"
+import Shark from "../denizens/shark"
+import Effect from "../denizens/effect"
+import Fishegg from "../denizens/fishegg"
+import Crab from "../denizens/crab"
+import DeadCreature from "../denizens/deadCreature"
+import SeaweedCluster from "../environment/seaweedCluster"
+import Rock from "../environment/rock"
 
 export default class Logic {
 

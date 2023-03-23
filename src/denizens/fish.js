@@ -1,5 +1,4 @@
 import Fishegg from "./fishegg"
-import { Rectangle } from "./quadtree"
 import Swimmer from "./swimmer"
 
 

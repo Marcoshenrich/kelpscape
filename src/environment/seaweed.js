@@ -1,4 +1,4 @@
-import Denizen from "./denizen";
+import Denizen from "../denizens/denizen";
 
 export default class Seaweed extends Denizen {
     constructor(id, ctx, canvas, view, logic, {pos}) {

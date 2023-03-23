@@ -1,5 +1,5 @@
-import Denizen from "./denizen";
-import { rand } from "./utils";
+import Denizen from "../denizens/denizen";
+import { rand } from "../engine/utils";
 class Rock extends Denizen {
 
     constructor(id, ctx, canvas, view, logic) {

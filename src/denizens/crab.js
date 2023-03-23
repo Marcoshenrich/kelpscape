@@ -1,5 +1,4 @@
 import DeadCreature from "./deadCreature";
-import Denizen from "./denizen";
 import Swimmer from "./swimmer";
 
 
@@ -119,8 +118,6 @@ export default class Crab extends Swimmer {
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.ctx.globalAlpha = 1
-        this.ctx.fillText(`${this.energy}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';

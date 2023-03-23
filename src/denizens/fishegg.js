@@ -1,7 +1,7 @@
-import Denizen from "./denizen"
+
 import Fish from "./fish"
 import Floater from "./floater"
-import { rand } from "./utils"
+import { rand } from "../engine/utils"
 
 export default class Fishegg extends Floater {
 

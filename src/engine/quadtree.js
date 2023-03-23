@@ -1,7 +1,3 @@
-import Fishegg from "./fishegg";
-
-
-
 
 export default class Quadtree {
     constructor(bounds, capacity, view) {
