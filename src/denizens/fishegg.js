@@ -24,7 +24,7 @@ export default class Fishegg extends Floater {
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
             this.logic.fishBabyCount += 1
-            this.logic.fishes["FishBaby" + this.logic.fishBabyCount] = new FishBaby(this.logic.fishBabyCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
+            this.logic.fishBabies["FishBaby" + this.logic.fishBabyCount] = new FishBaby(this.logic.fishBabyCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
         },rand(15000,25000))
 
         this.clearOnDeath.push(timerId)

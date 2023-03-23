@@ -26,9 +26,10 @@ export default class Shark extends Swimmer {
 
         this.seekingMate = false
         this.mateThreshold = 70
-
+        
         this.maxEnergy = 100
         this.energy = this.maxEnergy
+        this.fadeThreshold = 7
         this.energyUseCoef = .005
         this.matingThreshold = 15
         this.matingEnergyCost = 5
@@ -82,7 +83,7 @@ export default class Shark extends Swimmer {
 
     draw() {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
-        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
+        this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
 
         if (this.view.debugging) {

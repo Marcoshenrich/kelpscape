@@ -19,8 +19,9 @@ export default class Swimmer extends Denizen {
         this.move()
         this.consumeEnergy()
         this.draw()
+        if (this.spawn) console.log(this.id, this.speciesObject)
         // if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead && !(this.spawn && this.foodEaten > 4)) this.becomeCorpse()
+        if (this.dead && !(this.spawn && this.foodEaten === this.growUpThreshold)) this.becomeCorpse()
         this.behaviorChanger()
     }
 

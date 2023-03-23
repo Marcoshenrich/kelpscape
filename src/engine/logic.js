@@ -20,7 +20,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 40
+        this.fishCount = 15
         this.fishBabyCount = 0
         this.algaeCount = 100
         this.sharkCount = 2
@@ -85,7 +85,7 @@ export default class Logic {
     }
 
     reAssignDataObjs() {
-        this.predatorsWithMouthsArr = [...Object.values(this.fishes), ...Object.values(this.sharks)]
+        this.predatorsWithMouthsArr = [...Object.values(this.fishBabies),...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs)]
     }
 
@@ -147,8 +147,9 @@ export default class Logic {
     }
 
     fishFleeFromSharks() {
-        for (let i = 0; i < Object.values(this.fishes).length; i++) {
-            let fish = Object.values(this.fishes)[i]
+        let allFish = [...Object.values(this.fishes), ...Object.values(this.fishBabies)]
+        for (let i = 0; i < allFish.length; i++) {
+            let fish = allFish[i]
             if (fish.mating) continue
             if (fish.fleeing) continue
             this.findNearestPredator(fish, Shark)

@@ -4,14 +4,15 @@ import Swimmer from "./swimmer";
 
 export default class Crab extends Swimmer {
 
-    constructor(id, ctx, canvas, view, logic) {
+    constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
         this.id = "Crab" + id
+        this.spawn = false
         this.img = new Image()
         this.img.src = './dist/art/crab.png'
         this.height = 15
         this.width = 30
-        this.pos = [Math.floor(Math.random() * this.arenaWidth - this.width), this.arenaHeight - this.height]
+        this.pos = pos || [Math.floor(Math.random() * this.arenaWidth - this.width), this.arenaHeight - this.height]
         this.speed = Math.floor(Math.random() * 4)/10
         this.maxSpeed = .4
         this.up = false
@@ -30,14 +31,18 @@ export default class Crab extends Swimmer {
 
         this.maxEnergy = 10
         this.energy = this.maxEnergy
+        this.fadeThreshold = 5
+
         this.energyUseCoef = .0007
         this.matingThreshold = 6
         this.matingEnergyCost = 1
 
         this.trapHeight = 6
-        this.trapWidth = 30
+        this.trapWidth = this.width
         this.trapPos = this.pos
         this.trappedPrey = false
+
+        this.totalEnergyConsumed = 0
     }
 
 
@@ -65,9 +70,9 @@ export default class Crab extends Swimmer {
 
     coreloop() {
         if (this.trappedPrey) {
-            this.munchOnPreyAlive()
+            this.consumeFod(this.trappedPrey, "trapped")
         } else if (this.scavenging) {
-            this.scavenge()
+            this.consumeFod(this.scavenging, "scavenge")
         }
 
         if (!this.scavenging) this.move()
@@ -75,26 +80,17 @@ export default class Crab extends Swimmer {
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead) {
-            this.becomeCorpse()
-        }
-    }  
+        if (this.dead) this.becomeCorpse()
 
-    munchOnPreyAlive() {
-        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-        this.trappedPrey.energy -= this.consumptionRate
-        if (this.trappedPrey.dead) {
-            this.speed = .3
-            this.trappedPrey = false
-        }
-    }
+    } 
 
-    scavenge() {
-        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate]) 
+    consumeFod(foodSource, foodType) {
+        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate])
         this.scavenging.energyVal -= this.consumptionRate
-        if (this.scavenging.dead) {
+        this.totalEnergyConsumed += this.consumptionRate
+        if (foodSource.dead) {
             this.speed = .3
-            this.scavenging = false
+            foodType === "scavenge" ? this.scavenging = false : this.trappedPrey = false
         }
     }
 
@@ -115,9 +111,13 @@ export default class Crab extends Swimmer {
 
 
     draw(){
-        this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
+        this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.ctx.globalAlpha = 1
+        this.ctx.fillStyle = 'rgba(255,255,255,1)';
+        this.ctx.font = "12px serif";
+        this.ctx.fillText(`${this.totalEnergyConsumed}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';

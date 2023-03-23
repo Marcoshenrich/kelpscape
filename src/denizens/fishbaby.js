@@ -23,8 +23,10 @@ export default class FishBaby extends Fish {
         this.maxSpeed = .3
 
         this.energyVal = 5
+        this.fadeThreshold = 3
 
         this.foodEaten = 0
+        this.growUpThreshold = 4
         this.eatFoodThreshold = 8
         this.huntingThreshold = 6
 
@@ -36,7 +38,7 @@ export default class FishBaby extends Fish {
         this.fleeFromCoords = []
 
         this.afterIEatCB = () => {
-            if (this.foodEaten > 4) this.growUp()
+            if (this.foodEaten === this.growUpThreshold) this.growUp()
         }
     }
 
