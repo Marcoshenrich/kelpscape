@@ -13,7 +13,6 @@ export default class Floater extends Denizen {
     }
 
     coreloop() {
-        if (this.trapped) console.log(this.trapped);
         this.bob()
         this.dieFromEnergyLoss()
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
@@ -35,7 +34,7 @@ export default class Floater extends Denizen {
 
         if (this.trapped) {
             this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
-            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1] - 5
+            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
             return
         }
 

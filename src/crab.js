@@ -31,7 +31,7 @@ export default class Crab extends Swimmer {
 
         this.maxEnergy = 10
         this.energy = this.maxEnergy
-        this.energyUseCoef = .0005
+        this.energyUseCoef = .0007
         this.matingThreshold = 6
         this.matingEnergyCost = 1
 
@@ -46,7 +46,7 @@ export default class Crab extends Swimmer {
         setTimeout(() => {
             this.timeToClimbSeaweed = !this.timeToClimbSeaweed
             this.climbSeaweedTimer()
-        }, Math.floor(Math.random() * this.timeToClimbSeaweed ? 600000 : 300000))
+        }, Math.floor(Math.random() * (this.timeToClimbSeaweed ? 60000 : 30000)))
     }
 
     seaweedFinder() {
@@ -82,7 +82,7 @@ export default class Crab extends Swimmer {
     }  
 
     munchOnPreyAlive() {
-        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate])
+        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
         this.trappedPrey.energy -= this.consumptionRate
         if (this.trappedPrey.dead) {
             this.speed = .3
@@ -119,6 +119,8 @@ export default class Crab extends Swimmer {
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.ctx.globalAlpha = 1
+        this.ctx.fillText(`${this.energy}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';

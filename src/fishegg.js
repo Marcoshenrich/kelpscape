@@ -8,8 +8,7 @@ export default class Fishegg extends Floater {
     constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
         this.id = "Fishegg" + id
-        // this.pos = [pos[0] + this.miniRandomizer(), pos[1] + this.miniRandomizer()]
-        this.pos = [rand(1, this.arenaWidth), this.arenaHeight - 20]
+        this.pos = [pos[0] + this.miniRandomizer(), pos[1] + this.miniRandomizer()]
 
         this.img = new Image()
         this.img.src = './dist/art/fishEggs.png'

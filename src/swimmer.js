@@ -64,7 +64,7 @@ export default class Swimmer extends Denizen {
 
         if (this.trapped) {
             this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
-            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1] - 5
+            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
             return
         }
 

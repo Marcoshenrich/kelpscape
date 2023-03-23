@@ -21,10 +21,9 @@ export default class Logic {
         this.fishCount = 40
         this.algaeCount = 100
         this.sharkCount = 2
-        // this.eggCount = 0
-        this.eggCount = 1
+        this.eggCount = 0
         this.effectCount = 0
-        this.seaweedClusterCount = 10
+        this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
         this.crabCount = 10
         this.rockCount = 20
@@ -32,8 +31,7 @@ export default class Logic {
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
-        // this.eggs = {}
-        this.eggs = this.tankPopulator(this.eggCount, Fishegg)
+        this.eggs = {}
         this.effects = this.tankPopulator(0, Effect)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
@@ -70,7 +68,6 @@ export default class Logic {
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
                     let prey = collisionArray[j]
-                     if (prey instanceof Fishegg) console.log(prey)
                     if ((prey instanceof Fish && prey.spawn) || prey instanceof Fishegg) {
                         if (prey.dead) continue
                         prey.trapped = trapper
