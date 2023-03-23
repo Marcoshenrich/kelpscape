@@ -34,7 +34,7 @@ export default class View {
         this.quadtree = {}
         this.populateQuad()
         this.animate()
-        this.debugging = false
+        this.debugging = true
         this.gameFrame = 0
 
 

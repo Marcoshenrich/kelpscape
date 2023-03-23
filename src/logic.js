@@ -21,7 +21,8 @@ export default class Logic {
         this.fishCount = 40
         this.algaeCount = 100
         this.sharkCount = 2
-        this.eggCount = 0
+        // this.eggCount = 0
+        this.eggCount = 1
         this.effectCount = 0
         this.seaweedClusterCount = 10
         this.deadCreatureCount = 0
@@ -31,7 +32,8 @@ export default class Logic {
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
-        this.eggs = {}
+        // this.eggs = {}
+        this.eggs = this.tankPopulator(this.eggCount, Fishegg)
         this.effects = this.tankPopulator(0, Effect)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
@@ -55,7 +57,8 @@ export default class Logic {
     }
 
 
-    trappersTrapFish() {
+    trappersTrapFishAndEggs() {
+        // this.view.quadtree.queryType(Fishegg, true)
         for (let i = 0; i < this.trappersArr.length; i++) {	
             let trapper = this.trappersArr[i]
             if (trapper.trappedPrey) continue
@@ -63,10 +66,12 @@ export default class Logic {
 
             let collisionArray = this.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
 
+
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
                     let prey = collisionArray[j]
-                    if (prey instanceof Fish && prey.spawn) {
+                     if (prey instanceof Fishegg) console.log(prey)
+                    if ((prey instanceof Fish && prey.spawn) || prey instanceof Fishegg) {
                         if (prey.dead) continue
                         prey.trapped = trapper
                         prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
@@ -108,7 +113,7 @@ export default class Logic {
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
-        this.trappersTrapFish()
+        this.trappersTrapFishAndEggs()
         this.denizensMate()
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
