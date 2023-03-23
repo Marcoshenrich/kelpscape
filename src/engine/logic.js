@@ -136,7 +136,7 @@ export default class Logic {
             if (scavenger.scavenging) continue
             if (scavenger.mating) continue
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), scavenger)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), scavenger)
        
             for (let j = 0; j < collisionArray.length; j++) {
 

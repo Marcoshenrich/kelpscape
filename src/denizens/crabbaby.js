@@ -6,8 +6,6 @@ export default class CrabBaby extends Crab {
 
     constructor(id, ctx, canvas, view, logic, pos) {
         super(id, ctx, canvas, view, logic)
-
-        this.pos = [100,100]
         this.id = "CrabBaby" + id
         this.spawn = true
         this.img = new Image()
@@ -19,7 +17,7 @@ export default class CrabBaby extends Crab {
         this.maxSpeed = .25
 
         this.consumptionRate = .002
-        this.growUpThreshold = 30
+        this.growUpThreshold = 1
 
         this.maxEnergy = 5
         this.energy = this.maxEnergy
@@ -32,10 +30,10 @@ export default class CrabBaby extends Crab {
     }
 
     growUp() {
-        // this.dead = true
-        // this.logic.recentlyDeadDenizens.push(this)
-        // this.logic.crabCount += 1
-        // this.logic.crabs["Crab" + this.logic.fishCount] = new Crab(this.logic.crabCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
+        this.dead = true
+        this.logic.recentlyDeadDenizens.push(this)
+        this.logic.crabCount += 1
+        this.logic.crabs["Crab" + this.logic.fishCount] = new Crab(this.logic.crabCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
     }
 
 

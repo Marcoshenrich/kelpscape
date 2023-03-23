@@ -138,8 +138,8 @@ export default class Crab extends Swimmer {
     }
 
     becomeCorpse() {
-        // this.logic.deadCreatureCount++
-        // this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
+        this.logic.deadCreatureCount++
+        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
     }
 
     consumeEnergy() {
@@ -157,8 +157,6 @@ export default class Crab extends Swimmer {
         this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.ctx.globalAlpha = 1
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
-        this.ctx.font = "12px serif";
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
