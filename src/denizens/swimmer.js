@@ -19,7 +19,6 @@ export default class Swimmer extends Denizen {
         this.move()
         this.consumeEnergy()
         this.draw()
-        if (this.spawn) console.log(this.id, this.speciesObject)
         // if (this.view.gameFrame % 10 !== 0) return
         if (this.dead && !(this.spawn && this.foodEaten === this.growUpThreshold)) this.becomeCorpse()
         this.behaviorChanger()
@@ -260,8 +259,8 @@ export default class Swimmer extends Denizen {
     }
 
     becomeCorpse() {
-        this.logic.deadCreatureCount++
-        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: (this.spawn ? "Spawn": "Fish")})
+        // this.logic.deadCreatureCount++
+        // this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: (this.spawn ? "Spawn": "Fish")})
     }
 
 

@@ -20,7 +20,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 15
+        this.fishCount = 40
         this.fishBabyCount = 0
         this.algaeCount = 100
         this.sharkCount = 2
@@ -29,6 +29,7 @@ export default class Logic {
         this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
         this.crabCount = 10
+        this.crabBabyCount = 0
         this.rockCount = 20
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
@@ -40,6 +41,7 @@ export default class Logic {
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
+        this.crabBabies = {}
         this.rocks = this.tankPopulator(this.rockCount, Rock)
 
         this.algaeSpawnIncrement = 2000
@@ -52,7 +54,7 @@ export default class Logic {
         this.matingDenizensObj = {}
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies), ...Object.values(this.fishes), ...Object.values(this.sharks)]
-        this.scavengersArr = [...Object.values(this.crabs)]
+        this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
         this.trappersArr = [...Object.values(this.crabs)]
         this.recentlyDeadDenizens = []
 
@@ -86,7 +88,7 @@ export default class Logic {
 
     reAssignDataObjs() {
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies),...Object.values(this.fishes), ...Object.values(this.sharks)]
-        this.scavengersArr = [...Object.values(this.crabs)]
+        this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
     }
 
     
@@ -208,6 +210,7 @@ export default class Logic {
 
             let collisionArray = this.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), bachelorFish)
             let foundMate;
+
             for (const bumpedDenizen of collisionArray) {
                 if (bachelorFish.constructor === bumpedDenizen.constructor &&
                     bumpedDenizen.seekingMate) {

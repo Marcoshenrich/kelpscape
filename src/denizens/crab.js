@@ -1,3 +1,4 @@
+import CrabBaby from "./crabbaby";
 import DeadCreature from "./deadCreature";
 import Swimmer from "./swimmer";
 
@@ -5,7 +6,9 @@ import Swimmer from "./swimmer";
 export default class Crab extends Swimmer {
 
     constructor(id, ctx, canvas, view, logic, pos) {
+
         super(ctx, canvas, view, logic)
+
         this.id = "Crab" + id
         this.spawn = false
         this.img = new Image()
@@ -34,8 +37,9 @@ export default class Crab extends Swimmer {
         this.fadeThreshold = 5
 
         this.energyUseCoef = .0007
-        this.matingThreshold = 6
+        this.matingThreshold = 9
         this.matingEnergyCost = 1
+        this.seekingMate = false
 
         this.trapHeight = 6
         this.trapWidth = this.width
@@ -78,25 +82,64 @@ export default class Crab extends Swimmer {
         if (!this.scavenging) this.move()
 
         this.consumeEnergy()
+        this.behaviorChanger()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead) this.becomeCorpse()
+        // if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.becomeCorpse()
+        
 
     } 
 
+    behaviorChanger(){
+        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {
+            this.logic.matingDenizensObj[this.id] = this
+            this.seekingMate = true
+        } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
+            delete this.logic.matingDenizensObj[this.id]
+            this.seekingMate = false
+        }
+    }
+
+    mate(spawnBool) {
+        this.mating = true
+        this.speed = 0
+        this.energy -= this.matingEnergyCost
+    
+        setTimeout(() => {
+            this.speed += .4
+            this.mating = false
+            if (spawnBool) return
+            let i = Math.floor(Math.random() * 6)
+            while (i > 0) {
+                i--
+                this.logic.crabBabyCount += 1
+                this.logic.crabBabies["crabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+            }
+        }, 1)
+    }
+
     consumeFod(foodSource, foodType) {
         this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate])
-        this.scavenging.energyVal -= this.consumptionRate
+        if (foodType === "scavenge") {
+            foodSource.energyVal -= this.consumptionRate
+        } else {
+            foodSource.energy -= this.consumptionRate
+        }
+        
         this.totalEnergyConsumed += this.consumptionRate
         if (foodSource.dead) {
             this.speed = .3
             foodType === "scavenge" ? this.scavenging = false : this.trappedPrey = false
         }
+
+        if (this.spawn && this.totalEnergyConsumed > this.growUpThreshold) {
+            this.growUp()
+        }
     }
 
     becomeCorpse() {
-        this.logic.deadCreatureCount++
-        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
+        // this.logic.deadCreatureCount++
+        // this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
     }
 
     consumeEnergy() {
@@ -116,8 +159,6 @@ export default class Crab extends Swimmer {
         this.ctx.globalAlpha = 1
         this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.font = "12px serif";
-        this.ctx.fillText(`${this.totalEnergyConsumed}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
