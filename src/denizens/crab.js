@@ -31,14 +31,18 @@ export default class Crab extends Swimmer {
 
         this.scavenging = false
         this.consumptionRate = .005
+        this.recentlyAte = false
 
         this.maxEnergy = 10
         this.energy = this.maxEnergy
         this.fadeThreshold = 5
+        
 
         this.energyUseCoef = .0007
-        this.matingThreshold = 9
-        this.matingEnergyCost = 1
+        this.matingThreshold = 6
+        this.matingEnergyCost = 3
+        this.mating = false
+        this.carryingEggs = false
         this.seekingMate = false
 
         this.trapHeight = 6
@@ -91,7 +95,7 @@ export default class Crab extends Swimmer {
     } 
 
     behaviorChanger(){
-        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {
+        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte) {
             this.logic.matingDenizensObj[this.id] = this
             this.seekingMate = true
         } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
@@ -104,20 +108,24 @@ export default class Crab extends Swimmer {
         this.mating = true
         this.speed = 0
         this.energy -= this.matingEnergyCost
-        if (!spawnBool) this.img.src = './dist/art/crabdad.png'
     
         setTimeout(() => {
             this.speed += .2
             this.mating = false
             if (spawnBool) return
-            this.img.src = './dist/art/crab.png'
-            let i = Math.floor(Math.random() * 3) + 1
-            while (i > 0) {
-                i--
-                this.logic.crabBabyCount += 1
-                this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
-            }
-        }, 20000)
+            this.img.src = './dist/art/crabdad.png'
+
+            setTimeout(() => {
+                this.img.src = './dist/art/crab.png'
+                let i = Math.floor(Math.random() * 3) + 2
+                while (i > 0) {
+                    i--
+                    this.logic.crabBabyCount += 1
+                    this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                }
+            },30000)
+
+        }, 3000)
     }
 
     consumeFod(foodSource, foodType) {
@@ -136,6 +144,11 @@ export default class Crab extends Swimmer {
 
         if (this.spawn && this.totalEnergyConsumed > this.growUpThreshold) {
             this.growUp()
+        }
+
+        if (!this.recentlyAte && !this.scavenging) {
+            this.recentlyAte = true
+            setTimeout(() => { this.recentlyAte = false}, 10000) 
         }
     }
 

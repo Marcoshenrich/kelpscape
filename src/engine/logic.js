@@ -161,7 +161,7 @@ export default class Logic {
     }
 
     findNearestPredator(prey, predatorSpeciesClass) {
-        let nearbyDenizenArray = this.view.quadtree.queryRange(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ), prey)
+        let nearbyDenizenArray = this.view.quadtree.findOverlaps(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ), prey)
         let closePredator;
         for (const nearbyDenizen of nearbyDenizenArray) {
             if (nearbyDenizen instanceof predatorSpeciesClass) {
@@ -264,7 +264,7 @@ export default class Logic {
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), predator)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), predator)
 
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
