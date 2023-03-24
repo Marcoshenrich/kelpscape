@@ -102,26 +102,26 @@ export default class View {
 
     drawEcosystemGraph() {
         this.ctx.fillStyle = 'rgba(0,0,0,.3)';
-        this.ctx.fillRect(this.canvas.width - 210, 10, 200, 220) 
+        this.ctx.fillRect(this.canvas.width - 220, 10, 202, 220) 
 
         for (let i = 0; i < this.ecosystemGraphData.length; i++) {
             let { algaeRatio, fishRatio, crabRatio } = this.ecosystemGraphData[i]
             let nextStartHeight = 10
-            this.ctx.fillStyle = 'rgba(0,255,0,1)';
-            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * algaeRatio)
-            nextStartHeight += 220 * algaeRatio
 
-            this.ctx.fillStyle = 'rgba(0,255,255,1)';
-            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * fishRatio) 
-            nextStartHeight += 220 * fishRatio
+            this.ctx.fillStyle = 'rgba(0,255,0,.1)';
+            nextStartHeight += this.drawEcoLine(i, nextStartHeight, algaeRatio)
 
-            this.ctx.fillStyle = 'rgba(255,0,1)';
-            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * crabRatio)
-            nextStartHeight += 220 * crabRatio
+            this.ctx.fillStyle = 'rgba(0,255,255,.1)';
+            nextStartHeight += this.drawEcoLine(i, nextStartHeight, fishRatio)
+
+            this.ctx.fillStyle = 'rgba(255,0,0,.1)';
+            nextStartHeight += this.drawEcoLine(i, nextStartHeight, crabRatio)
         }
+    }
 
-    
-
+    drawEcoLine(i, nextStartHeight, ratio) {
+        this.ctx.fillRect(this.canvas.width - 220 + (i * 2), nextStartHeight, 2, 220 * ratio)
+        return 220 * ratio
     }
 
     drawTextBox() {
