@@ -82,7 +82,6 @@ export default class Crab extends Swimmer {
         } else if (this.scavenging) {
             this.consumeFod(this.scavenging, "scavenge")
         }
-
         if (!this.scavenging) this.move()
 
         this.consumeEnergy()
@@ -95,7 +94,7 @@ export default class Crab extends Swimmer {
     } 
 
     behaviorChanger(){
-        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte) {
+        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte && !this.carryingEggs) {
             this.logic.matingDenizensObj[this.id] = this
             this.seekingMate = true
         } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
@@ -106,6 +105,7 @@ export default class Crab extends Swimmer {
 
     mate(spawnBool) {
         this.mating = true
+        this.seekingMate = false
         this.speed = 0
         this.energy -= this.matingEnergyCost
     
@@ -113,10 +113,12 @@ export default class Crab extends Swimmer {
             this.speed += .2
             this.mating = false
             if (spawnBool) return
+            this.carryingEggs = true
             this.img.src = './dist/art/crabdad.png'
 
             setTimeout(() => {
                 this.img.src = './dist/art/crab.png'
+                this.carryingEggs = false
                 let i = Math.floor(Math.random() * 3) + 2
                 while (i > 0) {
                     i--
@@ -129,7 +131,7 @@ export default class Crab extends Swimmer {
     }
 
     consumeFod(foodSource, foodType) {
-        this.energy = Math.min([this.maxEnergy, this.energy + this.consumptionRate])
+        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
         if (foodType === "scavenge") {
             foodSource.energyVal -= this.consumptionRate
         } else {
@@ -148,7 +150,7 @@ export default class Crab extends Swimmer {
 
         if (!this.recentlyAte && !this.scavenging) {
             this.recentlyAte = true
-            setTimeout(() => { this.recentlyAte = false}, 10000) 
+            setTimeout(() =>  this.recentlyAte = false, 10000) 
         }
     }
 
@@ -175,6 +177,9 @@ export default class Crab extends Swimmer {
 
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.pos[0] + 8.5 + this.offset[0], this.pos[1] + this.offset[1] - 17, 15, 15)
 
+        this.ctx.fillStyle = 'rgba(255,255,255,1)';
+        this.ctx.font = "12px serif";
+        this.ctx.fillText(`${this.energy}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
