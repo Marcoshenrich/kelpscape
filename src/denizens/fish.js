@@ -10,8 +10,6 @@ export default class Fish extends Swimmer {
         this.id = "Fish" + id
         this.leftImg.src = './dist/art/fishleft.png'
         this.rightImg.src = './dist/art/fishright.png'
-        this.mateHeart = new Image()
-        this.mateHeart.src = './dist/art/red-heart.png'
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
         this.width = 25
         this.height = 16

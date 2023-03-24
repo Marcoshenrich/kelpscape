@@ -6,9 +6,10 @@ import Algae from "../denizens/algae"
 import Shark from "../denizens/shark"
 import Effect from "../denizens/effect"
 import Fishegg from "../denizens/fishegg"
-import Crab from "../denizens/crab"
 import DeadCreature from "../denizens/deadCreature"
 import SeaweedCluster from "../environment/seaweedCluster"
+import CrabBaby from "../denizens/crabbaby"
+import Crab from "../denizens/crab"
 import Rock from "../environment/rock"
 
 export default class Logic {

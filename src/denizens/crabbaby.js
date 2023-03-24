@@ -1,5 +1,5 @@
 import { miniRandomizer } from "../engine/utils";
-import Crab from "./Crab";
+import Crab from "./crab";
 
 
 export default class CrabBaby extends Crab {

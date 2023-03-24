@@ -10,6 +10,9 @@ export default class Denizen {
         this.arenaWidth = this.view.arenaWidth
         this.offset = this.view.offset
 
+        this.mateHeart = new Image()
+        this.mateHeart.src = './dist/art/red-heart.png'
+
         this.clearOnDeath = []
         this.trapped = false
         this.trappedPosDelta = []
