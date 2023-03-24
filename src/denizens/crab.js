@@ -1,6 +1,7 @@
 import CrabBaby from "./crabbaby";
 import DeadCreature from "./deadCreature";
 import Swimmer from "./swimmer";
+import { rand } from "../engine/utils";
 
 
 export default class Crab extends Swimmer {
@@ -64,7 +65,7 @@ export default class Crab extends Swimmer {
     seaweedFinder() {
         let seaweedSpots = {}
         Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
-            seaweedSpots[(seaweedCluster.pos[0] + Object.values(seaweedCluster.seaweed)[0].width / 2)] = seaweedCluster
+            seaweedSpots[(seaweedCluster.pos[0]) + this.width + rand(-4,4)] = seaweedCluster
         })
         return seaweedSpots
     }
@@ -88,7 +89,7 @@ export default class Crab extends Swimmer {
         this.behaviorChanger()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        // if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.becomeCorpse()
+        if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.becomeCorpse()
         
 
     } 
@@ -134,6 +135,7 @@ export default class Crab extends Swimmer {
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
         if (foodType === "scavenge") {
             foodSource.energyVal -= this.consumptionRate
+            if (foodSource.pos[1] > this.pos[1] + this.height ) this.scavenging = false
         } else {
             foodSource.energy -= this.consumptionRate
         }
@@ -235,6 +237,7 @@ export default class Crab extends Swimmer {
 
 
     move() {
+        if (this.mating) return
         if (!this.onSeaweed && this.timeToClimbSeaweed && (Math.floor(this.pos[0]) in this.seaweedSpots) ) {
             this.onSeaweed = this.seaweedSpots[Math.floor(this.pos[0])]
         }
