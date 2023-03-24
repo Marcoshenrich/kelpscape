@@ -11,8 +11,8 @@ export default class View {
         this.background.src = './dist/art/background.jpeg'
 
         this.arenaCoef = 2
-        this.arenaWidth = this.canvas.width * this.arenaCoef
-        this.arenaHeight = this.canvas.height * this.arenaCoef
+        this.arenaWidth = 1000 * this.arenaCoef
+        this.arenaHeight = 666 * this.arenaCoef
         this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
 
@@ -35,10 +35,14 @@ export default class View {
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}
+        this.ecosystemGraphData = []
+
         this.populateQuad()
         this.animate()
         this.debugging = false
         this.gameFrame = 0
+
+
 
 
 
@@ -67,6 +71,8 @@ export default class View {
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()
+        if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
+        this.drawEcosystemGraph()
         this.logic.coreLoop()
         if (this.debugging) this.quadtree.draw()
         requestAnimationFrame(this.animate.bind(this))
@@ -78,18 +84,58 @@ export default class View {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
 
+    captureEcosystemGraphData() { 
+
+        if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
+
+        let totalDenizens = Object.values(this.algae).length + Object.values(this.fishes).length + Object.values(this.fishBabies).length + Object.values(this.crabs).length + + Object.values(this.crabBabies).length
+        const graphData = {
+            totalDenizens,
+            algaeRatio: (Object.values(this.algae).length / totalDenizens),
+            fishRatio: (Object.values(this.fishes).length + Object.values(this.fishBabies).length) / totalDenizens,
+            crabRatio: (Object.values(this.crabs).length + Object.values(this.crabBabies).length) / totalDenizens
+        }
+        
+        this.ecosystemGraphData.push(graphData)
+        
+    }
+
+    drawEcosystemGraph() {
+        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
+        this.ctx.fillRect(this.canvas.width - 210, 10, 200, 220) 
+
+        for (let i = 0; i < this.ecosystemGraphData.length; i++) {
+            let { algaeRatio, fishRatio, crabRatio } = this.ecosystemGraphData[i]
+            let nextStartHeight = 10
+            this.ctx.fillStyle = 'rgba(0,255,0,1)';
+            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * algaeRatio)
+            nextStartHeight += 220 * algaeRatio
+
+            this.ctx.fillStyle = 'rgba(0,255,255,1)';
+            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * fishRatio) 
+            nextStartHeight += 220 * fishRatio
+
+            this.ctx.fillStyle = 'rgba(255,0,1)';
+            this.ctx.fillRect(this.canvas.width - 210 + (i * 2), nextStartHeight, 2, 220 * crabRatio)
+            nextStartHeight += 220 * crabRatio
+        }
+
+    
+
+    }
+
     drawTextBox() {
         this.ctx.fillStyle = 'rgba(0,0,0,.3)';
         this.ctx.fillRect(10, 10, 150, 220)
 
         this.ctx.fillStyle = 'rgba(250,110,0,1)';
         this.ctx.font = "24px serif";
-        this.ctx.fillText(`Algae: ${Object.values(this.logic.algae).length}`, 25, 50)
-        this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length}`, 25, 80)
-        this.ctx.fillText(`Eggs: ${Object.values(this.logic.eggs).length}`, 25, 110)
-        this.ctx.fillText(`Sharks: ${Object.values(this.logic.sharks).length}`, 25, 140)
-        this.ctx.fillText(`Crabs: ${Object.values(this.logic.crabs).length}`, 25, 170)
-        this.ctx.fillText(`Corpses: ${Object.values(this.logic.deadCreatures).length}`, 25, 200)
+        this.ctx.fillText(`Algae: ${Object.values(this.algae).length}`, 25, 50)
+        this.ctx.fillText(`Fishes: ${Object.values(this.fishes).length + Object.values(this.fishBabies).length}`, 25, 80)
+        this.ctx.fillText(`Eggs: ${Object.values(this.eggs).length}`, 25, 110)
+        this.ctx.fillText(`Sharks: ${Object.values(this.sharks).length}`, 25, 140)
+        this.ctx.fillText(`Crabs: ${Object.values(this.crabs).length + Object.values(this.crabBabies).length}`, 25, 170)
+        this.ctx.fillText(`Corpses: ${Object.values(this.deadCreatures).length}`, 25, 200)
     }
 
 
