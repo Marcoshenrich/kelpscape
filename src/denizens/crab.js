@@ -123,7 +123,7 @@ export default class Crab extends Swimmer {
                 let i = Math.floor(Math.random() * 3) + 2
                 while (i > 0) {
                     i--
-                    this.spawnDenizen(this)
+                    this.logic.spawnDenizen(this)
                 }
             },30000)
 

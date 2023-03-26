@@ -14,7 +14,6 @@ export default class Floater extends Denizen {
 
     coreloop() {
         this.bob()
-        this.dieFromEnergyLoss()
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
@@ -23,15 +22,7 @@ export default class Floater extends Denizen {
         }
     }
 
-    dieFromEnergyLoss() {
-        if (this.energy < 0) {
-            this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
-        }
-    }
-
     bob() {
-
         if (this.trapped) {
             this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
             this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]

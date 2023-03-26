@@ -32,8 +32,8 @@ export default class CrabBaby extends Crab {
     growUp() {
         this.dead = true
         this.logic.recentlyDeadDenizens.push(this)
-        this.logic.spawnDenizen(parentDenizen) 
+        this.logic.spawnDenizen(this) 
     }
-    
+
 }
 

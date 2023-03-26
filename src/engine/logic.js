@@ -11,6 +11,8 @@ import CrabBaby from "../denizens/crabbaby"
 import Crab from "../denizens/crab"
 import Rock from "../environment/rock"
 import DeadCreature from "../denizens/deadCreature"
+import Jellyfish from "../denizens/jellyfish"
+
 
 export default class Logic {
 
@@ -31,6 +33,7 @@ export default class Logic {
         this.deadCreatureCount = 0
         this.crabCount = 10
         this.crabBabyCount = 0
+        this.jellyfishCount = 50
         this.rockCount = 20
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
@@ -43,6 +46,7 @@ export default class Logic {
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
         this.crabBabies = {}
+        this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
         this.rocks = this.tankPopulator(this.rockCount, Rock)
 
         this.algaeSpawnIncrement = 2000

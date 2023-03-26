@@ -19,7 +19,7 @@ export default class Swimmer extends Denizen {
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead && !(this.spawn && this.foodEaten === this.growUpThreshold)) this.becomeCorpse()
+        if (this.dead && !(this.spawn && this.foodEaten === this.growUpThreshold)) this.logic.denizenCorpse(this)
         this.behaviorChanger()
     }
 
@@ -48,8 +48,6 @@ export default class Swimmer extends Denizen {
         return this.right ? this.rightImg : this.leftImg
     }
 
-    //maybe refactor so that moving left and right is an intrinsic state, and the switch happens accordingly to movement 
-    // one issue is that the mouthpos changes, which is partially causing the bug
 
     switchDirections() {
         if (this.recentlySwitchedDirections) return
@@ -221,8 +219,6 @@ export default class Swimmer extends Denizen {
             if (xlow) this.pos[0] -= this.maxSpeed
         }
 
-
-
         if (this.mouthPos[1] < this.nearestFoodCords[1]) {
             if (yhigh) this.pos[1] += this.maxSpeed
         } else {
@@ -257,10 +253,6 @@ export default class Swimmer extends Denizen {
             this.logic.denizenCorpse(this)
         }
     }
-
-    becomeCorpse() {
-    }
-
 
 
 }
