@@ -1,5 +1,4 @@
 import Denizen from "./denizen"
-import DeadCreature from "./deadCreature"
 
 export default class Swimmer extends Denizen {
 
@@ -255,6 +254,7 @@ export default class Swimmer extends Denizen {
         if (this.energy < .05) {
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
+            this.logic.denizenCorpse(this)
         }
     }
 

@@ -32,8 +32,7 @@ export default class CrabBaby extends Crab {
     growUp() {
         this.dead = true
         this.logic.recentlyDeadDenizens.push(this)
-        this.logic.crabCount += 1
-        this.logic.crabs["Crab" + this.logic.fishCount] = new Crab(this.logic.crabCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
+        this.logic.spawnDenizen(parentDenizen) 
     }
 
 

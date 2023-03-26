@@ -123,8 +123,7 @@ export default class Crab extends Swimmer {
                 let i = Math.floor(Math.random() * 3) + 2
                 while (i > 0) {
                     i--
-                    this.logic.crabBabyCount += 1
-                    this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                    this.spawnDenizen(this)
                 }
             },30000)
 

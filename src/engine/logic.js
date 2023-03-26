@@ -1,16 +1,16 @@
 import Input from "./input"
 import { Rectangle } from "./quadtree"
 import FishBaby from "../denizens/fishbaby"
-import Fish from "../denizens/fish"
 import Algae from "../denizens/algae"
+import Fish from "../denizens/fish"
 import Shark from "../denizens/shark"
 import Effect from "../denizens/effect"
 import Fishegg from "../denizens/fishegg"
-import DeadCreature from "../denizens/deadCreature"
 import SeaweedCluster from "../environment/seaweedCluster"
 import CrabBaby from "../denizens/crabbaby"
 import Crab from "../denizens/crab"
 import Rock from "../environment/rock"
+import DeadCreature from "../denizens/deadCreature"
 
 export default class Logic {
 
@@ -72,22 +72,19 @@ export default class Logic {
                 this.fishes["Fish" + this.fishCount] = new Fish(this.fishCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
                 break
             case Crab:
-                this.logic.crabBabyCount += 1
-                this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                this.crabBabyCount += 1
+                this.crabBabies["CrabBaby" + this.crabBabyCount] = new CrabBaby(this.crabBabyCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
                 break
-
-
+            case CrabBaby:
+                this.crabCount += 1
+                this.crabs["Crab" + this.fishCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                break
         }
     }
 
     denizenCorpse(deadDenizen) {
         this.deadCreatureCount++
-        switch (deadDenizen.constructor) {
-            case Fish:
-                this.deadCreatures["DeadCreature" + this.deadCreatureCount] = new DeadCreature(this.deadCreatureCount, this.ctx, this.canvas, this.view, this, deadDenizen.pos, "Fish")
-                break
-
-        }
+        this.deadCreatures["DeadCreature" + this.deadCreatureCount] = new DeadCreature(this.deadCreatureCount, this.ctx, this.canvas, this.view, this, deadDenizen.pos, deadDenizen)
     }
 
 
@@ -339,6 +336,7 @@ export default class Logic {
 
 
     tankPopulator(objnum, className, options) {
+
         let denizenObj = {}
 
         while (objnum > 0) {

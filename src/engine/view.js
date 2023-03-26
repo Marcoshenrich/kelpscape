@@ -1,10 +1,10 @@
 import Logic from "./logic"
 import Quadtree, { Rectangle } from "./quadtree"
 
+
 export default class View {
 
     constructor(canvas) {
-        
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
         this.background = new Image()
@@ -15,8 +15,6 @@ export default class View {
         this.arenaHeight = 666 * this.arenaCoef
         this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
-
-
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.fishes = this.logic.fishes
         this.fishBabies = this.logic.fishBabies
@@ -47,7 +45,6 @@ export default class View {
 
 
     }
-
 
     populateQuad() {
         this.quadtree = new Quadtree(this.bounds, 6, this);
