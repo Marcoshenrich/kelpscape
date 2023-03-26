@@ -114,8 +114,7 @@ export default class Fish extends Swimmer {
             let i = Math.floor(Math.random() * 6)
             while (i > 0) {
                 i--
-                this.logic.eggCount += 1
-                this.logic.eggs["Fishegg" + this.logic.eggCount] = new Fishegg(this.logic.eggCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                this.logic.spawnDenizen(this) 
             }
         }, 1500)
     }

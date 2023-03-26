@@ -1,13 +1,13 @@
 import Denizen from "./denizen"
 
 export default class DeadCreature extends Denizen {
-    constructor(id, ctx, canvas, view, logic, pos, options) {
+    constructor(id, ctx, canvas, view, logic, pos, type) {
         super(ctx, canvas, view, logic)
         this.id = "DeadCreature" + id
         this.pos = [pos[0], pos[1]]
         this.driftSpeed = .2
         this.img = new Image()
-        this.type = options && options.type || "Fish"
+        this.type = type
         this.width;
         this.height;
         this.energyVal;

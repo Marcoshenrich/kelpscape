@@ -45,8 +45,7 @@ export default class FishBaby extends Fish {
     growUp() {
         this.dead = true
         this.logic.recentlyDeadDenizens.push(this)
-        this.logic.fishCount += 1
-        this.logic.fishes["Fish" + this.logic.fishCount] = new Fish(this.logic.fishCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
+        this.logic.spawnDenizen(this)
     }
 
 }

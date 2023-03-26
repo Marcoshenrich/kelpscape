@@ -61,6 +61,35 @@ export default class Logic {
 
     }
 
+    spawnDenizen(parentDenizen) {
+        switch(parentDenizen.constructor) {
+            case Fish:
+                this.eggCount += 1
+                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
+                break
+            case FishBaby:
+                this.fishCount += 1
+                this.fishes["Fish" + this.fishCount] = new Fish(this.fishCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                break
+            case Crab:
+                this.logic.crabBabyCount += 1
+                this.logic.crabBabies["CrabBaby" + this.logic.crabBabyCount] = new CrabBaby(this.logic.crabBabyCount, this.ctx, this.canvas, this.view, this.logic, [Math.floor(this.pos[0]), Math.floor(this.pos[1])])
+                break
+
+
+        }
+    }
+
+    denizenCorpse(deadDenizen) {
+        this.deadCreatureCount++
+        switch (deadDenizen.constructor) {
+            case Fish:
+                this.deadCreatures["DeadCreature" + this.deadCreatureCount] = new DeadCreature(this.deadCreatureCount, this.ctx, this.canvas, this.view, this, deadDenizen.pos, "Fish")
+                break
+
+        }
+    }
+
 
 
 
