@@ -3,7 +3,7 @@ import CrabBaby from "./crabbaby"
 import Crab from "./crab"
 import Fish from "./fish"
 import FishBaby from "./fishbaby"
-import { default as Swimmer } from "../denizens/swimmer"
+import Shark from "./shark"
 
 export default class DeadCreature extends Denizen {
     constructor(id, ctx, canvas, view, logic, pos, deadDenizen) {
@@ -46,6 +46,13 @@ export default class DeadCreature extends Denizen {
 
     typeSelector() {
         switch (this.deadDenizen.constructor) {
+            case Shark:
+                this.img.src = './dist/art/sharkdead.png'
+                this.width = 100
+                this.height = 30
+                this.energyVal = 40
+                break
+
             case FishBaby:
                 this.img.src = './dist/art/fishdead.png'
                 this.width = 12
@@ -71,7 +78,7 @@ export default class DeadCreature extends Denizen {
                 this.img.src = './dist/art/crabdead.png'
                 this.width = 15
                 this.height = 7
-                this.energyVal = 5
+                this.energyVal = 2.5
                 break
 
             default: 

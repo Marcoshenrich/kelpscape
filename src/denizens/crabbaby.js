@@ -34,8 +34,6 @@ export default class CrabBaby extends Crab {
         this.logic.recentlyDeadDenizens.push(this)
         this.logic.spawnDenizen(parentDenizen) 
     }
-
-
-
+    
 }
 

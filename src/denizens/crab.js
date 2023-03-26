@@ -34,7 +34,7 @@ export default class Crab extends Swimmer {
         this.consumptionRate = .005
         this.recentlyAte = false
 
-        this.maxEnergy = .2
+        this.maxEnergy = 10
         this.energy = this.maxEnergy
         this.fadeThreshold = 5
         

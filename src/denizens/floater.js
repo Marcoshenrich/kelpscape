@@ -38,8 +38,6 @@ export default class Floater extends Denizen {
             return
         }
 
-
-
         if (this.up) {
             this.trackCoef -= this.bobSpeed
             this.pos[1] -= this.bobSpeed
