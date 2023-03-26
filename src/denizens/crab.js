@@ -34,7 +34,7 @@ export default class Crab extends Swimmer {
         this.consumptionRate = .005
         this.recentlyAte = false
 
-        this.maxEnergy = 10
+        this.maxEnergy = .2
         this.energy = this.maxEnergy
         this.fadeThreshold = 5
         
@@ -89,7 +89,7 @@ export default class Crab extends Swimmer {
         this.behaviorChanger()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
-        if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.becomeCorpse()
+        if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.logic.denizenCorpse(this)
         
 
     } 
@@ -153,11 +153,6 @@ export default class Crab extends Swimmer {
             this.recentlyAte = true
             setTimeout(() =>  this.recentlyAte = false, 10000) 
         }
-    }
-
-    becomeCorpse() {
-        this.logic.deadCreatureCount++
-        this.logic.deadCreatures["DeadCreature" + this.logic.deadCreatureCount] = new DeadCreature(this.logic.deadCreatureCount, this.ctx, this.canvas, this.view, this.logic, this.pos, { type: "Crab" })
     }
 
     consumeEnergy() {
