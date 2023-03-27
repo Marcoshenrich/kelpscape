@@ -3,7 +3,8 @@ import Denizen from "./denizen";
 import Floater from "./floater";
 import Swimmer from "./swimmer";
 
-export default class Jellyfish extends Floater {
+
+export default class Jellyfish extends Swimmer {
     constructor(id, ctx, canvas, view, logic){
         super(ctx, canvas, view, logic)
         this.id = "Jellyfish" + id
@@ -12,8 +13,9 @@ export default class Jellyfish extends Floater {
         this.height = 25
         this.width =  15
         this.pos = this.placer()
+        this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
 
-        this.maxSpeed = .2
+        this.maxSpeed = 1
         this.speed = rand(1, 20) / 100
 
         this.up = [true,false][rand(2)]
@@ -29,67 +31,32 @@ export default class Jellyfish extends Floater {
         return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
     }
 
-    moveChangerOne() {
-        this.movement1 = this.moveSelector()
-        setTimeout(() => {
-            this.moveChangerOne()
-        }, Math.floor(Math.random() * 3000))
-    }
+    bob() {
+        if (this.trapped) {
+            this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
+            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
+            return
+        }
 
-    moveChangerTwo() {
-        this.movement2 = this.moveSelector()
-        setTimeout(() => {
-            this.moveChangerTwo()
-        }, Math.floor(Math.random() * 3000))
-    }
+        if (this.up) {
+            this.trackCoef -= this.bobSpeed
+            this.pos[1] -= this.bobSpeed
+        } else {
+            this.trackCoef += this.bobSpeed
 
-    movementSwitchTimer() {
-        setTimeout(() => {
-            this.timeToSwitchMovement = true
-            this.movementSwitchTimer()
-        }, Math.floor(Math.random() * 25000) + 7000)
-    }
-
-    movementPatterns = {
-        scan: () => {
-            if (this.right) {
-                this.pos[0] += (this.speed / 2)
-            } else {
-                this.pos[0] -= (this.speed / 2)
-            }
-        },
-
-        crissCross: () => {
-            this.movementPatterns.scan()
-            this.movementPatterns.bob()
-        },
-
-        bob: () => {
-            if (this.up) {
-                this.pos[1] += (this.speed / 2)
-            } else {
-                this.pos[1] -= (this.speed / 2)
+            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
+                this.pos[1] += this.bobSpeed
             }
         }
-    }
 
-    movementSwitches = {
-        reverseUp: () => {
-            this.up = !this.up
-        },
-
-        reverseSide: () => {
-            this.right = !this.right;
-            this.img = this.imgSelector();
-        },
-
-        speedUp: () => {
-            if (this.speed < this.maxSpeed) this.speed += .1
-        },
-
-        slowDown: () => {
-            if (this.speed > .3) this.speed -= .1
+        if (this.trackCoef > this.bobCoef) {
+            this.up = true
         }
+
+        if (this.trackCoef < 0) {
+            this.up = false
+        }
+
     }
 
 
@@ -123,3 +90,5 @@ export default class Jellyfish extends Floater {
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
     }
 }
+
+

@@ -20,3 +20,24 @@ const tester = (ceil, floor) => {
     return [Math.min(...resArr), Math.max(...resArr)]
 
 }
+
+
+// some base class
+class BaseClass { }
+// SocialNetworkMixin
+const floater = (superclass) => class extends superclass {
+    
+}
+
+class MixinBuilder {
+    constructor(superclass) {
+        this.superclass = superclass;
+    }
+    with(...mixins) {
+        return mixins.reduce((c, mixin) => mixin(c), this.superclass);
+    }
+}
+
+export const mix = (superclass) => new MixinBuilder(superclass);
+
+// class Facebook extends mix(BaseClass).with(SocialNetwork, AdProvider) { }
