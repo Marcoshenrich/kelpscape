@@ -150,6 +150,16 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 
 /***/ }),
 
+/***/ "./src/engine/intro.js":
+/*!*****************************!*\
+  !*** ./src/engine/intro.js ***!
+  \*****************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": function() { return /* binding */ Intro; }\n/* harmony export */ });\n\n\n\n\nclass Intro {\n    constructor(canvas) {\n        this.canvas = canvas\n        this.ctx = this.canvas.getContext('2d')\n        this.background = new Image()\n        this.background.src = './dist/art/intro.png'\n        this.animate()\n        this.bgHeight = 648\n        this.bgWidth = 1440\n        this.xOffset = 0\n        this.yOffset = 0\n    }\n\n    animate() {\n        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)\n\n\n        this.positionRecalc()    \n        console.log(this.xOffset)\n        // this.ctx.drawImage(this.background, this.backgroundPos[0], this.backgroundPos[1], this.arenaWidth, this.arenaHeight)\n        this.ctx.drawImage(this.background, this.xOffset, this.yOffset, this.bgWidth - this.xOffset, this.bgHeight - this.yOffset, 0, 0, this.canvas.width, this.canvas.height)\n        // this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height)\n\n\n        requestAnimationFrame(this.animate.bind(this))\n    }\n\n    positionRecalc() {\n\n\n        let screenRatio = this.canvas.height / this.canvas.width\n        //need to make it so the virtual space between the undrawn image width == the image ratio of .45\n\n\n        \n    }\n\n\n\n}\n\n//# sourceURL=webpack://jsproj/./src/engine/intro.js?");
+
+/***/ }),
+
 /***/ "./src/engine/logic.js":
 /*!*****************************!*\
   !*** ./src/engine/logic.js ***!
@@ -226,7 +236,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \**********************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _engine_view__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./engine/view */ \"./src/engine/view.js\");\n\n\nconst canvas = document.getElementById('canvas1')\ncanvas.height = window.innerHeight\ncanvas.width = window.innerWidth\n\nconst view = new _engine_view__WEBPACK_IMPORTED_MODULE_0__[\"default\"](canvas)\n\n\nwindow.addEventListener(\"resize\", (e)=> {\n    canvas.height = e.currentTarget.innerHeight\n    canvas.width = e.currentTarget.innerWidth\n\n})\n\n//# sourceURL=webpack://jsproj/./src/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _engine_intro__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./engine/intro */ \"./src/engine/intro.js\");\n/* harmony import */ var _engine_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./engine/view */ \"./src/engine/view.js\");\n\n\n\nconst canvas = document.getElementById('canvas1')\ncanvas.height = window.innerHeight\ncanvas.width = window.innerWidth\n\n\nconst intro = new _engine_intro__WEBPACK_IMPORTED_MODULE_0__[\"default\"](canvas)\n\n\n\n\n\n// const view = new View(canvas)\n\n\nwindow.addEventListener(\"resize\", (e)=> {\n    canvas.height = e.currentTarget.innerHeight\n    canvas.width = e.currentTarget.innerWidth\n})\n\n//# sourceURL=webpack://jsproj/./src/index.js?");
 
 /***/ })
 
