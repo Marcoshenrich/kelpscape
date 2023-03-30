@@ -23,10 +23,19 @@ export default class Jellyfish extends Swimmer {
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
 
+        this.trapHeight = 14
+        this.trapWidth = 8
+        this.trapPos = this.trapPlacer()
+        this.trappedPrey = false
+
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
+    }
+
+    trapPlacer() {
+        return [this.pos[0] + 3, this.pos[1] + 10]
     }
 
     moveSelector = () => {
@@ -76,6 +85,8 @@ export default class Jellyfish extends Swimmer {
         this.ctx.fillStyle = 'rgba(0,0,0,1)';
         this.ctx.font = "12px serif";
         this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+        
+        this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
         if (this.view.debugging) {
            
         }
@@ -86,6 +97,7 @@ export default class Jellyfish extends Swimmer {
             Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
             this.timeToSwitchMovement = false
         }    
+        this.trapPos = this.trapPlacer()
         this.movement1();
         this.movement2();
     }
