@@ -16,6 +16,8 @@ export default class Fishegg extends Floater {
         this.dims = Math.floor(Math.random() * 5) + 10
         this.height = this.dims
         this.width = this.dims
+
+        this.energyVal = 2
     }
 
 
@@ -23,6 +25,8 @@ export default class Fishegg extends Floater {
         let timerId = setTimeout(()=>{
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
+            if (this.trapped) return
+            this.logic.spawnDenizen(this)
             this.logic.fishBabyCount += 1
             this.logic.fishBabies["FishBaby" + this.logic.fishBabyCount] = new FishBaby(this.logic.fishBabyCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
         },rand(15000,25000))

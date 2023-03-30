@@ -18,12 +18,14 @@ export default class Jellyfish extends Swimmer {
         this.maxSpeed = .5
         this.speed = rand(1, 5) / 100
 
-        this.energy=10
+        this.maxEnergy = 5
+        this.energy = this.maxEnergy
+        this.consumptionRate = .002
 
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
 
-        this.trapHeight = 14
+        this.trapHeight = 6
         this.trapWidth = 8
         this.trapPos = this.trapPlacer()
         this.trappedPrey = false
@@ -78,17 +80,31 @@ export default class Jellyfish extends Swimmer {
     }
 
     coreloop() {
+
+        if (this.trappedPrey) this.consumeFod(this.trappedPrey, "trapped")
+
         this.bob()
         this.move()
         this.draw()
 
-        this.ctx.fillStyle = 'rgba(0,0,0,1)';
-        this.ctx.font = "12px serif";
-        this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-        
-        this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
         if (this.view.debugging) {
-           
+            this.ctx.fillStyle = 'rgba(0,0,0,1)';
+            this.ctx.font = "12px serif";
+            this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+            this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
+            
+            
+        }
+    }
+
+    consumeFod(foodSource, foodType) {
+        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
+        foodSource.energy -= this.consumptionRate
+        this.totalEnergyConsumed += this.consumptionRate
+
+        if (foodSource.dead) {
+            this.speed = .2
+            this.trappedPrey = false
         }
     }
     

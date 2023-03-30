@@ -71,6 +71,10 @@ export default class Logic {
                 this.eggCount += 1
                 this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
                 break
+            case Fishegg:
+                this.fishBabyCount += 1
+                this.fishBabies["FishBaby" + this.fishBabyCount] = new FishBaby(this.fishBabyCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
+                break
             case FishBaby:
                 this.fishCount += 1
                 this.fishes["Fish" + this.fishCount] = new Fish(this.fishCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
@@ -95,26 +99,26 @@ export default class Logic {
 
 
     trappersTrapFishAndEggs() {
-        // for (let i = 0; i < this.trappersArr.length; i++) {	
-        //     let trapper = this.trappersArr[i]
-        //     if (trapper.trappedPrey) continue
-        //     if (trapper.mating) continue
+        for (let i = 0; i < this.trappersArr.length; i++) {	
+            let trapper = this.trappersArr[i]
+            if (trapper.trappedPrey) continue
+            if (trapper.mating) continue
 
-        //     let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
 
-        //     // pretty inneficient -> should look up predators directly
-        //     for (let j = 0; j < collisionArray.length; j++) {
-        //         let prey = collisionArray[j]
-        //         for (let k = 0; k < trapper.preySpecies.length; k++) {
-        //             if (prey instanceof trapper.preySpecies[k]) {
-        //                 if (prey.dead) continue
-        //                 prey.trapped = trapper
-        //                 prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
-        //                 trapper.trappedPrey = prey
-        //             }
-        //         }
-        //     }
-        // }
+            // pretty inneficient -> should look up predators directly
+            for (let j = 0; j < collisionArray.length; j++) {
+                let prey = collisionArray[j]
+                for (let k = 0; k < trapper.preySpecies.length; k++) {
+                    if (prey instanceof trapper.preySpecies[k]) {
+                        if (prey.dead) continue
+                        prey.trapped = trapper
+                        prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
+                        trapper.trappedPrey = prey
+                    }
+                }
+            }
+        }
     }
 
     reAssignDataObjs() {
@@ -133,6 +137,8 @@ export default class Logic {
         Shark.prototype.preySpeciesArr = [this.fishes, this.fishBabies]
         Crab.prototype.preySpecies = [FishBaby]
         Crab.prototype.preySpeciesArr = [this.fishBabies]
+        Jellyfish.prototype.preySpecies = [FishBaby, Fishegg]
+        Jellyfish.prototype.preySpeciesArr = [this.fishBabies, this.eggs]
     }
 
     assignSpeciesObjects() {
@@ -144,6 +150,7 @@ export default class Logic {
         Effect.prototype.speciesObject = this.effects
         SeaweedCluster.prototype.speciesObject = this.seaweedClusters
         DeadCreature.prototype.speciesObject = this.deadCreatures
+        Jellyfish.prototype.speciesObject = this.jellyfish
         Crab.prototype.speciesObject = this.crabs
     }
 

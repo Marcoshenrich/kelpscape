@@ -14,11 +14,19 @@ export default class Floater extends Denizen {
 
     coreloop() {
         this.bob()
+        this.deathChecker()
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
             this.ctx.font = "12px serif";
             this.ctx.fillText(`${this.pos[1]}`, this.pos[0], this.pos[1])
+        }
+    }
+
+    deathChecker() {
+        if (this.energy === 0 || this.energyVal === 0) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
         }
     }
 
