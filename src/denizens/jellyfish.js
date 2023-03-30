@@ -15,8 +15,10 @@ export default class Jellyfish extends Swimmer {
         this.pos = this.placer()
         this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
 
-        this.maxSpeed = 1
-        this.speed = rand(1, 20) / 100
+        this.maxSpeed = .5
+        this.speed = rand(1, 5) / 100
+
+        this.energy=10
 
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
@@ -70,10 +72,12 @@ export default class Jellyfish extends Swimmer {
         this.bob()
         this.move()
         this.draw()
+
+        this.ctx.fillStyle = 'rgba(0,0,0,1)';
+        this.ctx.font = "12px serif";
+        this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
         if (this.view.debugging) {
-            this.ctx.fillStyle = 'rgba(0,0,0,1)';
-            this.ctx.font = "12px serif";
-            this.ctx.fillText(`${this.pos[1]}`, this.pos[0], this.pos[1])
+           
         }
     }
     
@@ -84,6 +88,24 @@ export default class Jellyfish extends Swimmer {
         }    
         this.movement1();
         this.movement2();
+    }
+
+    movementSwitches = {
+        reverseUp: () => {
+            this.up = !this.up
+        },
+
+        reverseSide: () => {
+            this.right = !this.right;
+        },
+
+        speedUp: () => {
+            if (this.speed < this.maxSpeed) this.speed += .1
+        },
+
+        slowDown: () => {
+            if (this.speed > .3) this.speed -= .1
+        }
     }
 
     draw() {

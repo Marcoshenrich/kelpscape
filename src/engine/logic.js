@@ -60,7 +60,7 @@ export default class Logic {
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies), ...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
-        this.trappersArr = [...Object.values(this.crabs)]
+        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish)]
         this.recentlyDeadDenizens = []
 
     }
@@ -95,31 +95,32 @@ export default class Logic {
 
 
     trappersTrapFishAndEggs() {
-        for (let i = 0; i < this.trappersArr.length; i++) {	
-            let trapper = this.trappersArr[i]
-            if (trapper.trappedPrey) continue
-            if (trapper.mating) continue
+        // for (let i = 0; i < this.trappersArr.length; i++) {	
+        //     let trapper = this.trappersArr[i]
+        //     if (trapper.trappedPrey) continue
+        //     if (trapper.mating) continue
 
-            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
+        //     let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
 
-            // pretty inneficient -> should look up predators directly
-            for (let j = 0; j < collisionArray.length; j++) {
-                let prey = collisionArray[j]
-                for (let k = 0; k < trapper.preySpecies.length; k++) {
-                    if (prey instanceof trapper.preySpecies[k]) {
-                        if (prey.dead) continue
-                        prey.trapped = trapper
-                        prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
-                        trapper.trappedPrey = prey
-                    }
-                }
-            }
-        }
+        //     // pretty inneficient -> should look up predators directly
+        //     for (let j = 0; j < collisionArray.length; j++) {
+        //         let prey = collisionArray[j]
+        //         for (let k = 0; k < trapper.preySpecies.length; k++) {
+        //             if (prey instanceof trapper.preySpecies[k]) {
+        //                 if (prey.dead) continue
+        //                 prey.trapped = trapper
+        //                 prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
+        //                 trapper.trappedPrey = prey
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     reAssignDataObjs() {
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies),...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
+        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish)]
     }
 
     

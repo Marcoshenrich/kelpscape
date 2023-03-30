@@ -124,7 +124,7 @@ export default class View {
 
     drawTextBox() {
         this.ctx.fillStyle = 'rgba(0,0,0,.3)';
-        this.ctx.fillRect(10, 10, 150, 220)
+        this.ctx.fillRect(10, 10, 150, 250)
 
         this.ctx.fillStyle = 'rgba(250,110,0,1)';
         this.ctx.font = "24px serif";
@@ -133,7 +133,9 @@ export default class View {
         this.ctx.fillText(`Eggs: ${Object.values(this.eggs).length}`, 25, 110)
         this.ctx.fillText(`Sharks: ${Object.values(this.sharks).length}`, 25, 140)
         this.ctx.fillText(`Crabs: ${Object.values(this.crabs).length + Object.values(this.crabBabies).length}`, 25, 170)
-        this.ctx.fillText(`Corpses: ${Object.values(this.deadCreatures).length}`, 25, 200)
+        this.ctx.fillText(`Jellies: ${Object.values(this.jellyfish).length}`, 25, 200)
+        this.ctx.fillText(`Corpses: ${Object.values(this.deadCreatures).length}`, 25, 230)
+
     }
 
 
