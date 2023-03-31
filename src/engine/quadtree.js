@@ -97,9 +97,6 @@ export default class Quadtree {
     queryRange(range, opDenizen) {
         const foundDenizens = [];
 
-        // if (debugbool) {
-        //     this.view.ctx.fillRect(range.x + this.view.offset[0], range.y + this.view.offset[1], range.width, range.height)
-        // }
     
         if (!this.bounds.intersects(range)) {
             return foundDenizens;
@@ -110,14 +107,6 @@ export default class Quadtree {
                 foundDenizens.push(denizen);
             }
         }
-
-        // contains method checks for point collision, I want it to check for rectangle collision, but I couldn't get it to work. 
-
-        // for (const denizen of this.denizens) {
-        //     if (range.intersects({x: denizen.pos[0], y: denizen.pos[1], width: denizen.width, height: denizen.height}, this.view)) {
-        //         foundDenizens.push(denizen);
-        //     }
-        // }
 
 
         for (const node of this.nodes) {

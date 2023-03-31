@@ -1,5 +1,6 @@
 import Intro from "./engine/intro"
 import Pilot from "./engine/pilot"
+import { Rectangle } from "./engine/quadtree"
 import View from "./engine/view"
 
 const canvas = document.getElementById('canvas1')
@@ -24,17 +25,10 @@ canvas.addEventListener("mousedown", (e) => {
 })
 
 canvas.addEventListener("click", (e) => {
-    console.log("click")
     pilot.view.input.mouseIsDownAt = false
-    // console.log(e.x)
-    // console.log(e.y)
 
-
-
-
-
-
-
+    let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1],1,1),{id:null})
+    console.log(arr)
     // if (pilot.intro) {
     //     pilot.intro.simTransition = true
     // } else {
