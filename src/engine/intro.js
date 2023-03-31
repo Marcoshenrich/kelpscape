@@ -27,7 +27,7 @@ export default class Intro {
     }
 
     updatePos() {
-        this.looptracker += 4
+        this.looptracker += .5
     }
 
     drawTitle(text) {
@@ -39,6 +39,12 @@ export default class Intro {
 
         const x = centerX - (textWidth / 2);
         const y = centerY + (textHeight / 2);
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(centerX + 25, centerY + 50);
+        this.ctx.lineTo(centerX - 25, centerY + 25);
+        this.ctx.lineTo(centerX - 25, centerY + 75);
+        this.ctx.fill();
 
         this.ctx.fillText(text, x, y);
     }
