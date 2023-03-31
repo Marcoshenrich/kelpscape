@@ -1,8 +1,11 @@
 
 export default class InputHandler {
 
-    constructor(){
+    constructor(view){
+        this.view = view
         this.keys = [];
+        this.mouseIsDownAt = false
+
         window.addEventListener('keydown', e => {
             if((e.code === 'ArrowDown' ||
                 e.code === 'ArrowUp' ||
@@ -26,4 +29,13 @@ export default class InputHandler {
             e.preventDefault();
         })
     }
+
+    dragScreen(moveArr) {
+        this.view.offset[0] += moveArr[0] - this.mouseIsDownAt[0]
+        this.view.offset[1] += moveArr[1] - this.mouseIsDownAt[1]
+
+        this.mouseIsDownAt = [moveArr[0], moveArr[1]] 
+    }
+
+
 }

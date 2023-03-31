@@ -12,10 +12,33 @@ let pilot = new Pilot(canvas)
 
 
 
-canvas.addEventListener("click", () => {
-    if (pilot.intro) {
-        pilot.intro.simTransition = true
+
+canvas.addEventListener("mousemove", (e) => {
+    if (pilot.view.input.mouseIsDownAt) {
+        pilot.view.input.dragScreen([e.x, e.y])
     }
+})
+
+canvas.addEventListener("mousedown", (e) => {
+    pilot.view.input.mouseIsDownAt = [e.x, e.y]
+})
+
+canvas.addEventListener("click", (e) => {
+    console.log("click")
+    pilot.view.input.mouseIsDownAt = false
+    // console.log(e.x)
+    // console.log(e.y)
+
+
+
+
+
+
+
+    // if (pilot.intro) {
+    //     pilot.intro.simTransition = true
+    // } else {
+    // }
 })
 
 

@@ -17,8 +17,6 @@ import Jellyfish from "../denizens/jellyfish"
 export default class Logic {
 
     constructor(ctx, canvas, view) {
-
-        this.input = new Input()
         this.ctx = ctx
         this.canvas = canvas
         this.view = view

@@ -14,6 +14,7 @@ export default class Pilot {
         } else {
             this.view.animate()
         }
+        this.view.animate()
         requestAnimationFrame(this.animate.bind(this))
     }
 }

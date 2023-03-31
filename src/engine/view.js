@@ -1,6 +1,6 @@
 import Logic from "./logic"
 import Quadtree, { Rectangle } from "./quadtree"
-
+import Input from "./input"
 
 export default class View {
 
@@ -16,6 +16,7 @@ export default class View {
         this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
         this.logic = new Logic(this.ctx, this.canvas, this)
+        this.input = new Input(this)
         this.fishes = this.logic.fishes
         this.fishBabies = this.logic.fishBabies
         this.algae = this.logic.algae
@@ -70,7 +71,7 @@ export default class View {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         // if (this.gameFrame % 100 === 0) this.populateQuad() 
         this.populateQuad() 
-        this.updateCamera(this.logic.input.keys) 
+        this.updateCamera(this.input.keys) 
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()

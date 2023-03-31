@@ -113,6 +113,8 @@ export default class Jellyfish extends Swimmer {
             Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
             this.timeToSwitchMovement = false
         }    
+        if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
+        if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
         this.trapPos = this.trapPlacer()
         this.movement1();
         this.movement2();
