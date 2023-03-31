@@ -1,6 +1,3 @@
-import { siTorproject } from "simple-icons"
-
-
 
 export default class Intro {
     constructor(canvas) {
@@ -12,39 +9,58 @@ export default class Intro {
         this.bgWidth = 1440
         this.xOffset = 0
         this.yOffset = 0
+        this.looptracker = 0 
+
         this.animate()
+
     }
 
     animate() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+        this.updatePos()
+        this.drawDynamicBackground()
 
-        // this.ctx.drawImage(this.background, this.backgroundPos[0], this.backgroundPos[1], this.arenaWidth, this.arenaHeight)
-        this.swiffler()
-        // this.ctx.drawImage(this.background, 0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.font = "25px Georgia";
 
-
+        this.drawTitle("kelpscape")
         requestAnimationFrame(this.animate.bind(this))
+    }
+
+    updatePos() {
+        this.looptracker += 4
+    }
+
+    drawTitle(text) {
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height / 2;
+
+        const textWidth = this.ctx.measureText(text).width;
+        const textHeight = 10;
+
+        const x = centerX - (textWidth / 2);
+        const y = centerY + (textHeight / 2);
+
+        this.ctx.fillText(text, x, y);
     }
 
 
 
-    swiffler() {
+    drawDynamicBackground() {
+        let scaleFactor = Math.max(this.canvas.width / this.bgWidth, this.canvas.height / this.bgHeight);
+        let newWidth = this.bgWidth * scaleFactor;
+        let newHeight = this.bgHeight * scaleFactor;
+        let x = (this.canvas.width / 2) - (newWidth / 2);
+        let y = (this.canvas.height / 2) - (newHeight / 2);
+        this.ctx.drawImage(this.background, x + this.looptracker, y, newWidth, newHeight);
 
+        if (x + this.looptracker >= 0) {
+            let secondX = (x + this.looptracker - newWidth)
+            this.ctx.drawImage(this.background, secondX + 1, y, newWidth, newHeight);
+        } 
 
-
-            let scaleFactor = Math.max(this.canvas.width / this.bgWidth, this.canvas.height / this.bgHeight);
-
-            let newWidth = this.bgWidth * scaleFactor;
-            let newHeight = this.bgHeight * scaleFactor;
-
-            let x = (this.canvas.width / 2) - (newWidth / 2);
-            let y = (this.canvas.height / 2) - (newHeight / 2);
-
-            // When drawing the image, we have to scale down the image
-            // width and height in order to fit within the canvas
-        console.log(x, y, newWidth, newHeight)
-        this.ctx.drawImage(this.background, x, y, newWidth, newHeight);
-        
+        if (x + this.looptracker - newWidth > 0)  {
+            this.looptracker = -x + 1
+        }
     }
 
 
