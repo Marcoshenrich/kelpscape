@@ -1,8 +1,9 @@
 
 export default class Intro {
-    constructor(canvas) {
+    constructor(canvas, view) {
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
+        this.view = view
         this.background = new Image()
         this.background.src = './dist/art/intro.png'
         this.bgHeight = 648
@@ -10,6 +11,9 @@ export default class Intro {
         this.xOffset = 0
         this.yOffset = 0
         this.looptracker = 0 
+        this.simTransition = false
+        this.simStart = false
+        this.fader = 0
 
         this.animate()
 
@@ -19,11 +23,17 @@ export default class Intro {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updatePos()
         this.drawDynamicBackground()
-
+        this.ctx.fillStyle = `rgba(0,0,0,1)`
         this.ctx.font = "25px Georgia";
-
         this.drawTitle("kelpscape")
-        requestAnimationFrame(this.animate.bind(this))
+        if (this.simTransition) this.simStarter()
+    }
+
+    simStarter() {
+        this.ctx.fillStyle = `rgba(0,0,0,${this.fader})`;
+        this.fader += .005
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        if (this.fader > 1) this.simStart = true
     }
 
     updatePos() {

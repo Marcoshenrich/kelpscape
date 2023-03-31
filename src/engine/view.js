@@ -37,11 +37,10 @@ export default class View {
         this.ecosystemGraphData = []
 
         this.populateQuad()
-        this.animate()
         this.debugging = false
         this.gameFrame = 0
 
-
+        this.introFader = 1
 
 
 
@@ -57,23 +56,29 @@ export default class View {
 
     }
 
+    fadeInStart() {
+        this.ctx.fillStyle = `rgba(0,0,0,${this.introFader})`;
+        this.introFader -= .005
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+    }
+
 
 
 
     animate() {
         this.gameFrame++ 
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         // if (this.gameFrame % 100 === 0) this.populateQuad() 
         this.populateQuad() 
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updateCamera(this.logic.input.keys) 
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()
         if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
         this.drawEcosystemGraph()
+        if (this.introFader > 0) this.fadeInStart()
         this.logic.coreLoop()
         if (this.debugging) this.quadtree.draw()
-        requestAnimationFrame(this.animate.bind(this))
     }
 
     drawBackround() {
