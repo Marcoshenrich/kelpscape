@@ -1,4 +1,3 @@
-import Input from "./input"
 import { Rectangle } from "./quadtree"
 import FishBaby from "../denizens/fishbaby"
 import Algae from "../denizens/algae"
@@ -7,12 +6,14 @@ import Shark from "../denizens/shark"
 import Effect from "../denizens/effect"
 import Fishegg from "../denizens/fishegg"
 import SeaweedCluster from "../environment/seaweedCluster"
+import Seaweed from "../environment/seaweed"
 import CrabBaby from "../denizens/crabbaby"
 import Crab from "../denizens/crab"
 import Rock from "../environment/rock"
 import DeadCreature from "../denizens/deadCreature"
 import Jellyfish from "../denizens/jellyfish"
 import Otter from "../denizens/otter"
+import SeaUrchin from "../denizens/seaurchin"
 
 
 export default class Logic {
@@ -35,6 +36,7 @@ export default class Logic {
         this.jellyfishCount = 50
         this.rockCount = 20
         this.otterCount = 10
+        this.seaUrchinCount = 0
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
         this.fishBabies = {}
@@ -42,6 +44,7 @@ export default class Logic {
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggs = {}
         this.effects = this.tankPopulator(0, Effect)
+        this.seaUrchins = {}
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
@@ -49,6 +52,7 @@ export default class Logic {
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
         this.rocks = this.tankPopulator(this.rockCount, Rock)
         this.otters = this.tankPopulator(this.otterCount, Otter)
+        
 
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
@@ -86,7 +90,11 @@ export default class Logic {
                 break
             case CrabBaby:
                 this.crabCount += 1
-                this.crabs["Crab" + this.fishCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                this.crabs["Crab" + this.crabCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                break
+            case Seaweed:
+                this.seaUrchinCount += 1
+                this.seaUrchins["SeaUrchin" + this.seaUrchinCount] = new SeaUrchin(this.seaUrchinCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
                 break
         }
     }
@@ -141,8 +149,8 @@ export default class Logic {
         Crab.prototype.preySpeciesArr = [this.fishBabies]
         Jellyfish.prototype.preySpecies = [FishBaby, Fishegg]
         Jellyfish.prototype.preySpeciesArr = [this.fishBabies, this.eggs]
-        Otter.prototype.preySpecies = [Crab, CrabBaby]
-        Otter.prototype.preySpeciesArr = [this.crabs, this.crabBabies]
+        Otter.prototype.preySpecies = [Crab, CrabBaby, SeaUrchin]
+        Otter.prototype.preySpeciesArr = [this.crabs, this.crabBabies, this.seaUrchins]
     }
 
     assignSpeciesObjects() {

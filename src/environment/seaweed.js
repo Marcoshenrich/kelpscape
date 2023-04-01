@@ -1,4 +1,5 @@
 import Denizen from "../denizens/denizen";
+import { rand } from "../engine/utils";
 
 export default class Seaweed extends Denizen {
     constructor(id, ctx, canvas, view, logic, {pos}) {
@@ -30,6 +31,13 @@ export default class Seaweed extends Denizen {
         this.staggerFrame = 40
 
         this.animationFramesSetter()
+        this.placeUrchin()
+    }
+
+    placeUrchin() {
+        if (rand(10)) return
+
+        this.logic.spawnDenizen(this)
     }
 
 

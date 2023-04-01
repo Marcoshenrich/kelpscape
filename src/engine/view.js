@@ -30,9 +30,11 @@ export default class View {
         this.jellyfish = this.logic.jellyfish
         this.rocks = this.logic.rocks
         this.otters = this.logic.otters
+        this.seaUrchins = this.logic.seaUrchins
 
-        this.allDenizensArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.crabBabies, this.jellyfish, this.rocks, this.otters]
-        this.allDenizensinQuadArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures, this.jellyfish]
+
+        this.allDenizensArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.crabBabies, this.jellyfish, this.rocks, this.otters, this.seaUrchins]
+        this.allDenizensinQuadArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures, this.jellyfish, this.seaUrchins]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}

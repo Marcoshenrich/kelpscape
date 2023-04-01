@@ -33,7 +33,7 @@ export default class Otter extends Denizen{
         this.trappedPrey = false
 
         this.trapPlacer()
-        this.findCrab()
+        this.findPrey()
         this.imgSelector()
 
     }
@@ -77,9 +77,9 @@ export default class Otter extends Denizen{
         }
     }
 
-    findCrab() {
-        let crabArr = Object.values(this.logic.crabs)
-        this.divingForFood = crabArr[rand(crabArr.length)]
+    findPrey() {
+        let preyArr = [...Object.values(this.logic.crabs), ...Object.values(this.logic.seaUrchins)]
+        this.divingForFood = preyArr[rand(preyArr.length)]
     }
 
     moveTowardsSurface() {
