@@ -19,10 +19,11 @@ export default class Quadtree {
         }
     }
 
-    insert(denizen) {
+    insert(denizen, level=0) {
+        if (level > 300) console.log(denizen)
         if (this.nodes.length) {
             for (const node of this.nodes) {
-                if (node.insert(denizen)) {
+                if (node.insert(denizen, level + 1)) {
                     return true;
                 }
             }
@@ -42,7 +43,7 @@ export default class Quadtree {
         }
 
         for (const node of this.nodes) {
-            if (node.insert(denizen)) {
+            if (node.insert(denizen, level + 1)) {
                 return true;
             }
         }
