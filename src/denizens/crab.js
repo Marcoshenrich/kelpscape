@@ -227,6 +227,12 @@ export default class Crab extends Swimmer {
 
 
     move() {
+        if (this.trapped) {
+            this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
+            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
+            return
+        }
+        
         if (this.mating) return
         if (!this.onSeaweed && this.timeToClimbSeaweed && (Math.floor(this.pos[0]) in this.seaweedSpots) ) {
             this.onSeaweed = this.seaweedSpots[Math.floor(this.pos[0])]

@@ -29,7 +29,7 @@ export default class View {
         this.crabBabies = this.logic.crabBabies
         this.jellyfish = this.logic.jellyfish
         this.rocks = this.logic.rocks
-        this.otters = this.logic.ottters
+        this.otters = this.logic.otters
 
         this.allDenizensArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.crabBabies, this.jellyfish, this.rocks, this.otters]
         this.allDenizensinQuadArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures, this.jellyfish]

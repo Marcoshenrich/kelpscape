@@ -24,4 +24,12 @@ export default class Denizen {
         })
     }
 
+    afterIEatCB() {
+
+    }
+
+    afterITrapCB() {
+
+    }
+
 }

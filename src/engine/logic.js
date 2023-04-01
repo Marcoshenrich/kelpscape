@@ -48,7 +48,7 @@ export default class Logic {
         this.crabBabies = {}
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
         this.rocks = this.tankPopulator(this.rockCount, Rock)
-        this.ottters = this.tankPopulator(this.otterCount, Otter)
+        this.otters = this.tankPopulator(this.otterCount, Otter)
 
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
@@ -61,7 +61,7 @@ export default class Logic {
 
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies), ...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
-        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish)]
+        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
         this.recentlyDeadDenizens = []
 
     }
@@ -99,7 +99,7 @@ export default class Logic {
 
 
 
-    trappersTrapFishAndEggs() {
+    trappersTrapPrey() {
         for (let i = 0; i < this.trappersArr.length; i++) {	
             let trapper = this.trappersArr[i]
             if (trapper.trappedPrey) continue
@@ -116,6 +116,7 @@ export default class Logic {
                         prey.trapped = trapper
                         prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
                         trapper.trappedPrey = prey
+                        trapper.afterITrapCB()
                     }
                 }
             }
@@ -125,7 +126,7 @@ export default class Logic {
     reAssignDataObjs() {
         this.predatorsWithMouthsArr = [...Object.values(this.fishBabies),...Object.values(this.fishes), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
-        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish)]
+        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
     }
 
     
@@ -140,6 +141,8 @@ export default class Logic {
         Crab.prototype.preySpeciesArr = [this.fishBabies]
         Jellyfish.prototype.preySpecies = [FishBaby, Fishegg]
         Jellyfish.prototype.preySpeciesArr = [this.fishBabies, this.eggs]
+        Otter.prototype.preySpecies = [Crab, CrabBaby]
+        Otter.prototype.preySpeciesArr = [this.crabs, this.crabBabies]
     }
 
     assignSpeciesObjects() {
@@ -153,21 +156,22 @@ export default class Logic {
         DeadCreature.prototype.speciesObject = this.deadCreatures
         Jellyfish.prototype.speciesObject = this.jellyfish
         Crab.prototype.speciesObject = this.crabs
+        Otter.prototype.speciesObject = this.otters
     }
 
     coreLoop(){
 
         // if (this.view.gameFrame % 10 !== 0) return
+        this.reAssignDataObjs()
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
         this.denizensWithMouthsEatPrey()
-        this.trappersTrapFishAndEggs()
+        this.trappersTrapPrey()
         this.denizensMate()
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
         // this.deadCreatureDebugLoop()
         this.deleteDeadDenizens()
-        this.reAssignDataObjs()
     }
 
     scavengersEatDeadCreatures() {
