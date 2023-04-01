@@ -35,7 +35,7 @@ export default class Logic {
         this.crabBabyCount = 0
         this.jellyfishCount = 50
         this.rockCount = 20
-        this.otterCount = 10
+        this.otterCount = 0
         this.seaUrchinCount = 0
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
@@ -51,11 +51,14 @@ export default class Logic {
         this.crabBabies = {}
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
         this.rocks = this.tankPopulator(this.rockCount, Rock)
-        this.otters = this.tankPopulator(this.otterCount, Otter)
+        this.otters = {}
         
 
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
+
+        this.otterDiveIncrement = 1000
+        this.ottersDiveSometimes()
         
         this.hungryDenizenArr = []
         this.assignFoodWeb()
@@ -68,6 +71,14 @@ export default class Logic {
         this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
         this.recentlyDeadDenizens = []
 
+    }
+
+    ottersDiveSometimes() {
+        setTimeout(() => {
+            this.otterCount++
+            this.otters["Otter" + this.otterCount] = new Otter(this.otterCount, this.ctx, this.canvas, this.view, this)
+            this.ottersDiveSometimes()
+        }, Math.floor(Math.random() * this.otterDiveIncrement) + this.otterDiveIncrement)
     }
 
     spawnDenizen(parentDenizen) {
@@ -165,6 +176,7 @@ export default class Logic {
         Jellyfish.prototype.speciesObject = this.jellyfish
         Crab.prototype.speciesObject = this.crabs
         Otter.prototype.speciesObject = this.otters
+        SeaUrchin.prototype.speciesObject = this.seaUrchins
     }
 
     coreLoop(){
@@ -232,13 +244,19 @@ export default class Logic {
         }, 1000)
     }
 
+    unpackAllPreySpecies(denizen) {
+        let allPreyArr = []
+        console.log(denizen)
+        denizen.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
+        return allPreyArr
+    }
+
     findNearestFood(predator) {
         let nearestFoodCords = []
         let nearestFoundDistance = Infinity
         let foodId;
 
-        let allPreyArr = []
-        predator.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
+        let allPreyArr = this.unpackAllPreySpecies(predator)
 
         for (const prey of allPreyArr) {
             let xDistance = Math.abs(predator.pos[0] - prey.pos[0])
@@ -339,6 +357,7 @@ export default class Logic {
     deleteDeadDenizens(){
         while (this.recentlyDeadDenizens.length) {
             let deadDenizen = this.recentlyDeadDenizens.pop()
+            console.log(deadDenizen)
             deadDenizen.clearCallbacksOnDeath()
             delete deadDenizen.speciesObject[deadDenizen.id]
         }

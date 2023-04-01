@@ -60,7 +60,6 @@ export default class Otter extends Denizen{
         }
 
         this.trapPlacer()
-
     }
 
 
@@ -78,12 +77,17 @@ export default class Otter extends Denizen{
     }
 
     findPrey() {
-        let preyArr = [...Object.values(this.logic.crabs), ...Object.values(this.logic.seaUrchins)]
+        let preyArr = this.logic.unpackAllPreySpecies(this)
         this.divingForFood = preyArr[rand(preyArr.length)]
     }
 
     moveTowardsSurface() {
         this.pos[1] -= this.maxSpeed
+        if (this.pos[1] + this.height < 0) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+            if (this.trappedPrey) this.logic.recentlyDeadDenizens.push(this.trappedPrey)
+        }
     }
     
     moveTowardsFood() {
