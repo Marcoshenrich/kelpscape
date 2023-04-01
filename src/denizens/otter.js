@@ -26,40 +26,72 @@ export default class Otter extends Denizen{
 
         this.maxSpeed = 1
         this.divingForFood = false
-        this.pos = [rand(this.arenaWidth - this.width),0-this.height]
+        // this.pos = [rand(this.arenaWidth - this.width),0-this.height]
+        
+
+        this.yMovementCoef = -1
+        this.xMovementCoef = 0
+
+
+        this.centerX = this.canvas.width / 2;
+        this.centerY = 0;
+        this.radius = this.canvas.height - 200;
+
+        this.angle = 0 
+        this.objectX = this.centerX + this.radius * Math.cos(this.angle);
+        this.objectY = this.centerY + this.radius * Math.sin(this.angle)
+
+        this.pos = [this.arenaWidth - this.width, 0 - this.height]
+        
 
         this.trapHeight = 6
         this.trapWidth = 4
         this.trappedPrey = false
 
         this.trapPlacer()
-        this.findPrey()
+        // this.findPrey()
         this.imgSelector()
 
     }
 
     imgSelector() {
-        if (this.trappedPrey || this.returnToSurface) {
-            this.img = [this.upRight, this.upLeft][rand(0,1)]
-        } else {
-            if (this.pos[0] >= this.divingForFood.pos[0]) {
-                this.img = this.downLeft
-            } else {
-                this.img = this.downRight
-            } 
-        }
+        this.img = this.downLeft
+        // if (this.trappedPrey || this.returnToSurface) {
+        //     this.img = [this.upRight, this.upLeft][rand(0,1)]
+        // } else {
+        //     if (this.pos[0] >= this.divingForFood.pos[0]) {
+        //         this.img = this.downLeft
+        //     } else {
+        //         this.img = this.downRight
+        //     } 
+        // }
+    }
+
+    moveInACircle() {
+        this.angle += 0.001;
+        this.pos[0] = this.centerX + this.radius * Math.cos(this.angle);
+        this.pos[1] = this.centerY + this.radius * Math.sin(this.angle)
     }
 
     coreloop() {
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
-
-        if (this.trappedPrey || this.returnToSurface) {
-            this.moveTowardsSurface()
-        } else {
-            this.moveTowardsFood()
-        }
-
+        this.rotateImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
+        this.moveInACircle()
+        // if (this.trappedPrey || this.returnToSurface) {
+        //     this.moveTowardsSurface()
+        // } else {
+        //     this.moveTowardsFood()
+        // }
+        this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
         this.trapPlacer()
+    }
+
+    rotateImage() {
+        this.ctx.save();
+        this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
+        this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
+        this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
+        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
+        this.ctx.restore();
     }
 
 
@@ -89,36 +121,38 @@ export default class Otter extends Denizen{
             if (this.trappedPrey) this.logic.recentlyDeadDenizens.push(this.trappedPrey)
         }
     }
+
+
     
-    moveTowardsFood() {
+    // moveTowardsFood() {
         
-        let [xhigh, xlow, yhigh, ylow] = this.inBounds()
+    //     let [xhigh, xlow, yhigh, ylow] = this.inBounds()
 
-        if (this.trapPos[0] < this.divingForFood.pos[0]) {
-            if (xhigh) this.pos[0] += this.maxSpeed
-        } else {
-            if (xlow) this.pos[0] -= this.maxSpeed
-        }
+    //     if (this.trapPos[0] < this.divingForFood.pos[0]) {
+    //         if (xhigh) this.pos[0] += this.maxSpeed
+    //     } else {
+    //         if (xlow) this.pos[0] -= this.maxSpeed
+    //     }
 
-        if (this.trapPos[1] < this.divingForFood.pos[1]) {
-            if (yhigh) this.pos[1] += this.maxSpeed
-        } else {
-            if (ylow) this.pos[1] -= this.maxSpeed
-        }
+    //     if (this.trapPos[1] < this.divingForFood.pos[1]) {
+    //         if (yhigh) this.pos[1] += this.maxSpeed
+    //     } else {
+    //         if (ylow) this.pos[1] -= this.maxSpeed
+    //     }
 
-    }
+    // }
 
-    inBounds() {
-        let xhigh = true
-        let xlow = true
-        let yhigh = true
-        let ylow = true
-        if (this.pos[0] < 0) xlow = false
-        if (this.pos[0] > this.view.arenaWidth - this.width) xhigh = false
-        if (this.pos[1] < 0) ylow = false
-        if (this.pos[1] > this.view.arenaHeight - this.height) yhigh = false
-        return [xhigh, xlow, yhigh, ylow]
-    }
+    // inBounds() {
+    //     let xhigh = true
+    //     let xlow = true
+    //     let yhigh = true
+    //     let ylow = true
+    //     if (this.pos[0] < 0) xlow = false
+    //     if (this.pos[0] > this.view.arenaWidth - this.width) xhigh = false
+    //     if (this.pos[1] < 0) ylow = false
+    //     if (this.pos[1] > this.view.arenaHeight - this.height) yhigh = false
+    //     return [xhigh, xlow, yhigh, ylow]
+    // }
 
 
 }

@@ -75,6 +75,7 @@ export default class Logic {
 
     ottersDiveSometimes() {
         setTimeout(() => {
+            console.log("new otter")
             this.otterCount++
             this.otters["Otter" + this.otterCount] = new Otter(this.otterCount, this.ctx, this.canvas, this.view, this)
             this.ottersDiveSometimes()
@@ -246,7 +247,6 @@ export default class Logic {
 
     unpackAllPreySpecies(denizen) {
         let allPreyArr = []
-        console.log(denizen)
         denizen.preySpeciesArr.forEach((preyObj) => { allPreyArr = allPreyArr.concat(Object.values(preyObj)) })
         return allPreyArr
     }
@@ -357,7 +357,6 @@ export default class Logic {
     deleteDeadDenizens(){
         while (this.recentlyDeadDenizens.length) {
             let deadDenizen = this.recentlyDeadDenizens.pop()
-            console.log(deadDenizen)
             deadDenizen.clearCallbacksOnDeath()
             delete deadDenizen.speciesObject[deadDenizen.id]
         }
