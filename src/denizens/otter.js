@@ -26,22 +26,19 @@ export default class Otter extends Denizen{
 
         this.maxSpeed = 1
         this.divingForFood = false
-        // this.pos = [rand(this.arenaWidth - this.width),0-this.height]
+        this.pos = [rand(this.arenaWidth - this.width),0 - this.height]
         
 
         this.yMovementCoef = -1
         this.xMovementCoef = 0
 
 
-        this.centerX = this.canvas.width / 2;
+        this.centerX = rand(this.arenaWidth)
         this.centerY = 0;
-        this.radius = this.canvas.height - 200;
+        this.radius = rand(this.arenaHeight/2, this.arenaHeight - 50)
 
-        this.angle = 0 
-        this.objectX = this.centerX + this.radius * Math.cos(this.angle);
-        this.objectY = this.centerY + this.radius * Math.sin(this.angle)
+        this.angle = 0
 
-        this.pos = [this.arenaWidth - this.width, 0 - this.height]
         
 
         this.trapHeight = 6
@@ -49,7 +46,7 @@ export default class Otter extends Denizen{
         this.trappedPrey = false
 
         this.trapPlacer()
-        // this.findPrey()
+
         this.imgSelector()
 
     }
@@ -90,8 +87,8 @@ export default class Otter extends Denizen{
         const centerX = this.width / 2;
         const centerY = this.height / 2;
 
-        const bottomX = (-this.width / 2)
-        const bottomY = (this.height / 2)
+        const bottomX = (-this.width / 2) + 20
+        const bottomY = (this.height / 2) - 10
 
         const rotatedBottomX = bottomX * Math.cos(this.angle) - bottomY * Math.sin(this.angle);
         const rotatedBottomY = bottomX * Math.sin(this.angle) + bottomY * Math.cos(this.angle);
@@ -99,29 +96,20 @@ export default class Otter extends Denizen{
         const bottomPosX = this.pos[0] + centerX + rotatedBottomX
         const bottomPosY = this.pos[1] + centerY + rotatedBottomY
 
+        this.trapPos[0] = bottomPosX;
+        this.trapPos[1] = bottomPosY;
+
 
         this.ctx.save();
         this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
         this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
 
- 
-        
-        
-        
         this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
-        this.ctx.fillStyle = 'rgba(0,0,0,1)';
-        this.ctx.fillRect(this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
-        this.ctx.fillStyle = 'rgba(255,0,0,1)';
-        this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
         
         
         
         this.ctx.restore();
-
-
-        this.trapPos[0] = bottomPosX;
-        this.trapPos[1] = bottomPosY;
 
 
 
