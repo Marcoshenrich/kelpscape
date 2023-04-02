@@ -70,7 +70,7 @@ canvas.addEventListener("click", (e) => {
 
 
 
-// window.addEventListener("resize", (e)=> {
-//     canvas.height = e.currentTarget.innerHeight
-//     canvas.width = e.currentTarget.innerWidth
-// })
+window.addEventListener("resize", (e)=> {
+    canvas.height = e.currentTarget.innerHeight
+    canvas.width = e.currentTarget.innerWidth
+})
