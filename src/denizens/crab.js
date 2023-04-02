@@ -147,6 +147,7 @@ export default class Crab extends Swimmer {
 
         if (this.spawn && this.totalEnergyConsumed > this.growUpThreshold) {
             this.growUp()
+            
         }
 
         if (!this.recentlyAte && !this.scavenging) {

@@ -37,7 +37,10 @@ export default class Otter extends Denizen{
         this.centerY = 0;
         this.radius = rand(this.arenaHeight/2, this.arenaHeight - 50)
 
-        this.angle = 0
+        this.right = this.centerX > this.pos[0]
+
+        this.angle = 270
+        this.trapPos = [null,null]
 
         
 
@@ -52,20 +55,19 @@ export default class Otter extends Denizen{
     }
 
     imgSelector() {
-        this.img = this.downLeft
-        // if (this.trappedPrey || this.returnToSurface) {
-        //     this.img = [this.upRight, this.upLeft][rand(0,1)]
-        // } else {
-        //     if (this.pos[0] >= this.divingForFood.pos[0]) {
-        //         this.img = this.downLeft
-        //     } else {
-        //         this.img = this.downRight
-        //     } 
-        // }
+        // this.img = this.right ? this.downRight : this.downLeft
+
+        this.img = this.downRight
     }
 
     moveInACircle() {
-        this.angle += 0.001;
+        this.angle -= 0.001;
+        // if (this.right) {
+        //     this.angle -= 0.001;
+        // } else {
+        //     this.angle += 0.001;
+
+        // }
         this.pos[0] = this.centerX + this.radius * Math.cos(this.angle);
         this.pos[1] = this.centerY + this.radius * Math.sin(this.angle)
     }
@@ -84,6 +86,20 @@ export default class Otter extends Denizen{
 
     rotateImage() {
 
+
+        this.ctx.save();
+        this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
+        this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
+
+        this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
+        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
+        
+        
+        
+        this.ctx.restore();
+    }
+
+    trapPlacer() {
         const centerX = this.width / 2;
         const centerY = this.height / 2;
 
@@ -99,36 +115,8 @@ export default class Otter extends Denizen{
         this.trapPos[0] = bottomPosX;
         this.trapPos[1] = bottomPosY;
 
-
-        this.ctx.save();
-        this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
-        this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
-
-        this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
-        
-        
-        
-        this.ctx.restore();
-
-
-
         this.ctx.fillStyle = 'rgba(0,255,255,1)';
         this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
-    }
-
-
-    afterITrapCB() {
-        this.imgSelector()
-        this.trappedPrey.trappedPosDelta = [0,0]
-    }
-
-    trapPlacer() {
-        if (this.trappedPrey || this.returnToSurface) {
-            this.trapPos = [this.pos[0] + (this.width / 2) - (this.trapWidth / 2), this.pos[1] - this.trapHeight]
-        } else {
-            this.trapPos = [this.pos[0] + (this.width / 2) - (this.trapWidth / 2), this.pos[1] + this.height - this.trapHeight]
-        }
     }
 
     findPrey() {
