@@ -82,12 +82,12 @@ export default class View {
         this.updateCamera(this.input.keys) 
         this.drawBackround()
         this.drawTextBox()
-        this.drawDenizens()
+        this.denizenCoreloop()
         this.drawInfoText()
         if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
         this.drawEcosystemGraph()
         if (this.introFader > 0) this.fadeInStart()
-        this.logic.coreLoop()
+        this.logic.coreloop()
         if (this.debugging) this.quadtree.draw()
     }
 
@@ -186,7 +186,7 @@ export default class View {
         this.backgroundPos[1] = this.offset[1];
     }
 
-    drawDenizens() {
+    denizenCoreloop() {
         this.allDenizensArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
                 denizen.coreloop()

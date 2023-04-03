@@ -33,8 +33,6 @@ export default class TextBox {
 
         this.textParser()
         this.recalculateBounds()
-        console.log("in coreloop")
-
         this.totalLines = 1
         this.indexTracker = 0
     }
@@ -56,10 +54,6 @@ export default class TextBox {
 
                 if (this.ctx.measureText(checkSent).width > this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2) || i === textArr.length - 1) {
                     //wow...
-
-
-                    // console.log(this.ctx.measureText(checkSent).fontBoundingBoxAscent + this.startTextAtY + (this.leading * this.totalLines))
-                    // console.log(this.bottomLimitOfText);
                     if (this.ctx.measureText(checkSent).fontBoundingBoxAscent + this.startTextAtY + (this.leading * this.totalLines) > this.bottomLimitOfText) {
                         this.font -= 2
                         this.leading -= 5

@@ -21,7 +21,7 @@ let ctx = canvas.getContext('2d')
 
 // const animate = () => {
 //     ctx.clearRect(0, 0, canvas.width, canvas.height)
-//     // let rotation = rotObj["rotation"]
+
 //     rotateImage(ctx, image, 100, 100, 100, 200, 180)
 //     rotObj["rotation"] += .1
 //     requestAnimationFrame(animate)
@@ -30,7 +30,8 @@ let ctx = canvas.getContext('2d')
 // function rotateImage(ctx, image, x, y, w, h, degrees) {
 //     ctx.save();
 //     ctx.translate(x + w / 2, y + h / 2);
-//     ctx.rotate(degrees * Math.PI / 180.0);
+//     // to rotate the image the other way, you add/subtract rotObj[rot]
+//     ctx.rotate(degrees + rotObj["rotation"] * Math.PI / 180.0);
 //     ctx.translate(-x - w / 2, -y - h / 2);
 //     ctx.drawImage(image, x, y, w, h);
 //     ctx.restore();

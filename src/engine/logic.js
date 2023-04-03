@@ -31,7 +31,7 @@ export default class Logic {
         this.effectCount = 0
         this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
-        this.crabCount = 0
+        this.crabCount = 10
         this.crabBabyCount = 0
         this.jellyfishCount = 50
         this.rockCount = 20
@@ -58,7 +58,7 @@ export default class Logic {
         this.algaeSpawns()
 
         this.otterDiveIncrement = 1000
-        this.ottersDiveSometimes()
+        // this.ottersDiveSometimes()
         
         this.hungryDenizenArr = []
         this.assignFoodWeb()
@@ -176,13 +176,16 @@ export default class Logic {
         DeadCreature.prototype.speciesObject = this.deadCreatures
         Jellyfish.prototype.speciesObject = this.jellyfish
         Crab.prototype.speciesObject = this.crabs
+        CrabBaby.prototype.speciesObject = this.crabBabies
+
         Otter.prototype.speciesObject = this.otters
         SeaUrchin.prototype.speciesObject = this.seaUrchins
     }
 
-    coreLoop(){
+    coreloop(){
 
         // if (this.view.gameFrame % 10 !== 0) return
+        this.deleteDeadDenizens()
         this.reAssignDataObjs()
         this.denizensHuntWhenHungry()
         this.denizensWithMouthsCanFindSomethingElseToEat()
@@ -192,7 +195,6 @@ export default class Logic {
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
         // this.deadCreatureDebugLoop()
-        this.deleteDeadDenizens()
     }
 
     scavengersEatDeadCreatures() {
