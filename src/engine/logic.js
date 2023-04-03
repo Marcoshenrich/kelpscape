@@ -31,7 +31,7 @@ export default class Logic {
         this.effectCount = 0
         this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
-        this.crabCount = 10
+        this.crabCount = 0
         this.crabBabyCount = 0
         this.jellyfishCount = 50
         this.rockCount = 20

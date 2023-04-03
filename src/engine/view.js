@@ -46,6 +46,8 @@ export default class View {
 
         this.introFader = 1
 
+        this.textBox = null
+
 
 
     }
@@ -66,7 +68,10 @@ export default class View {
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
 
-
+    drawInfoText() {
+        
+        if (this.textBox) this.textBox.coreloop()
+    }
 
 
     animate() {
@@ -78,6 +83,7 @@ export default class View {
         this.drawBackround()
         this.drawTextBox()
         this.drawDenizens()
+        this.drawInfoText()
         if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
         this.drawEcosystemGraph()
         if (this.introFader > 0) this.fadeInStart()
