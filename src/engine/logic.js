@@ -58,7 +58,7 @@ export default class Logic {
         this.algaeSpawns()
 
         this.otterDiveIncrement = 1000
-        // this.ottersDiveSometimes()
+        this.ottersDiveSometimes()
         
         this.hungryDenizenArr = []
         this.assignFoodWeb()
@@ -75,7 +75,7 @@ export default class Logic {
 
     ottersDiveSometimes() {
         setTimeout(() => {
-            console.log("new otter")
+            // console.log("new otter")
             this.otterCount++
             this.otters["Otter" + this.otterCount] = new Otter(this.otterCount, this.ctx, this.canvas, this.view, this)
             this.ottersDiveSometimes()

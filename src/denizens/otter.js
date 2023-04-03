@@ -21,28 +21,21 @@ export default class Otter extends Denizen{
         this.downLeft.src = './dist/art/otter/otterDownLeft.png'
         this.height = 60
         this.width = 30
-        this.xCoef = 0
-        this.returnToSurface = false
 
         this.maxSpeed = 1
-        this.divingForFood = false
-        this.pos = [rand(this.arenaWidth - this.width),0 - this.height]
         
-
-        this.yMovementCoef = -1
-        this.xMovementCoef = 0
-
+        this.pos = []
 
         this.centerX = rand(this.arenaWidth)
         this.centerY = 0;
+
+
         this.radius = rand(this.arenaHeight/2, this.arenaHeight - 50)
 
-        this.right = this.centerX > this.pos[0]
+        this.right = [true,false][rand(2)]
 
-        this.angle = 270
+        this.angle = this.right ? 135 : 0
         this.trapPos = [null,null]
-
-        
 
         this.trapHeight = 6
         this.trapWidth = 4
@@ -51,23 +44,23 @@ export default class Otter extends Denizen{
         this.trapPlacer()
 
         this.imgSelector()
+        setTimeout(() => {
+            this.logic.recentlyDeadDenizens.push(this)
+        }, 25000);
 
     }
 
     imgSelector() {
-        // this.img = this.right ? this.downRight : this.downLeft
-
-        this.img = this.downRight
+        this.img = this.right ? this.downRight : this.downLeft
     }
 
     moveInACircle() {
-        this.angle -= 0.001;
-        // if (this.right) {
-        //     this.angle -= 0.001;
-        // } else {
-        //     this.angle += 0.001;
+        if (this.right) {
+            this.angle -= 0.001;
+        } else {
+            this.angle += 0.001;
 
-        // }
+        }
         this.pos[0] = this.centerX + this.radius * Math.cos(this.angle);
         this.pos[1] = this.centerY + this.radius * Math.sin(this.angle)
     }
@@ -75,13 +68,23 @@ export default class Otter extends Denizen{
     coreloop() {
         this.rotateImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         this.moveInACircle()
+
+        this.ctx.fillStyle = `rgba(255,255,255,1)`;
+        this.ctx.font = `10px serif`;
+
+        if (this.right) {
+            this.ctx.fillText("right", this.pos[0] + this.offset[0], this.pos[1] + this.offset[1]) 
+        } else {
+            this.ctx.fillText("left", this.pos[0] + this.offset[0], this.pos[1] + this.offset[1]) 
+        }
+
         // if (this.trappedPrey || this.returnToSurface) {
         //     this.moveTowardsSurface()
         // } else {
         //     this.moveTowardsFood()
         // }
 
-        // this.trapPlacer()
+        this.trapPlacer()
     }
 
     rotateImage() {
@@ -89,7 +92,14 @@ export default class Otter extends Denizen{
 
         this.ctx.save();
         this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
-        this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
+
+        if (this.right) {
+            this.ctx.rotate(((this.angle - 135) * 45) * Math.PI / 180.0);
+
+        }else {
+
+            this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
+        }
 
         this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
