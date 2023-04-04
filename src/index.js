@@ -10,9 +10,6 @@ canvas.width = window.innerWidth
 
 let ctx = canvas.getContext('2d')
 
-
-ctx.fillText(`${canvas.height}`, 200,200)
-ctx.fillText(`${canvas.width}`, 200, 250)
 let pilot = new Pilot(canvas)
 
 
