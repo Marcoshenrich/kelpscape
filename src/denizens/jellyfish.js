@@ -1,6 +1,4 @@
 import { rand } from "../engine/utils";
-import Denizen from "./denizen";
-import Floater from "./floater";
 import Swimmer from "./swimmer";
 
 
@@ -25,9 +23,10 @@ export default class Jellyfish extends Swimmer {
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
 
-        this.trapHeight = 6
-        this.trapWidth = 8
-        this.trapPos = this.trapPlacer()
+        this.trapHeight = 18
+        this.trapWidth = 18
+        this.trapPos = []
+        this.trapPlacer()
         this.trappedPrey = false
 
         this.movement1 = this.moveSelector()
@@ -37,7 +36,8 @@ export default class Jellyfish extends Swimmer {
     }
 
     trapPlacer() {
-        return [this.pos[0] + 3, this.pos[1] + 10]
+        this.trapPos[0] = this.pos[0] + 3
+        this.trapPos[1] = this.pos[1] + 10
     }
 
     moveSelector = () => {
@@ -86,6 +86,8 @@ export default class Jellyfish extends Swimmer {
         this.bob()
         this.move()
         this.draw()
+        // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
+
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
@@ -115,7 +117,7 @@ export default class Jellyfish extends Swimmer {
         }    
         if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
         if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
-        this.trapPos = this.trapPlacer()
+        this.trapPlacer()
         this.movement1();
         this.movement2();
     }

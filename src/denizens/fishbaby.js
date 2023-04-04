@@ -13,7 +13,7 @@ export default class FishBaby extends Fish {
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
         this.width = 12
         this.height = 8
-        this.pos = [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()]
+        this.pos = pos ? [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()] : this.placer()
         this.oldPos = this.pos
         this.mouthSize = 4
 

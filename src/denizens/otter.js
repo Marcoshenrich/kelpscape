@@ -121,8 +121,8 @@ export default class Otter extends Denizen{
         this.trapPos[0] = bottomPosX;
         this.trapPos[1] = bottomPosY;
 
-        this.ctx.fillStyle = 'rgba(0,255,255,1)';
-        this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
+        // this.ctx.fillStyle = 'rgba(0,255,255,1)';
+        // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
     }
 
 }

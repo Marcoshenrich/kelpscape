@@ -24,7 +24,7 @@ export default class Logic {
         this.view = view
 
         this.fishCount = 40
-        this.fishBabyCount = 0
+        this.fishBabyCount = 40
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
@@ -39,16 +39,16 @@ export default class Logic {
         this.seaUrchinCount = 0
 
         this.fishes = this.tankPopulator(this.fishCount, Fish)
-        this.fishBabies = {}
+        this.fishBabies = this.tankPopulator(this.fishBabyCount, FishBaby)
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
-        this.eggs = {}
-        this.effects = this.tankPopulator(0, Effect)
-        this.seaUrchins = {}
+        this.eggs = this.tankPopulator(this.eggCount, Fishegg)
+        this.effects = this.tankPopulator(this.effectCount, Effect)
+        this.seaUrchins = this.tankPopulator(this.seaUrchinCount, SeaUrchin)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
-        this.crabBabies = {}
+        this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby)
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
         this.rocks = this.tankPopulator(this.rockCount, Rock)
         this.otters = {}
@@ -133,6 +133,7 @@ export default class Logic {
                 for (let k = 0; k < trapper.preySpecies.length; k++) {
                     if (prey instanceof trapper.preySpecies[k]) {
                         if (prey.dead) continue
+                        
                         prey.trapped = trapper.trapPos
                         prey.trappedPosDelta = [trapper.trapPos[0] - prey.pos[0], trapper.trapPos[1] - prey.pos[1]]
                         trapper.trappedPrey = prey
