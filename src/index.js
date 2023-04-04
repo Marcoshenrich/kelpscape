@@ -18,22 +18,42 @@ let pilot = new Pilot(canvas)
 //h: 1793
 
 canvas.addEventListener("mousedown", (e) => {
+    e.preventDefault()
     pilot.view.input.mouseIsDownAt = [e.x, e.y]
-},true)
+})
 
 canvas.addEventListener("mousemove", (e) => {
+    e.preventDefault()
     if (pilot.view.input.mouseIsDownAt) {
         pilot.view.input.dragScreen([e.x, e.y])
     }
-},true)
+})
 
 canvas.addEventListener("mouseup", (e) => {
+    e.preventDefault()
     pilot.view.input.mouseIsDownAt = false
-},true)
+})
 
-// canvas.addEventListener("touchstart", (e)=>{
-//     pilot.view.input.mouseIsDownAt = [e.x, e.y]
-// });
+canvas.addEventListener("touchstart", (e)=>{
+    e.preventDefault()
+    let touch = e.touches[0]
+    pilot.view.input.mouseIsDownAt = [touch.clientX, touch.clientY]
+});
+
+canvas.addEventListener("touchmove", (e) => {
+    e.preventDefault()
+    let touch = e.touches[0]
+    if (pilot.view.input.mouseIsDownAt) {
+        pilot.view.input.dragScreen([touch.clientX, touch.clientY])
+    }
+});
+
+canvas.addEventListener("touchend", (e) => {
+    e.preventDefault()
+    pilot.view.input.mouseIsDownAt = false
+    let touch = e.touches[0]
+    let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
+})
 
 
 
