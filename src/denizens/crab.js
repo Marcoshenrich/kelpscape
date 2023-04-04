@@ -110,14 +110,15 @@ export default class Crab extends Swimmer {
         this.speed = 0
         this.energy -= this.matingEnergyCost
     
-        setTimeout(() => {
+        let baseId = setTimeout(() => {
             this.speed += .2
             this.mating = false
             if (spawnBool) return
             this.carryingEggs = true
             this.img.src = './dist/art/crabdad.png'
 
-            setTimeout(() => {
+            let secId = setTimeout(() => {
+                if (this.trapped) return
                 this.img.src = './dist/art/crab.png'
                 this.carryingEggs = false
                 let i = Math.floor(Math.random() * 3) + 2
@@ -126,8 +127,11 @@ export default class Crab extends Swimmer {
                     this.logic.spawnDenizen(this)
                 }
             },30000)
+            this.clearOnDeath.push(secId)
 
         }, 3000)
+
+        this.clearOnDeath.push(baseId)
     }
 
     consumeFod(foodSource, foodType) {

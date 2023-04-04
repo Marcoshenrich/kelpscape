@@ -57,7 +57,7 @@ export default class Logic {
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
 
-        this.otterDiveIncrement = 1000
+        this.otterDiveIncrement = 900
         this.ottersDiveSometimes()
         
         this.hungryDenizenArr = []

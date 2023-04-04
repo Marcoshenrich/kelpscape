@@ -23,11 +23,13 @@ export default class Otter extends Denizen{
         this.width = 30
 
         this.maxSpeed = 1
+        this.appearedOnScreen = false
         
         this.pos = []
 
         this.centerX = rand(this.arenaWidth)
         this.centerY = 0;
+
 
 
         this.radius = rand(this.arenaHeight/2, this.arenaHeight - 50)
@@ -42,12 +44,7 @@ export default class Otter extends Denizen{
         this.trappedPrey = false
 
         this.trapPlacer()
-
         this.imgSelector()
-        setTimeout(() => {
-            this.logic.recentlyDeadDenizens.push(this)
-        }, 25000);
-
     }
 
     imgSelector() {
@@ -78,13 +75,20 @@ export default class Otter extends Denizen{
             this.ctx.fillText("left", this.pos[0] + this.offset[0], this.pos[1] + this.offset[1]) 
         }
 
-        // if (this.trappedPrey || this.returnToSurface) {
-        //     this.moveTowardsSurface()
-        // } else {
-        //     this.moveTowardsFood()
-        // }
+        if (!this.appearedOnScreen && this.pos[1] + this.height > 0 && this.pos[0] + this.width > 0 && this.pos[0] + this.width < this.arenaWidth)  {
+            this.appearedOnScreen = true
+        }
 
         this.trapPlacer()
+        if (this.appearedOnScreen && this.pos[1] + this.height < 0 && this.pos[0] + this.width < 0 || this.pos[0] - this.width > this.arenaWidth) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+            console.log("otter ded")
+            if (this.trappedPrey) {
+                this.trappedPrey.dead = true
+                this.logic.recentlyDeadDenizens.push(this.trappedPrey)
+            }
+        }
     }
 
     rotateImage() {
@@ -113,8 +117,16 @@ export default class Otter extends Denizen{
         const centerX = this.width / 2;
         const centerY = this.height / 2;
 
-        const bottomX = (-this.width / 2) + 20
-        const bottomY = (this.height / 2) - 10
+        let bottomX;
+        let bottomY;
+        if (this.right) {
+            bottomX = (this.width / 2) - 10
+            bottomY = (-this.height / 2) + 15
+        } else {
+            bottomX = (-this.width / 2) + 20
+            bottomY = (this.height / 2) - 10
+        }
+       
 
         const rotatedBottomX = bottomX * Math.cos(this.angle) - bottomY * Math.sin(this.angle);
         const rotatedBottomY = bottomX * Math.sin(this.angle) + bottomY * Math.cos(this.angle);
