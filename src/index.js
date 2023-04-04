@@ -8,9 +8,21 @@ canvas.height = window.innerHeight
 canvas.width = window.innerWidth
 
 
+const mobileDetector = () => {
+    return (navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i))
+}
+
+let mobile = mobileDetector()
+
 let ctx = canvas.getContext('2d')
 
-let pilot = new Pilot(canvas)
+let pilot = new Pilot(canvas, mobile)
 
 
 //mobile size
