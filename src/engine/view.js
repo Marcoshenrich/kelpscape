@@ -10,9 +10,8 @@ export default class View {
         this.background = new Image()
         this.background.src = './dist/art/background.jpeg'
 
-        this.arenaCoef = 2
-        this.arenaHeight = 666 * this.arenaCoef
-        this.arenaWidth = 1000 * this.arenaCoef
+        this.arenaHeight = this.canvas.height * 2
+        this.arenaWidth = this.arenaHeight * 1.5
         // this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.backgroundPos = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
         this.offset = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
