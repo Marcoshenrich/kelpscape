@@ -11,30 +11,43 @@ export default class View {
         this.background.src = './dist/art/background.jpeg'
 
         this.arenaCoef = 2
-        this.arenaWidth = 1000 * this.arenaCoef
         this.arenaHeight = 666 * this.arenaCoef
+        this.arenaWidth = 1000 * this.arenaCoef
         this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.input = new Input(this)
-        this.fishes = this.logic.fishes
-        this.fishBabies = this.logic.fishBabies
-        this.algae = this.logic.algae
-        this.eggs = this.logic.eggs
-        this.sharks = this.logic.sharks
-        this.effects = this.logic.effects
-        this.seaweedClusters = this.logic.seaweedClusters
-        this.deadCreatures = this.logic.deadCreatures
-        this.crabs = this.logic.crabs
-        this.crabBabies = this.logic.crabBabies
-        this.jellyfish = this.logic.jellyfish
-        this.rocks = this.logic.rocks
-        this.otters = this.logic.otters
-        this.seaUrchins = this.logic.seaUrchins
 
-
-        this.allDenizensArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.seaweedClusters, this.crabs, this.deadCreatures, this.crabBabies, this.jellyfish, this.rocks, this.otters, this.seaUrchins]
-        this.allDenizensinQuadArr = [this.fishes, this.fishBabies, this.algae, this.eggs, this.sharks, this.effects, this.crabs, this.deadCreatures, this.jellyfish, this.seaUrchins]
+        this.allDenizensArr = [
+            this.logic.fishes, 
+            this.logic.fishBabies, 
+            this.logic.algae, 
+            this.logic.eggs, 
+            this.logic.sharks, 
+            this.logic.effects, 
+            this.logic.turtles,
+            this.logic.seaweedClusters, 
+            this.logic.crabs, 
+            this.logic.deadCreatures, 
+            this.logic.crabBabies, 
+            this.logic.jellyfish, 
+            this.logic.rocks, 
+            this.logic.otters, 
+            this.logic.seaUrchins
+        ]
+        
+        this.allDenizensinQuadArr = [
+            this.logic.fishes, 
+            this.logic.fishBabies, 
+            this.logic.algae, 
+            this.logic.eggs, 
+            this.logic.sharks, 
+            this.logic.effects, 
+            this.logic.crabs, 
+            this.logic.deadCreatures, 
+            this.logic.jellyfish, 
+            this.logic.seaUrchins
+        ]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}
@@ -66,6 +79,9 @@ export default class View {
         this.ctx.fillStyle = `rgba(0,0,0,${this.introFader})`;
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
+        this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
+        this.ctx.fillText("mobile test 1", this.canvas.width / 2, this.canvas.height / 2)
+
     }
 
     drawInfoText() {
@@ -81,7 +97,7 @@ export default class View {
         this.populateQuad() 
         this.updateCamera(this.input.keys) 
         this.drawBackround()
-        this.drawTextBox()
+        // this.drawTextBox()
         this.denizenCoreloop()
         this.drawInfoText()
         if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
@@ -101,12 +117,12 @@ export default class View {
 
         if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
 
-        let totalDenizens = Object.values(this.algae).length + Object.values(this.fishes).length + Object.values(this.fishBabies).length + Object.values(this.crabs).length + + Object.values(this.crabBabies).length
+        let totalDenizens = Object.values(this.logic.algae).length + Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length + Object.values(this.logic.crabs).length + + Object.values(this.logic.crabBabies).length
         const graphData = {
             totalDenizens,
-            algaeRatio: (Object.values(this.algae).length / totalDenizens),
-            fishRatio: (Object.values(this.fishes).length + Object.values(this.fishBabies).length) / totalDenizens,
-            crabRatio: (Object.values(this.crabs).length + Object.values(this.crabBabies).length) / totalDenizens
+            algaeRatio: (Object.values(this.logic.algae).length / totalDenizens),
+            fishRatio: (Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length) / totalDenizens,
+            crabRatio: (Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length) / totalDenizens
         }
         
         this.ecosystemGraphData.push(graphData)
@@ -143,13 +159,13 @@ export default class View {
 
         this.ctx.fillStyle = 'rgba(250,110,0,1)';
         this.ctx.font = "24px serif";
-        this.ctx.fillText(`Algae: ${Object.values(this.algae).length}`, 25, 50)
-        this.ctx.fillText(`Fishes: ${Object.values(this.fishes).length + Object.values(this.fishBabies).length}`, 25, 80)
-        this.ctx.fillText(`Eggs: ${Object.values(this.eggs).length}`, 25, 110)
-        this.ctx.fillText(`Sharks: ${Object.values(this.sharks).length}`, 25, 140)
-        this.ctx.fillText(`Crabs: ${Object.values(this.crabs).length + Object.values(this.crabBabies).length}`, 25, 170)
-        this.ctx.fillText(`Jellies: ${Object.values(this.jellyfish).length}`, 25, 200)
-        this.ctx.fillText(`Corpses: ${Object.values(this.deadCreatures).length}`, 25, 230)
+        this.ctx.fillText(`Algae: ${Object.values(this.logic.algae).length}`, 25, 50)
+        this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length}`, 25, 80)
+        this.ctx.fillText(`Eggs: ${Object.values(this.logic.eggs).length}`, 25, 110)
+        this.ctx.fillText(`Sharks: ${Object.values(this.logic.sharks).length}`, 25, 140)
+        this.ctx.fillText(`Crabs: ${Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length}`, 25, 170)
+        this.ctx.fillText(`Jellies: ${Object.values(this.logic.jellyfish).length}`, 25, 200)
+        this.ctx.fillText(`Corpses: ${Object.values(this.logic.deadCreatures).length}`, 25, 230)
 
     }
 

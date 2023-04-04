@@ -14,6 +14,7 @@ import DeadCreature from "../denizens/deadCreature"
 import Jellyfish from "../denizens/jellyfish"
 import Otter from "../denizens/otter"
 import SeaUrchin from "../denizens/seaurchin"
+import Turtle from "../denizens/turtle"
 
 
 export default class Logic {
@@ -23,12 +24,13 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
-        this.fishCount = 40
-        this.fishBabyCount = 40
+        this.fishCount = 8
+        this.fishBabyCount =  4
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
         this.effectCount = 0
+        this.turtleCount = 1
         this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
         this.crabCount = 10
@@ -44,6 +46,7 @@ export default class Logic {
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggs = this.tankPopulator(this.eggCount, Fishegg)
         this.effects = this.tankPopulator(this.effectCount, Effect)
+        this.turtles = this.tankPopulator(this.turtleCount, Turtle)
         this.seaUrchins = this.tankPopulator(this.seaUrchinCount, SeaUrchin)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster)
         this.deadCreatures = {}
@@ -195,6 +198,7 @@ export default class Logic {
         this.denizensMate()
         this.fishFleeFromSharks()
         this.scavengersEatDeadCreatures()
+        this.deleteDeadDenizens()
         // this.deadCreatureDebugLoop()
     }
 
