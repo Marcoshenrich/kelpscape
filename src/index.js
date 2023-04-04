@@ -62,7 +62,7 @@ canvas.addEventListener("mousedown", (e) => {
 canvas.addEventListener("click", (e) => {
     pilot.view.input.mouseIsDownAt = false
 
-    let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1],1,1),{id:null})
+    let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1],1,1),"overlaps",{id:null})
     // if (pilot.intro) {
     //     pilot.intro.simTransition = true
     // } else {

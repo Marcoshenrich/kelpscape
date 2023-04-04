@@ -66,24 +66,15 @@ export default class Otter extends Denizen{
         this.rotateImage(this.img, this.pos[0], this.pos[1], this.width, this.height)
         this.moveInACircle()
 
-        this.ctx.fillStyle = `rgba(255,255,255,1)`;
-        this.ctx.font = `10px serif`;
-
-        if (this.right) {
-            this.ctx.fillText("right", this.pos[0] + this.offset[0], this.pos[1] + this.offset[1]) 
-        } else {
-            this.ctx.fillText("left", this.pos[0] + this.offset[0], this.pos[1] + this.offset[1]) 
-        }
-
-        if (!this.appearedOnScreen && this.pos[1] + this.height > 0 && this.pos[0] + this.width > 0 && this.pos[0] + this.width < this.arenaWidth)  {
+        if (!this.appearedOnScreen && this.pos[0] > 0 && this.pos[1] > 0 && this.pos[0] + this.width < this.arenaWidth)  {
             this.appearedOnScreen = true
         }
 
         this.trapPlacer()
-        if (this.appearedOnScreen && this.pos[1] + this.height < 0 && this.pos[0] + this.width < 0 || this.pos[0] - this.width > this.arenaWidth) {
+        if (this.appearedOnScreen && this.pos[1] + this.height < 0 || (this.pos[0] + this.width < 0 || this.pos[0] - this.width > this.arenaWidth)) {
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
-            console.log("otter ded")
+
             if (this.trappedPrey) {
                 this.trappedPrey.dead = true
                 this.logic.recentlyDeadDenizens.push(this.trappedPrey)
@@ -92,23 +83,17 @@ export default class Otter extends Denizen{
     }
 
     rotateImage() {
-
-
         this.ctx.save();
         this.ctx.translate(this.pos[0] + this.width / 2 + this.offset[0], this.pos[1] + this.height / 2 + this.offset[1]);
 
         if (this.right) {
             this.ctx.rotate(((this.angle - 135) * 45) * Math.PI / 180.0);
-
         }else {
-
             this.ctx.rotate((this.angle * 45) * Math.PI / 180.0);
         }
 
         this.ctx.translate(-this.pos[0] - this.width / 2 - this.offset[0], -this.pos[1] - this.height / 2 - this.offset[1]);
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height);
-        
-        
         
         this.ctx.restore();
     }
@@ -127,7 +112,6 @@ export default class Otter extends Denizen{
             bottomY = (this.height / 2) - 10
         }
        
-
         const rotatedBottomX = bottomX * Math.cos(this.angle) - bottomY * Math.sin(this.angle);
         const rotatedBottomY = bottomX * Math.sin(this.angle) + bottomY * Math.cos(this.angle);
 
@@ -140,52 +124,5 @@ export default class Otter extends Denizen{
         this.ctx.fillStyle = 'rgba(0,255,255,1)';
         this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
     }
-
-    findPrey() {
-        let preyArr = this.logic.unpackAllPreySpecies(this)
-        this.divingForFood = preyArr[rand(preyArr.length)]
-    }
-
-    moveTowardsSurface() {
-        this.pos[1] -= this.maxSpeed
-        if (this.pos[1] + this.height < 0) {
-            this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
-            if (this.trappedPrey) this.logic.recentlyDeadDenizens.push(this.trappedPrey)
-        }
-    }
-
-
-    
-    // moveTowardsFood() {
-        
-    //     let [xhigh, xlow, yhigh, ylow] = this.inBounds()
-
-    //     if (this.trapPos[0] < this.divingForFood.pos[0]) {
-    //         if (xhigh) this.pos[0] += this.maxSpeed
-    //     } else {
-    //         if (xlow) this.pos[0] -= this.maxSpeed
-    //     }
-
-    //     if (this.trapPos[1] < this.divingForFood.pos[1]) {
-    //         if (yhigh) this.pos[1] += this.maxSpeed
-    //     } else {
-    //         if (ylow) this.pos[1] -= this.maxSpeed
-    //     }
-
-    // }
-
-    // inBounds() {
-    //     let xhigh = true
-    //     let xlow = true
-    //     let yhigh = true
-    //     let ylow = true
-    //     if (this.pos[0] < 0) xlow = false
-    //     if (this.pos[0] > this.view.arenaWidth - this.width) xhigh = false
-    //     if (this.pos[1] < 0) ylow = false
-    //     if (this.pos[1] > this.view.arenaHeight - this.height) yhigh = false
-    //     return [xhigh, xlow, yhigh, ylow]
-    // }
-
 
 }

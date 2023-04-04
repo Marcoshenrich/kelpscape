@@ -117,7 +117,8 @@ export default class Quadtree {
         return foundDenizens;
     }
 
-    findOverlaps(range, opDenizen) {
+    findOverlaps(range, type, opDenizen) {
+        if (!opDenizen) console.log(range, type, opDenizen)
         const foundDenizens = [];
 
         if (!this.bounds.intersects(range)) {
@@ -125,14 +126,14 @@ export default class Quadtree {
         }
 
         for (const denizen of this.denizens) {
-            if (opDenizen.id !== denizen.id && range.overlaps(denizen)) {
+            if (opDenizen.id !== denizen.id && range[type](denizen)) {
                 foundDenizens.push(denizen);
             }
         }
 
 
         for (const node of this.nodes) {
-            foundDenizens.push(...node.findOverlaps(range, opDenizen));
+            foundDenizens.push(...node.findOverlaps(range, type, opDenizen));
         }
 
         return foundDenizens;
@@ -153,9 +154,19 @@ export class Rectangle {
         return this.recOverlapCheck(recA, recB) || this.recOverlapCheck(recB, recA)
     }
 
+    fullyOverlaps(denizen) {
+        let recA = { left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height }
+        let recB = { left: denizen.pos[0], right: denizen.pos[0] + denizen.width, top: denizen.pos[1], bottom: denizen.pos[1] + denizen.height }
+        return this.rectFullyInside(recA, recB) || this.rectFullyInside(recB, recA)
+    }
+
 
     recOverlapCheck(a, b) {
         return ((b.left <= a.right) && (b.right >= a.left) && (b.top <= a.bottom) && (b.bottom >= a.top))
+    }
+
+    rectFullyInside(a, b) {
+        return (a.left >= b.left && a.right <= b.right && a.top >= b.top && a.bottom <= b.bottom);
     }
 
 

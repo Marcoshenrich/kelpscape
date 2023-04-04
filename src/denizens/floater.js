@@ -32,8 +32,8 @@ export default class Floater extends Denizen {
 
     bob() {
         if (this.trapped) {
-            this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
-            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
+            this.pos[0] = this.trapped[0] - this.trappedPosDelta[0]
+            this.pos[1] = this.trapped[1] - this.trappedPosDelta[1]
             return
         }
 

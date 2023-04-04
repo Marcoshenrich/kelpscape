@@ -57,7 +57,7 @@ export default class Logic {
         this.algaeSpawnIncrement = 2000
         this.algaeSpawns()
 
-        this.otterDiveIncrement = 900
+        this.otterDiveIncrement = 10000
         this.ottersDiveSometimes()
         
         this.hungryDenizenArr = []
@@ -125,7 +125,7 @@ export default class Logic {
             if (trapper.trappedPrey) continue
             if (trapper.mating) continue
 
-            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), trapper)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight),"fullyOverlaps", trapper)
 
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
@@ -133,8 +133,8 @@ export default class Logic {
                 for (let k = 0; k < trapper.preySpecies.length; k++) {
                     if (prey instanceof trapper.preySpecies[k]) {
                         if (prey.dead) continue
-                        prey.trapped = trapper
-                        prey.trappedPosDelta = [trapper.pos[0] - prey.pos[0], trapper.pos[1] - prey.pos[1]]
+                        prey.trapped = trapper.trapPos
+                        prey.trappedPosDelta = [trapper.trapPos[0] - prey.pos[0], trapper.trapPos[1] - prey.pos[1]]
                         trapper.trappedPrey = prey
                         trapper.afterITrapCB()
                     }
@@ -203,7 +203,7 @@ export default class Logic {
             if (scavenger.scavenging) continue
             if (scavenger.mating) continue
 
-            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), scavenger)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), "overlaps", scavenger)
        
             for (let j = 0; j < collisionArray.length; j++) {
 
@@ -227,7 +227,7 @@ export default class Logic {
     }
 
     findNearestPredator(prey, predatorSpeciesClass) {
-        let nearbyDenizenArray = this.view.quadtree.findOverlaps(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ), prey)
+        let nearbyDenizenArray = this.view.quadtree.findOverlaps(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200 ), "overlaps", prey)
         let closePredator;
         for (const nearbyDenizen of nearbyDenizenArray) {
             if (nearbyDenizen instanceof predatorSpeciesClass) {
@@ -335,7 +335,7 @@ export default class Logic {
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
-            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), predator)
+            let collisionArray = this.view.quadtree.findOverlaps(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize),"overlaps", predator)
 
             // pretty inneficient -> should look up predators directly
             for (let j = 0; j < collisionArray.length; j++) {
