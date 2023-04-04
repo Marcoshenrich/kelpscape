@@ -13,8 +13,10 @@ export default class View {
         this.arenaCoef = 2
         this.arenaHeight = 666 * this.arenaCoef
         this.arenaWidth = 1000 * this.arenaCoef
-        this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
-        this.offset = [-this.arenaWidth / 3, -this.arenaHeight / 3]
+        // this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
+        this.backgroundPos = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
+        this.offset = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
+
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.input = new Input(this)
 
@@ -80,7 +82,7 @@ export default class View {
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile test 1", this.canvas.width / 2, this.canvas.height / 2)
+        this.ctx.fillText("mobile test 2", this.canvas.width / 2, this.canvas.height / 2)
 
     }
 

@@ -13,7 +13,9 @@ let ctx = canvas.getContext('2d')
 let pilot = new Pilot(canvas)
 
 
-
+//mobile size
+//w: 980
+//h: 1793
 
 canvas.addEventListener("mousemove", (e) => {
     if (pilot.view.input.mouseIsDownAt) {
