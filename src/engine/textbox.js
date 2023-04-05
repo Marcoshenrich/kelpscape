@@ -1,11 +1,12 @@
 
 
 export default class TextBox {
-    constructor(ctx, canvas, view, logic, text, path) {
+    constructor(ctx, canvas, view, logic, type, text, path) {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
         this.logic = logic
+        this.type = type
         this.text = text
 
         this.startTextAtX = 100
@@ -63,16 +64,8 @@ export default class TextBox {
                 checkSent += word
 
                 if (this.ctx.measureText(checkSent).width > this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2) || i === textArr.length - 1) {
-                    this.ctx.fillStyle = 'rgba(255,0,0,.3)';
 
                     let bottomPosOfText = this.ctx.measureText(checkSent).actualBoundingBoxDescent + this.startTextAtY + (this.leading * (this.totalLines))
-
-
-                    this.ctx.fillStyle = 'rgba(0,255,255,.3)';
-                    this.ctx.fillRect(0, bottomPosOfText, this.canvas.width, 1)
-
-
-                    this.ctx.fillStyle = 'rgba(255,255,255,1)';
 
                     if (bottomPosOfText > this.bottomLimitOfText) {
                         this.font -= 1
@@ -80,8 +73,6 @@ export default class TextBox {
                         this.indexTracker = 0
                         break
                     }
-
-
 
                     if (i === textArr.length - 1 && this.ctx.measureText(checkSent + word).width < this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2)) {
                         printSent += word

@@ -7,6 +7,7 @@ export default class Fishegg extends Floater {
 
     constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
+        this.textBox = this.logic.textContentObj["Fish Egg"]
         this.id = "Fishegg" + id
         this.pos = [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()]
 

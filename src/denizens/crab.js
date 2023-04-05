@@ -9,7 +9,7 @@ export default class Crab extends Swimmer {
     constructor(id, ctx, canvas, view, logic, pos) {
 
         super(ctx, canvas, view, logic)
-
+        this.textBox = this.logic.textContentObj["Crab"]
         this.id = "Crab" + id
         this.spawn = false
         this.img = new Image()

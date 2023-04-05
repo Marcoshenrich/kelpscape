@@ -35,7 +35,6 @@ export default class View {
             this.logic.sharks, 
             this.logic.effects, 
             this.logic.turtles,
-            this.logic.seaweedClusters,
             this.seaweed,
             this.logic.crabs, 
             this.logic.deadCreatures, 
@@ -90,7 +89,7 @@ export default class View {
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile test 13", this.canvas.width / 2, this.canvas.height / 2)
+        this.ctx.fillText("mobile test 14", this.canvas.width / 2, this.canvas.height / 2)
 
     }
 
@@ -109,11 +108,27 @@ export default class View {
         // this.drawTextBox()
         this.denizenCoreloop()
         this.drawInfoText()
-        if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
-        this.drawEcosystemGraph()
+        // if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
+        // this.drawEcosystemGraph()
+
+
+        this.drawScore()
+
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
         if (this.debugging) this.quadtree.draw()
+    }
+
+    drawScore() {
+        let maxScore = Object.values(this.logic.scoreTrackObj).length
+        let score = 0
+        Object.values(this.logic.scoreTrackObj).forEach((found)=>{
+            if (found) score++
+        })
+
+        this.ctx.fillStyle = 'rgba(255,255,255,.3)';
+        this.ctx.fillText(`maxScore ${maxScore}`, this.canvas.width - 300, 100)
+        this.ctx.fillText(`score ${score}`, this.canvas.width - 300, 150)
     }
 
     drawBackround() {

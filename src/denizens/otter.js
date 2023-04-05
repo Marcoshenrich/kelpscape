@@ -6,12 +6,13 @@ import TextBox from "../engine/textbox";
 export default class Otter extends Denizen{
     constructor(id, ctx, canvas, view, logic) {
         super(ctx, canvas, view, logic)
+        this.textBox = this.logic.textContentObj["Otter"]
         this.id = "Otter" + id
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
         this.logic = logic
-        this.textBox = new TextBox(ctx, canvas, view, logic, "The sea otter (Enhydra lutris) is a crucial player in maintaining the health of the kelp forest. These adorable creatures are known for their love of shellfish, which they crack open with rocks using their impressive dexterity. Sea otters also play an important role in keeping the kelp forests healthy. They feed on sea urchins, which can overgraze kelp if left unchecked. Sea otters are one of the few animals that use tools, and they have even been known to hold hands while sleeping to keep from drifting away from each other. Sadly, sea otters were hunted to near extinction for their fur in the 18th and 19th centuries, but conservation efforts have helped their populations rebound in some areas.", "sea_otter.webp")
+
         this.upRight = new Image()
         this.upRight.src = './dist/art/otter/otterUpRight.png'
         this.upLeft = new Image()

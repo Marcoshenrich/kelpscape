@@ -7,7 +7,7 @@ export default class Fish extends Swimmer {
 
     constructor(id, ctx, canvas, view, logic, pos) {
         super(ctx, canvas, view, logic)
-        this.textBox = new TextBox(ctx, canvas, view, logic, "The Garibaldi (Hypsypops rubicundus) is a brightly-colored fish that is native to the rocky reefs and kelp forests of the eastern Pacific Ocean. Their bright orange coloration serves as a warning to potential predators that they are venomous, thanks to a coating of mucus on their skin. Garibaldi are also known for their courtship behavior, during which the male will dig a circular depression in the sand or gravel and aggressively guard it from other fish, enticing females to lay their eggs in the nest. These fish are an important part of the kelp forest ecosystem, feeding on small invertebrates and algae, and providing food for larger predators such as sea lions and sharks. Despite being protected in some areas, Garibaldi populations are threatened by overfishing and habitat destruction.", "garabaldi.jpeg")
+        this.textBox = this.logic.textContentObj["Fish"]
         this.spawn = false
         this.id = "Fish" + id
         this.leftImg.src = './dist/art/fishleft.png'

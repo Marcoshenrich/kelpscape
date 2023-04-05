@@ -8,6 +8,7 @@ import Shark from "./shark"
 export default class DeadCreature extends Denizen {
     constructor(id, ctx, canvas, view, logic, pos, deadDenizen) {
         super(ctx, canvas, view, logic)
+        this.textBox = this.logic.textContentObj["Corpse"]
         this.id = "DeadCreature" + id
         this.pos = [pos[0], pos[1]]
         this.driftSpeed = .2
