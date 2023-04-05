@@ -18,11 +18,8 @@ const mobileDetector = () => {
         || navigator.userAgent.match(/Windows Phone/i))
 }
 
-let mobile = mobileDetector()
 
-let ctx = canvas.getContext('2d')
-
-let pilot = new Pilot(canvas, mobile)
+let pilot = new Pilot(canvas, mobileDetector())
 
 
 //mobile size
@@ -68,8 +65,16 @@ canvas.addEventListener("touchend", (e) => {
         pilot.view.textBox = null
     } else {
         let touch = e.touches[0]
+
+
+
+        pilot.touch = touch
+
+
         let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
-        if (collisionArr[0]) pilot.view.textBox = collisionArr[0].textBox
+        if (collisionArr[0]) pilot.textBox = collisionArr[0].textBox
+
+        pilot.collisionArr = collisionArr
     }
 })
 

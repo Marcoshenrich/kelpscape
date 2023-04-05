@@ -8,6 +8,9 @@ export default class Pilot {
         this.view = new View(canvas, mobile)
         this.intro = new Intro(canvas, mobile)
         this.mobile = mobile
+
+        this.touch = null
+        this.collisionArr = null
         
         this.animate()
 
@@ -23,9 +26,9 @@ export default class Pilot {
         this.ctx.fillStyle = `rgba(255,255,255,1`;
         this.ctx.font = "25px Georgia";
 
-        this.ctx.fillText(`h: ${this.canvas.height}`, 200, 200)
-        this.ctx.fillText(`w: ${this.canvas.width}`, 200, 250)
-        this.ctx.fillText(`m: ${this.mobile}`, 200, 300)
+        this.ctx.fillText(`t: ${this.touch}`, 200, 200)
+        this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
+        // this.ctx.fillText(`m: ${this.mobile}`, 200, 300)
 
 
         requestAnimationFrame(this.animate.bind(this))

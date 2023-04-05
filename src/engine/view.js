@@ -19,6 +19,8 @@ export default class View {
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.input = new Input(this)
 
+
+
         this.allDenizensArr = [
             this.logic.fishes, 
             this.logic.fishBabies, 
@@ -81,7 +83,7 @@ export default class View {
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile test 10", this.canvas.width / 2, this.canvas.height / 2)
+        this.ctx.fillText("mobile test 11", this.canvas.width / 2, this.canvas.height / 2)
 
     }
 

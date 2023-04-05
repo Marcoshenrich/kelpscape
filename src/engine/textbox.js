@@ -1,7 +1,7 @@
 
 
 export default class TextBox {
-    constructor(ctx, canvas, view, logic, text) {
+    constructor(ctx, canvas, view, logic, text, path) {
         this.ctx = ctx
         this.canvas = canvas
         this.view = view
@@ -19,18 +19,28 @@ export default class TextBox {
 
         this.font = 24
 
-        this.bottomLimitOfText = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin
+        
+        this.img = new Image()
+        this.img.src = `./dist/images/${path}`
+        this.imgWidth = this.canvas.width/4
+        this.imgHeight = this.imgWidth * .66
 
+        this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
+
+        this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
     }
 
     recalculateBounds() {
-        this.bottomLimitOfText = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin
+        this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
+        this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
+        this.imgWidth = this.canvas.width / 4
+        this.imgHeight = this.imgWidth * .66
     }
 
     coreloop() {
         this.ctx.fillStyle = `rgba(0,0,0,.9)`;
         this.ctx.fillRect(this.textBoxOuterMargin, this.textBoxOuterMargin, this.canvas.width - this.textBoxOuterMargin * 2, this.canvas.height - this.textBoxOuterMargin * 2)
-
+        this.ctx.drawImage(this.img, (this.canvas.width/2) - (this.imgWidth/2), this.topPlacementOfImage, this.imgWidth, this.imgHeight)
         this.textParser()
         this.recalculateBounds()
         this.totalLines = 1
@@ -53,10 +63,22 @@ export default class TextBox {
                 checkSent += word
 
                 if (this.ctx.measureText(checkSent).width > this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2) || i === textArr.length - 1) {
-                    //wow...
-                    if (this.ctx.measureText(checkSent).fontBoundingBoxAscent + this.startTextAtY + (this.leading * this.totalLines) > this.bottomLimitOfText) {
-                        this.font -= 2
-                        this.leading -= 5
+                    this.ctx.fillStyle = 'rgba(255,0,0,.3)';
+
+                    let bottomPosOfText = this.ctx.measureText(checkSent).actualBoundingBoxDescent + this.startTextAtY + (this.leading * (this.totalLines))
+
+
+                    this.ctx.fillStyle = 'rgba(0,255,255,.3)';
+                    this.ctx.fillRect(0, bottomPosOfText, this.canvas.width, 1)
+
+
+                    this.ctx.fillStyle = 'rgba(255,255,255,1)';
+
+                    if (bottomPosOfText > this.bottomLimitOfText) {
+                        this.font -= 1
+                        this.leading -= 2.5
+                        this.indexTracker = 0
+                        break
                     }
 
 
@@ -64,7 +86,7 @@ export default class TextBox {
                     if (i === textArr.length - 1 && this.ctx.measureText(checkSent + word).width < this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2)) {
                         printSent += word
                     } else {
-                        this.ctx.fillText(word, this.startTextAtX + this.textBoxInnerMargin, this.startTextAtY + this.leading * (this.totalLines + 1))
+                        this.ctx.fillText(word, this.startTextAtX + this.textBoxInnerMargin, this.startTextAtY  + this.leading * (this.totalLines + 1))
                     }
 
 
@@ -76,9 +98,9 @@ export default class TextBox {
 
                     if (i === textArr.length - 1) {
                         this.indexTracker = i + 1
-                        if (this.ctx.measureText(checkSent).fontBoundingBoxAscent + this.startTextAtY + (this.leading * this.totalLines) < this.canvas.height * .6) {
-                            this.font += 2
-                            this.leading += 5
+                        if (bottomPosOfText < this.bottomLimitOfText - this.textBoxInnerMargin * 3) {
+                            this.font += 1
+                            this.leading += 2.5
                         }
                     } else {
                         this.indexTracker = i
