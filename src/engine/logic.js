@@ -44,13 +44,13 @@ export default class Logic {
             "Jellyfish": new TextBox(ctx, canvas, view, this, "jellyfish", "Several species of jellyfish can be found in the Pacific kelp forest, including the lion's mane jellyfish (Cyanea capillata) and the moon jellyfish (Aurelia aurita). These cnidarians are well-adapted to life in the ocean, with their gelatinous bodies and trailing tentacles. While they may seem harmless, some jellyfish species in the kelp forest can deliver a painful sting to humans, making it important to observe them from a safe distance. Despite their somewhat fearsome reputation, jellyfish play a crucial role in the kelp forest ecosystem, feeding on small planktonic organisms and providing food for larger predators such as sea turtles and birds. The moon jellyfish is particularly interesting, as it has a unique way of navigating the ocean - it can sense the Earth's magnetic field and use it to orient itself in the water.", "jellyfish.jpeg"),
             "Otter": new TextBox(ctx, canvas, view, this, "Otter", "The sea otter (Enhydra lutris) is a crucial player in maintaining the health of the kelp forest. These adorable creatures are known for their love of shellfish, which they crack open with rocks using their impressive dexterity. Sea otters also play an important role in keeping the kelp forests healthy. They feed on sea urchins, which can overgraze kelp if left unchecked. Sea otters are one of the few animals that use tools, and they have even been known to hold hands while sleeping to keep from drifting away from each other. Sadly, sea otters were hunted to near extinction for their fur in the 18th and 19th centuries, but conservation efforts have helped their populations rebound in some areas.", "sea_otter.webp"),
             
-            "Crab": false,
-            "Rock": false,
-            "Shark": false,
-            "Turtle": false,
-            "Sea Urchin": false,
-            "Fish Egg": false,
-            "Corpse": false,
+            "Crab": new TextBox(ctx, canvas, view, this, "Crab", "Crabs are a common sight in the Pacific kelp forest, where they play an important role in the ecosystem. One of the most well-known species is the Dungeness crab (Metacarcinus magister), which is prized by humans for its sweet, tender meat. Dungeness crabs can be found in shallow waters and prefer to feed on small fish and crustaceans, but will also eat kelp and other algae if food is scarce. Another common species is the graceful kelp crab (Pugettia gracilis), which is named for its slender legs and preference for living among the kelp fronds. These crabs are expert at camouflaging themselves among the kelp, making them difficult to spot. Crabs are important predators in the kelp forest, helping to control the populations of smaller invertebrates, and are themselves preyed upon by larger predators such as sea otters and seals.", "crab.jpeg"),
+            "Rock": new TextBox(ctx, canvas, view, this, "Rock", "Congratulations, you clicked on a rock. This was very insightful and brave. Most people would just ignore the rock and say “no reason to click on any rocks.” Not you. You’ll click on rocks all day. No stone left unturned, as your dad used to say.", "rock.jpeg"),
+            "Shark": new TextBox(ctx, canvas, view, this, "", "", ""),
+            "Turtle": new TextBox(ctx, canvas, view, this, "", "", ""),
+            "Sea Urchin": new TextBox(ctx, canvas, view, this, "", "", ""),
+            "Fish Egg": new TextBox(ctx, canvas, view, this, "", "", ""),
+            "Corpse": new TextBox(ctx, canvas, view, this, "", "", ""),
         }
 
         this.fishCount = 8
