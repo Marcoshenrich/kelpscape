@@ -60,7 +60,7 @@ canvas.addEventListener("touchstart", (e)=>{
             pilot.view.textBox = textBox
             pilot.view.logic.scoreTrackObj[textBox.type] = true
         }
-        pilot.collisionArr = `${touch.clientX},${touch.clientY}`
+        pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
 });
 

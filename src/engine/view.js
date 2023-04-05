@@ -68,7 +68,8 @@ export default class View {
 
         this.introFader = 1
 
-        this.textBox = null
+        // this.textBox = null
+        this.textBox = this.logic.textContentObj["Fish"]
 
 
 
