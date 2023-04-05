@@ -4,13 +4,14 @@ import Input from "./input"
 
 export default class View {
 
-    constructor(canvas) {
+    constructor(canvas, mobile) {
         this.canvas = canvas
+        this.mobile = !!mobile
         this.ctx = canvas.getContext('2d')
         this.background = new Image()
         this.background.src = './dist/art/background.jpeg'
 
-        this.arenaHeight = this.canvas.height * 2
+        this.arenaHeight = Math.max(this.window.height, 1300)
         this.arenaWidth = this.arenaHeight * 1.5
         // this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.backgroundPos = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
