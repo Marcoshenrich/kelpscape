@@ -39,18 +39,18 @@ export default class View {
             this.logic.seaUrchins
         ]
         
-        this.allDenizensinQuadArr = [
-            this.logic.fishes, 
-            this.logic.fishBabies, 
-            this.logic.algae, 
-            this.logic.eggs, 
-            this.logic.sharks, 
-            this.logic.effects, 
-            this.logic.crabs, 
-            this.logic.deadCreatures, 
-            this.logic.jellyfish, 
-            this.logic.seaUrchins
-        ]
+        // this.allDenizensinQuadArr = [
+        //     this.logic.fishes, 
+        //     this.logic.fishBabies, 
+        //     this.logic.algae, 
+        //     this.logic.eggs, 
+        //     this.logic.sharks, 
+        //     this.logic.effects, 
+        //     this.logic.crabs, 
+        //     this.logic.deadCreatures, 
+        //     this.logic.jellyfish, 
+        //     this.logic.seaUrchins
+        // ]
 
         this.bounds = new Rectangle(0, 0, this.arenaWidth, this.arenaHeight)
         this.quadtree = {}
@@ -70,7 +70,7 @@ export default class View {
 
     populateQuad() {
         this.quadtree = new Quadtree(this.bounds, 6, this);
-        this.allDenizensinQuadArr.forEach((denizenObj)=>{
+        this.allDenizensArr.forEach((denizenObj)=>{
             Object.values(denizenObj).forEach((denizen) => {
                 this.quadtree.insert(denizen)
             })
@@ -83,7 +83,7 @@ export default class View {
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile test 11", this.canvas.width / 2, this.canvas.height / 2)
+        this.ctx.fillText("mobile test 12", this.canvas.width / 2, this.canvas.height / 2)
 
     }
 
