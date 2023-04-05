@@ -16,7 +16,7 @@ export default class TextBox {
         this.totalLines = 1
 
         this.textBoxInnerMargin = 25
-        this.textBoxOuterMargin = 100
+        this.textBoxOuterMargin = Math.floor(this.canvas.width/12)
 
         this.font = 24
 
