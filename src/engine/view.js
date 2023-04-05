@@ -11,7 +11,7 @@ export default class View {
         this.background = new Image()
         this.background.src = './dist/art/background.jpeg'
 
-        this.arenaHeight = Math.max(window.innerHeight, 1300)
+        this.arenaHeight = Math.max(window.innerHeight, 1700)
         this.arenaWidth = this.arenaHeight * 1.5
         // this.backgroundPos = [-this.arenaWidth/3, -this.arenaHeight/3]
         this.backgroundPos = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
@@ -82,12 +82,11 @@ export default class View {
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
         this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile test 8", this.canvas.width / 2, this.canvas.height / 2)
+        this.ctx.fillText("mobile test 9", this.canvas.width / 2, this.canvas.height / 2)
 
     }
 
     drawInfoText() {
-        
         if (this.textBox) this.textBox.coreloop()
     }
 
