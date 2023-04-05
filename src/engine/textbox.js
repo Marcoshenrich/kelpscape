@@ -9,14 +9,16 @@ export default class TextBox {
         this.type = type
         this.text = text
 
-        this.startTextAtX = 100
-        this.startTextAtY = 100
         this.leading = 50
         this.indexTracker = 0
-        this.totalLines = 1
-
+        this.totalLines = 0
+        
         this.textBoxInnerMargin = 25
         this.textBoxOuterMargin = Math.floor(this.canvas.width/12)
+
+        this.startTextAtX = this.textBoxOuterMargin + this.textBoxInnerMargin
+        this.startHeaderAtY = this.startTextAtX
+        this.startTextAtY = this.ctx.measureText(this.type).actualBoundingBoxDescent + this.textBoxInnerMargin
 
         this.font = 24
 
@@ -29,19 +31,37 @@ export default class TextBox {
         this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
 
         this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
+        this.rightLimitOfText = this.canvas.width - this.textBoxInnerMargin - this.textBoxOuterMargin
     }
 
     recalculateBounds() {
         this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
+        this.rightLimitOfText = this.canvas.width - this.textBoxInnerMargin - this.textBoxOuterMargin
         this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
         this.imgWidth = this.canvas.width / 4
         this.imgHeight = this.imgWidth * .66
+        this.startTextAtX = this.textBoxOuterMargin + this.textBoxInnerMargin
+        this.startHeaderAtY = this.startTextAtX + 15
+        this.startTextAtY = this.ctx.measureText(this.type).actualBoundingBoxDescent + this.textBoxInnerMargin/2 + this.startHeaderAtY
     }
 
     coreloop() {
-        this.ctx.fillStyle = `rgba(0,0,0,.9)`;
+        this.ctx.fillStyle = `rgba(0,64,100,.8)`;
         this.ctx.fillRect(this.textBoxOuterMargin, this.textBoxOuterMargin, this.canvas.width - this.textBoxOuterMargin * 2, this.canvas.height - this.textBoxOuterMargin * 2)
         this.ctx.drawImage(this.img, (this.canvas.width/2) - (this.imgWidth/2), this.topPlacementOfImage, this.imgWidth, this.imgHeight)
+       
+
+        this.ctx.measureText(this.type).width
+
+
+
+        this.ctx.fillStyle = `rgba(234,221,212,1)`;
+        this.ctx.font = `${this.font * 1.4}px serif`;
+
+
+        this.ctx.fillText(this.type, (this.canvas.width / 2) - (this.ctx.measureText(this.type).width / 2), this.startHeaderAtY)
+
+
         this.textParser()
         this.recalculateBounds()
         this.totalLines = 1
@@ -52,10 +72,7 @@ export default class TextBox {
         let textArr = this.text.split(" ")
         let printSent = ""
         let checkSent = ""
-
-        this.ctx.fillStyle = `rgba(255,255,255,1)`;
         this.ctx.font = `${this.font}px serif`;
-
 
         while (this.indexTracker < textArr.length) {
 
@@ -63,7 +80,11 @@ export default class TextBox {
                 let word = textArr[i]
                 checkSent += word
 
-                if (this.ctx.measureText(checkSent).width > this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2) || i === textArr.length - 1) {
+                // this.ctx.fillRect(this.rightLimitOfText, 0, 1, this.canvas.height)
+                // this.ctx.fillRect(0, this.startTextAtY, this.canvas.width, 1)
+
+
+                if (this.startTextAtX + this.ctx.measureText(checkSent).width > this.rightLimitOfText || i === textArr.length - 1) {
 
                     let bottomPosOfText = this.ctx.measureText(checkSent).actualBoundingBoxDescent + this.startTextAtY + (this.leading * (this.totalLines))
 
@@ -77,11 +98,11 @@ export default class TextBox {
                     if (i === textArr.length - 1 && this.ctx.measureText(checkSent + word).width < this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2)) {
                         printSent += word
                     } else {
-                        this.ctx.fillText(word, this.startTextAtX + this.textBoxInnerMargin, this.startTextAtY  + this.leading * (this.totalLines + 1))
+                        this.ctx.fillText(word, this.startTextAtX, this.startTextAtY  + this.leading * (this.totalLines + 1))
                     }
 
 
-                    this.ctx.fillText(printSent, this.startTextAtX + this.textBoxInnerMargin, this.startTextAtY + this.leading * this.totalLines)
+                    this.ctx.fillText(printSent, this.startTextAtX, this.startTextAtY + (this.leading * this.totalLines))
                     this.totalLines += 1
 
                     printSent = ""
