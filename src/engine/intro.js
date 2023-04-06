@@ -15,7 +15,12 @@ export default class Intro {
         this.simStart = false
         this.fader = 0
 
+        this.sequenceStep = 0
+
         this.animate()
+        this.textFader = 1
+        this.fadeText = false
+        this.fadeTransitionSpeed = .008
 
     }
 
@@ -23,10 +28,61 @@ export default class Intro {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
         this.updatePos()
         this.drawDynamicBackground()
-        this.ctx.fillStyle = `rgba(0,0,0,1)`
-        this.ctx.font = "25px Georgia";
-        this.drawTitle("kelpscape")
+        this.drawIntroSequence()
         if (this.simTransition) this.simStarter()
+    }
+
+    drawIntroSequence() {
+        if (this.sequenceStep === 0) {
+            this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
+            this.ctx.font = "42px Georgia";
+            this.drawText("Start", true)
+            
+
+        } else if(this.sequenceStep === 1) {
+            this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
+            this.ctx.font = "42px Georgia";
+            this.drawText("Start",true)
+
+            if (this.fadeText) {
+                this.textFader -= this.fadeTransitionSpeed
+            } else {
+                this.textFader += this.fadeTransitionSpeed
+            }
+
+
+            if (this.textFader < 0) {
+                this.sequenceStep++
+            }
+        } else if (this.sequenceStep === 2) {
+            this.ctx.font = "42px Georgia";
+            this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
+            this.ctx.fillText("Pacific Kelp Forests stretch from Baja California,", 100, 100);
+            this.ctx.fillText("up through the bering sea,", 100, 150);
+            this.ctx.fillText("down to the southern coast of Japan.", 100, 200);
+
+            if (this.textFader > 1) {
+                this.fadeText = true
+            }
+
+            if (this.fadeText) {
+                this.textFader -= this.fadeTransitionSpeed
+            } else {
+                this.textFader += this.fadeTransitionSpeed
+            }
+
+        } else if (this.sequenceStep === 3) {
+
+        } else if (this.sequenceStep === 3) {
+
+        } else if (this.sequenceStep === 4) {
+            
+        } else if (this.sequenceStep === 5) {
+
+        } else if (this.sequenceStep === 6) {
+
+        }
+
     }
 
     simStarter() {
@@ -40,7 +96,7 @@ export default class Intro {
         this.looptracker += .5
     }
 
-    drawTitle(text) {
+    drawText(text, triangleBool) {
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
 
@@ -50,11 +106,14 @@ export default class Intro {
         const x = centerX - (textWidth / 2);
         const y = centerY + (textHeight / 2);
 
-        this.ctx.beginPath();
-        this.ctx.moveTo(centerX + 25, centerY + 50);
-        this.ctx.lineTo(centerX - 25, centerY + 25);
-        this.ctx.lineTo(centerX - 25, centerY + 75);
-        this.ctx.fill();
+        if (triangleBool) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(centerX + 25, centerY + 50);
+            this.ctx.lineTo(centerX - 25, centerY + 25);
+            this.ctx.lineTo(centerX - 25, centerY + 75);
+            this.ctx.fill();
+        }
+
 
         this.ctx.fillText(text, x, y);
     }

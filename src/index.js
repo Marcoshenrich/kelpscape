@@ -26,6 +26,8 @@ let pilot = new Pilot(canvas, mobileDetector())
 //w: 980
 //h: 1793
 
+
+
 canvas.addEventListener("mousedown", (e) => {
     e.preventDefault()
     pilot.view.input.mouseIsDownAt = [e.x, e.y]
@@ -96,6 +98,11 @@ canvas.addEventListener("click", (e) => {
             pilot.view.logic.scoreTrackObj[textBox.type] = true
         }
     }
+
+    if (!pilot.kickOffScore) {
+        pilot.sound.playIntroScore()
+    }
+
 
 
     // if (pilot.intro) {
