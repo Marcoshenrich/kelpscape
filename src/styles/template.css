@@ -10,16 +10,29 @@ height: 100%;
 }
 
 #sound-button{
-    width: 60px;
-    height: 60px;
-    position: absolute;
-    font-size: 30px;
     top: 20px;
     right: 20px;
     background-color: lightgrey;
 }
 
+#github-button {
+    top: 100px;
+    right: 20px;
+    font-size: 50px;
+    background-color: lightcoral;
+}
+
+#linkedin-button {
+    top: 180px;
+    right: 20px;
+    font-size: 40px;
+    background-color: lightblue;
+}
+
 .float-button {
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
     margin-left: 10px;
     position: absolute;
     border-radius: 50%;
@@ -28,14 +41,18 @@ height: 100%;
     align-items: center;
     border: 1px solid black;
     box-shadow: 2px 2px 2px 2px rgb(0, 0, 0, .5);
-    font-size: 16px;
     transition: .5s width, .5s height;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-#sound-button:hover {
+.float-button:hover {
     cursor: pointer;
     width: 65px;
     height: 65px;
     transition: .5s width, .5s height;
+}
+
+a {
+    color: black;
+    text-decoration: none;
 }
