@@ -6,7 +6,8 @@ export default class Jellyfish extends Swimmer {
     constructor(id, ctx, canvas, view, logic){
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Jellyfish"]
-        this.id = "Jellyfish" + id
+        this.type = "Jellyfish"
+        this.id = this.type + id
         this.img = new Image()
         this.img.src = ['./dist/art/jelly1.png', './dist/art/jelly2.png'][rand(2)]
         this.height = 25

@@ -2,10 +2,11 @@ import Fish from "./fish";
 
 export default class Garabaldi extends Fish{
     constructor(id, ctx, canvas, view, logic, options) {
-        super(ctx, canvas, view, logic, { ...options, width: 25, height: 16, mouthSize : 8})
-        this.id = "Garabaldi" + id
-        this.leftImg.src = './dist/art/fishes/fishleft.png'
-        this.rightImg.src = './dist/art/fishes/fishright.png'
+        super(ctx, canvas, view, logic, { ...options, width: 30, height: 15, mouthSize : 8})
+        this.type = "Garabaldi"
+        this.id = this.type + id
+        this.leftImg.src = './dist/art/fishes/garabaldileft.png'
+        this.rightImg.src = './dist/art/fishes/garabaldiright.png'
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
         
         this.oldPos = this.pos

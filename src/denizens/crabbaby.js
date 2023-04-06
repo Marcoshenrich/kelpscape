@@ -6,7 +6,8 @@ export default class CrabBaby extends Crab {
 
     constructor(id, ctx, canvas, view, logic, pos) {
         super(id, ctx, canvas, view, logic)
-        this.id = "CrabBaby" + id
+        this.type = "CrabBaby"
+        this.id = this.type + id
         this.spawn = true
         this.img = new Image()
         this.img.src = './dist/art/crab.png'

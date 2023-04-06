@@ -7,7 +7,8 @@ export default class Shark extends Swimmer {
     constructor(id, ctx, canvas, view, logic, spawn) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Shark"]
-        this.id = "Shark" + id
+        this.type = "Shark"
+        this.id = this.type + id
 
         this.leftImg.src = './dist/art/sharkleft.png'
         this.rightImg.src = './dist/art/sharkright.png'

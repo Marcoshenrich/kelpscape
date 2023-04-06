@@ -4,15 +4,18 @@ import { rand } from "../engine/utils";
 
 
 export default class Seaweed extends Denizen {
-    constructor(id, ctx, canvas, view, logic, {pos}) {
+    constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Algae"]
-
-        this.id = id
+        this.cluster = options.cluster
+        this.numInCluster = id
+        this.type = "Seaweed"
+        this.id = "Cluster" + this.cluster.id + "Seaweed" + this.numInCluster
         this.width = 60 
         this.height = 80 
         this.sizeCoef = Math.floor(Math.random() * 15)
-        this.pos = [pos[0] + Math.floor(Math.random() * 10), (this.arenaHeight - this.height) - ((id - 1) * 25)]
+        this.pos = [options.pos[0] + Math.floor(Math.random() * 5) - 10, (this.arenaHeight - this.height) - ((id - 1) * 25)]
+
         // this.pos[0] = Math.floor(Math.random() * this.arenaWidth - this.width/2)
         // this.pos[1] = this.arenaHeight - this.height - Math.floor(Math.random() * 200)
 

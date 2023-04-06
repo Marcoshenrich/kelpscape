@@ -32,6 +32,21 @@ export default class TextBox {
 
         this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
         this.rightLimitOfText = this.canvas.width - this.textBoxInnerMargin - this.textBoxOuterMargin
+
+        this.textR = 234
+        this.textB = 221
+        this.textG = 212
+
+        this.textFader = 0
+        this.fadeInSpeed = .005
+    }
+
+    resetTextBox() {
+        this.leading = 50
+        this.indexTracker = 0
+        this.totalLines = 0
+        this.font = 24
+        this.textFader = 0
     }
 
     recalculateBounds() {
@@ -53,9 +68,8 @@ export default class TextBox {
 
         this.ctx.measureText(this.type).width
 
-
-
-        this.ctx.fillStyle = `rgba(234,221,212,1)`;
+        this.ctx.fillStyle = `rgba(${this.textR},${this.textB},${this.textG},${this.textFader})`;
+        if (this.textFader < 1) this.textFader += this.fadeInSpeed
         this.ctx.font = `${this.font * 1.4}px serif`;
 
 
@@ -97,7 +111,7 @@ export default class TextBox {
 
                     if (i === textArr.length - 1 && this.ctx.measureText(checkSent + word).width < this.canvas.width - (this.textBoxOuterMargin * 2) - (this.textBoxInnerMargin * 2)) {
                         printSent += word
-                    } else {
+                    } else if (i === textArr.length - 1) {
                         this.ctx.fillText(word, this.startTextAtX, this.startTextAtY  + this.leading * (this.totalLines + 1))
                     }
 

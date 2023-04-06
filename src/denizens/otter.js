@@ -7,7 +7,8 @@ export default class Otter extends Denizen{
     constructor(id, ctx, canvas, view, logic) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Otter"]
-        this.id = "Otter" + id
+        this.type = "Otter"
+        this.id = this.type + id
         this.ctx = ctx
         this.canvas = canvas
         this.view = view

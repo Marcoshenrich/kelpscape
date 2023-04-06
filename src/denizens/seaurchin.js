@@ -5,7 +5,8 @@ export default class SeaUrchin extends Denizen {
     constructor(id, ctx, canvas, view, logic, parentPos) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Sea Urchin"]
-        this.id = "SeaUrchin" + id
+        this.type = "SeaUrchin"
+        this.id = this.type + id
         this.img = new Image()
         this.img.src = './dist/art/sea_urchin.png'
 

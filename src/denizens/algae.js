@@ -1,14 +1,17 @@
 import TextBox from "../engine/textbox"
+import { rand } from "../engine/utils"
 import Floater from "./floater"
-
 
 export default class Algae extends Floater {
 
-    constructor(id, ctx, canvas, view, logic) {
+    constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Algae"]
 
-        this.id = "Algae" + id
+        this.clustersObj = options.clustersObj
+
+        this.type = "Algae"
+        this.id = this.type + id
         this.img = new Image()
         this.img.src = './dist/art/algae.png'
         this.height = 8
@@ -23,10 +26,18 @@ export default class Algae extends Floater {
 
     placer() {
         let pos = []
-        pos[0] = Math.floor(Math.random() * this.arenaWidth) - this.width
-        pos[1] = Math.floor(Math.random() * this.arenaHeight / 2) + (this.arenaHeight / 2) - this.height
+        let targetCluster = Object.values(this.clustersObj)[rand(Object.values(this.clustersObj).length)]
+        pos[0] = rand(targetCluster.pos[0], targetCluster.pos[0] + targetCluster.width)
+        pos[1] = rand(targetCluster.tallestPoint, this.arenaHeight)
         return pos
     }
+
+
+    coreloop() {
+        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.clustersObj = this.logic.seaweedClusters
+    }
+
 
     
 

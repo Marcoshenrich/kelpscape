@@ -6,12 +6,15 @@ import FishBaby from "./Fishes/fishbaby"
 import Shark from "./shark"
 import GarabaldiBaby from "./Fishes/garabaldiBaby"
 import Garabaldi from "./Fishes/garabaldi"
+import BassBaby from "./Fishes/bassBaby"
+import Bass from "./Fishes/bass"
 
 export default class DeadCreature extends Denizen {
     constructor(id, ctx, canvas, view, logic, pos, deadDenizen) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Corpse"]
-        this.id = "DeadCreature" + id
+        this.type = "DeadCreature"
+        this.id = this.type + id
         this.pos = [pos[0], pos[1]]
         this.driftSpeed = .2
         this.img = new Image()
@@ -56,14 +59,14 @@ export default class DeadCreature extends Denizen {
                 this.energyVal = 40
                 break
 
-            case GarabaldiBaby:
+            case GarabaldiBaby || BassBaby: // temp until new image can be found
                 this.img.src = './dist/art/fishdead.png'
                 this.width = 12
                 this.height = 8
                 this.energyVal = 5
                 break
 
-            case Garabaldi:
+            case Garabaldi || Bass:
                 this.img.src = './dist/art/fishdead.png'
                 this.width = 25
                 this.height = 15

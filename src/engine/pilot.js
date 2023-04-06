@@ -26,8 +26,8 @@ export default class Pilot {
         this.ctx.fillStyle = `rgba(255,255,255,1`;
         this.ctx.font = "25px Georgia";
 
-        this.ctx.fillText(`t: ${this.touch}`, 200, 200)
-        this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
+        // this.ctx.fillText(`t: ${this.touch}`, 200, 200)
+        // this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
         // this.ctx.fillText(`m: ${this.mobile}`, 200, 300)
 
 

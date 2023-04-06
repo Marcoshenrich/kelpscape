@@ -4,7 +4,8 @@ export default class Turtle extends Denizen {
     constructor(id, ctx, canvas, view, logic) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Turtle"]
-        this.id = "Turtle" + id
+        this.type = "Turtle"
+        this.id = this.type + id
         this.img = new Image()
         this.img.src = './dist/art/turtle.png'
         this.pos = [500,500]

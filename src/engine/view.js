@@ -20,22 +20,24 @@ export default class View {
         this.input = new Input(this)
 
 
-        this.seaweed = {}
-        Object.values(this.logic.seaweedClusters).forEach((cluster)=>{
-            Object.values(cluster.seaweed).forEach((seaweed) => {
-                this.seaweed[String(seaweed.id) + String(cluster.id) ] = seaweed
-            })
-        })
+        // this.seaweed = {}
+        // Object.values(this.logic.seaweedClusters).forEach((cluster)=>{
+        //     Object.values(cluster.seaweed).forEach((seaweed) => {
+        //         this.seaweed[String(seaweed.id) + String(cluster.id) ] = seaweed
+        //     })
+        // })
 
         this.allDenizensArr = [
             this.logic.garabaldi, 
             this.logic.garabaldiBabies, 
+            this.logic.bass,
+            this.logic.bassBabies,
             this.logic.algae, 
             this.logic.eggs, 
             this.logic.sharks, 
             this.logic.effects, 
             this.logic.turtles,
-            this.seaweed,
+            this.logic.seaweedClusters,
             this.logic.crabs, 
             this.logic.deadCreatures, 
             this.logic.crabBabies, 
@@ -68,8 +70,8 @@ export default class View {
 
         this.introFader = 1
 
-        // this.textBox = null
-        this.textBox = this.logic.textContentObj["Fish"]
+        this.textBox = null
+        // this.textBox = this.logic.textContentObj["Fish"]
 
 
 
