@@ -22,6 +22,26 @@ const mobileDetector = () => {
 let pilot = new Pilot(canvas, mobileDetector())
 
 
+const soundButton = document.getElementById('sound-button')
+
+
+soundButton.addEventListener("click", (e) => {
+    e.stopPropagation()
+
+    if (soundButton.classList[1] === "sound-on") {
+        soundButton.classList.remove("sound-on")
+        soundButton.classList.add("sound-off")
+        soundButton.innerHTML = `<i class="fa-solid fa-volume-xmark">`
+        pilot.sound.muteAllSounds()
+    } else {
+        soundButton.classList.remove("sound-off")
+        soundButton.classList.add("sound-on")
+        soundButton.innerHTML = `<i class="fa-solid fa-volume-high">`
+        pilot.sound.unmuteAllSounds()
+    }
+
+})
+
 //mobile size
 //w: 980
 //h: 1793
@@ -100,7 +120,7 @@ canvas.addEventListener("click", (e) => {
     }
 
     if (!pilot.kickOffScore) {
-        // pilot.sound.playIntroScore()
+        pilot.sound.playIntroScore()
         pilot.intro.sequenceStep = 1
     }
 
