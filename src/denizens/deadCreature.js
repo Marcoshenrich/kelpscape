@@ -1,8 +1,8 @@
 import Denizen from "./denizen"
 import CrabBaby from "./crabbaby"
 import Crab from "./crab"
-import Fish from "./fish"
-import FishBaby from "./fishbaby"
+import Fish from "./Fishes/fish"
+import FishBaby from "./Fishes/fishbaby"
 import Shark from "./shark"
 
 export default class DeadCreature extends Denizen {

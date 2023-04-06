@@ -46,7 +46,7 @@ export default class TextBox {
     }
 
     coreloop() {
-        this.ctx.fillStyle = `rgba(0,64,100,.8)`;
+        this.ctx.fillStyle = `rgba(0,64,100,.85)`;
         this.ctx.fillRect(this.textBoxOuterMargin, this.textBoxOuterMargin, this.canvas.width - this.textBoxOuterMargin * 2, this.canvas.height - this.textBoxOuterMargin * 2)
         this.ctx.drawImage(this.img, (this.canvas.width/2) - (this.imgWidth/2), this.topPlacementOfImage, this.imgWidth, this.imgHeight)
        

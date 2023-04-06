@@ -1,49 +1,29 @@
 import Fishegg from "./fishegg"
-import Swimmer from "./swimmer"
-import TextBox from "../engine/textbox"
+import Swimmer from "../swimmer"
+import TextBox from "../../engine/textbox"
 
 
 export default class Fish extends Swimmer {
 
-    constructor(id, ctx, canvas, view, logic, pos) {
+    constructor(ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Fish"]
         this.spawn = false
         this.id = "Fish" + id
-        this.leftImg.src = './dist/art/fishleft.png'
-        this.rightImg.src = './dist/art/fishright.png'
-        this.speed = (Math.floor(Math.random() * 5) + 1) / 10
-        this.width = 25
-        this.height = 16
-        this.pos = pos || this.placer()
-        this.oldPos = this.pos
-        this.mouthSize = 8
+ 
         this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
 
-        this.maxEnergy = 20
-        this.energy = this.maxEnergy
+        this.pos = options.pos || this.placer()
 
         this.fadeThreshold = 7
 
-        this.energyUseCoef = .005
-        this.matingThreshold = 15
-        this.matingEnergyCost = 5
-        this.maxSpeed = .6
-
-        this.energyVal = 20
-
         this.mating = false
-        this.mateThreshold = 10
-
         this.seekingMate = false
-
         this.foodEaten = 0
-        this.eatFoodThreshold = 15
-        this.huntingThreshold = 7
 
         this.hunting = false
         this.nearestFoodCords = []

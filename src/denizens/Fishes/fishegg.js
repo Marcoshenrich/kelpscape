@@ -1,16 +1,16 @@
 
-import Floater from "./floater"
-import { rand, miniRandomizer } from "../engine/utils"
+import Floater from "../floater"
+import { rand, miniRandomizer } from "../../engine/utils"
 import FishBaby from "./fishbaby"
 
 export default class Fishegg extends Floater {
 
-    constructor(id, ctx, canvas, view, logic, pos) {
+    constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Fish Egg"]
         this.id = "Fishegg" + id
         this.pos = [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()]
-
+        this.parent = options.parent
         this.img = new Image()
         this.img.src = './dist/art/fishEggs.png'
         this.spawn()
