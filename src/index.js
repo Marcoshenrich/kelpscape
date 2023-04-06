@@ -100,7 +100,8 @@ canvas.addEventListener("click", (e) => {
     }
 
     if (!pilot.kickOffScore) {
-        pilot.sound.playIntroScore()
+        // pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
     }
 
 

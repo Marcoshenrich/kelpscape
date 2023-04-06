@@ -7,7 +7,7 @@ export default class Sound {
 
     allSoundsObj() {
         return {
-            // intro: { clip: new Audio("./dist/sounds/soundtrack/intro.mp3"), volumePreset: .2 },
+            intro: { clip: new Audio("./dist/sounds/soundtrack/intro.mp3"), volumePreset: .2 },
         }
     }
 
