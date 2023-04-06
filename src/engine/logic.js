@@ -54,8 +54,8 @@ export default class Logic {
             "Corpse": new TextBox(ctx, canvas, view, this, "Corpse", "Death is an inevitable part of life in the Pacific kelp forest, and the corpses of the denizens of this underwater world play an important role in sustaining the ecosystem. When a fish or other animal dies, its body sinks to the ocean floor, where it becomes a feast for scavengers like crabs and sea stars. As the corpse decomposes, it releases nutrients into the water, which are absorbed by algae and other plants in the kelp forest. This process, known as nutrient cycling, helps to maintain the health and productivity of the ecosystem. In addition to providing nutrients, dead organisms can also create new habitats for other creatures. For example, the hollow shells of dead snails and clams can provide shelter for small fish and invertebrates. While death may seem like a grim topic, it is an essential part of the natural cycle of life in the Pacific kelp forest.", "corpse.jpeg"),
         }
 
-        this.garabaldiCount = 10
-        this.garabaldiBabyCount =  10
+        this.garabaldiCount = 40
+        this.garabaldiBabyCount =  40
 
 
         this.bassCount = 10
@@ -84,7 +84,7 @@ export default class Logic {
 
         this.algae = this.tankPopulator(this.algaeCount, Algae)
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
-        this.eggs = this.tankPopulator(this.eggCount, Fishegg)
+        this.eggs = this.tankPopulator(this.eggCount, Fishegg, {})
         this.effects = this.tankPopulator(this.effectCount, Effect)
         this.turtles = this.tankPopulator(this.turtleCount, Turtle)
         this.seaUrchins = this.tankPopulator(this.seaUrchinCount, SeaUrchin)
@@ -129,8 +129,7 @@ export default class Logic {
                 this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: Garabaldi })
                 break
             case Fishegg:
-                this.fishBabyCount += 1
-                this.fishBabies["FishBaby" + this.fishBabyCount] = new FishBaby(this.fishBabyCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
+                this.spawnDenizenFish(parentDenizen)
                 break
             case GarabaldiBaby:
                 this.garabaldiCount += 1
@@ -152,10 +151,11 @@ export default class Logic {
     }
 
     spawnDenizenFish(parentDenizen) {
-        switch (parentDenizen.constructor) {
-            case Fishegg:
-                this.fishBabyCount += 1
-                this.fishBabies["FishBaby" + this.fishBabyCount] = new FishBaby(this.fishBabyCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
+        switch (parentDenizen.parent) {
+            case Garabaldi:
+                this.garabaldiBabyCount += 1
+                this.garabaldiBabies["GarabaldiBaby" + this.garabaldiBabyCount] = new GarabaldiBaby(this.garabaldiBabyCount, this.ctx, this.canvas, this.view, this, {pos:[Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])]})
+                break
         }
     }
 

@@ -9,7 +9,7 @@ export default class Fishegg extends Floater {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Fish Egg"]
         this.id = "Fishegg" + id
-        this.pos = [pos[0] + miniRandomizer(), pos[1] + miniRandomizer()]
+        this.pos = [options.pos[0] + miniRandomizer(), options.pos[1] + miniRandomizer()]
         this.parent = options.parent
         this.img = new Image()
         this.img.src = './dist/art/fishEggs.png'
@@ -28,8 +28,6 @@ export default class Fishegg extends Floater {
             this.logic.recentlyDeadDenizens.push(this)
             if (this.trapped) return
             this.logic.spawnDenizen(this)
-            this.logic.fishBabyCount += 1
-            this.logic.fishBabies["FishBaby" + this.logic.fishBabyCount] = new FishBaby(this.logic.fishBabyCount, this.ctx, this.canvas, this.view, this.logic, [this.pos[0], this.pos[1]])
         },rand(15000,25000))
 
         this.clearOnDeath.push(timerId)

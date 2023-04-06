@@ -28,8 +28,8 @@ export default class View {
         })
 
         this.allDenizensArr = [
-            this.logic.fishes, 
-            this.logic.fishBabies, 
+            this.logic.garabaldi, 
+            this.logic.garabaldiBabies, 
             this.logic.algae, 
             this.logic.eggs, 
             this.logic.sharks, 
@@ -140,57 +140,57 @@ export default class View {
 
     captureEcosystemGraphData() { 
 
-        if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
+        // if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
 
-        let totalDenizens = Object.values(this.logic.algae).length + Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length + Object.values(this.logic.crabs).length + + Object.values(this.logic.crabBabies).length
-        const graphData = {
-            totalDenizens,
-            algaeRatio: (Object.values(this.logic.algae).length / totalDenizens),
-            fishRatio: (Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length) / totalDenizens,
-            crabRatio: (Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length) / totalDenizens
-        }
+        // let totalDenizens = Object.values(this.logic.algae).length + Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length + Object.values(this.logic.crabs).length + + Object.values(this.logic.crabBabies).length
+        // const graphData = {
+        //     totalDenizens,
+        //     algaeRatio: (Object.values(this.logic.algae).length / totalDenizens),
+        //     fishRatio: (Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length) / totalDenizens,
+        //     crabRatio: (Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length) / totalDenizens
+        // }
         
-        this.ecosystemGraphData.push(graphData)
+        // this.ecosystemGraphData.push(graphData)
         
     }
 
     drawEcosystemGraph() {
-        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
-        this.ctx.fillRect(this.canvas.width - 220, 10, 202, 220) 
+        // this.ctx.fillStyle = 'rgba(0,0,0,.3)';
+        // this.ctx.fillRect(this.canvas.width - 220, 10, 202, 220) 
 
-        for (let i = 0; i < this.ecosystemGraphData.length; i++) {
-            let { algaeRatio, fishRatio, crabRatio } = this.ecosystemGraphData[i]
-            let nextStartHeight = 10
+        // for (let i = 0; i < this.ecosystemGraphData.length; i++) {
+        //     let { algaeRatio, fishRatio, crabRatio } = this.ecosystemGraphData[i]
+        //     let nextStartHeight = 10
 
-            this.ctx.fillStyle = 'rgba(0,255,0,.1)';
-            nextStartHeight += this.drawEcoLine(i, nextStartHeight, algaeRatio)
+        //     this.ctx.fillStyle = 'rgba(0,255,0,.1)';
+        //     nextStartHeight += this.drawEcoLine(i, nextStartHeight, algaeRatio)
 
-            this.ctx.fillStyle = 'rgba(0,255,255,.1)';
-            nextStartHeight += this.drawEcoLine(i, nextStartHeight, fishRatio)
+        //     this.ctx.fillStyle = 'rgba(0,255,255,.1)';
+        //     nextStartHeight += this.drawEcoLine(i, nextStartHeight, fishRatio)
 
-            this.ctx.fillStyle = 'rgba(255,0,0,.1)';
-            nextStartHeight += this.drawEcoLine(i, nextStartHeight, crabRatio)
-        }
+        //     this.ctx.fillStyle = 'rgba(255,0,0,.1)';
+        //     nextStartHeight += this.drawEcoLine(i, nextStartHeight, crabRatio)
+        // }
     }
 
     drawEcoLine(i, nextStartHeight, ratio) {
-        this.ctx.fillRect(this.canvas.width - 220 + (i * 2), nextStartHeight, 2, 220 * ratio)
-        return 220 * ratio
+        // this.ctx.fillRect(this.canvas.width - 220 + (i * 2), nextStartHeight, 2, 220 * ratio)
+        // return 220 * ratio
     }
 
     drawTextBox() {
-        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
-        this.ctx.fillRect(10, 10, 150, 250)
+        // this.ctx.fillStyle = 'rgba(0,0,0,.3)';
+        // this.ctx.fillRect(10, 10, 150, 250)
 
-        this.ctx.fillStyle = 'rgba(250,110,0,1)';
-        this.ctx.font = "24px serif";
-        this.ctx.fillText(`Algae: ${Object.values(this.logic.algae).length}`, 25, 50)
-        this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length}`, 25, 80)
-        this.ctx.fillText(`Eggs: ${Object.values(this.logic.eggs).length}`, 25, 110)
-        this.ctx.fillText(`Sharks: ${Object.values(this.logic.sharks).length}`, 25, 140)
-        this.ctx.fillText(`Crabs: ${Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length}`, 25, 170)
-        this.ctx.fillText(`Jellies: ${Object.values(this.logic.jellyfish).length}`, 25, 200)
-        this.ctx.fillText(`Corpses: ${Object.values(this.logic.deadCreatures).length}`, 25, 230)
+        // this.ctx.fillStyle = 'rgba(250,110,0,1)';
+        // this.ctx.font = "24px serif";
+        // this.ctx.fillText(`Algae: ${Object.values(this.logic.algae).length}`, 25, 50)
+        // this.ctx.fillText(`Fishes: ${Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length}`, 25, 80)
+        // this.ctx.fillText(`Eggs: ${Object.values(this.logic.eggs).length}`, 25, 110)
+        // this.ctx.fillText(`Sharks: ${Object.values(this.logic.sharks).length}`, 25, 140)
+        // this.ctx.fillText(`Crabs: ${Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length}`, 25, 170)
+        // this.ctx.fillText(`Jellies: ${Object.values(this.logic.jellyfish).length}`, 25, 200)
+        // this.ctx.fillText(`Corpses: ${Object.values(this.logic.deadCreatures).length}`, 25, 230)
 
     }
 

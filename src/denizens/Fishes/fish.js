@@ -9,13 +9,16 @@ export default class Fish extends Swimmer {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Fish"]
         this.spawn = false
-        this.id = "Fish" + id
  
-        this.mouthPos = this.mouthPlacer()
+        
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
+
+        this.width = options.width
+        this.height = options.height
+        this.mouthSize = options.mouthSize
 
         this.pos = options.pos || this.placer()
 
@@ -57,6 +60,7 @@ export default class Fish extends Swimmer {
         let pos = []
         pos[0] = Math.floor(Math.random() * (this.arenaWidth- this.width))
         pos[1] = Math.floor(Math.random() * (this.arenaHeight - this.height)) 
+        // console.log(pos)
         return pos
     }
 
