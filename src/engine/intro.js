@@ -103,7 +103,7 @@ export default class Intro {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             this.fontAndLeadingManager(this.ctx.measureText("Pacific Kelp Forests stretch from Baja California,").width)
             this.ctx.fillText("Pacific Kelp Forests stretch from Baja California,", this.textMargin, this.textMargin);
-            this.ctx.fillText("up through the bering sea,", this.textMargin, this.textMargin + this.leading);
+            this.ctx.fillText("up through the Bering Sea,", this.textMargin, this.textMargin + this.leading);
             this.ctx.fillText("down to the southern coast of Japan.", this.textMargin, this.textMargin + this.leading * 2);
             this.fadeManger()
         } else if (this.sequenceStep === 3) {
@@ -111,16 +111,16 @@ export default class Intro {
             this.ctx.font = `${this.fontSize}px Georgia`;
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             this.fontAndLeadingManager(this.ctx.measureText("and were once teeming with life.").width)
-            this.ctx.fillText("These massive marine ecosystems", this.textMargin, this.canvas.height - this.textMargin - this.leading * 2);
-            this.ctx.fillText("are home to hundreds of species", this.textMargin, this.canvas.height - this.textMargin - this.leading);
-            this.ctx.fillText("and were once teeming with life.", this.textMargin, this.canvas.height - this.textMargin);
+            this.ctx.fillText("These massive marine ecosystems", this.textMargin, this.textMargin);
+            this.ctx.fillText("are home to hundreds of species", this.textMargin, this.textMargin + this.leading);
+            this.ctx.fillText("and were once teeming with life.", this.textMargin, this.textMargin + this.leading * 2);
             this.fadeManger()
 
         } else if (this.sequenceStep === 4) {
             this.ctx.font = `${this.fontSize}px Georgia`;
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             const line1Width = this.ctx.measureText("Today, climate change and overfishing").width
-            const line2Width = this.ctx.measureText("threatens these incredible biospheres.").width
+            const line2Width = this.ctx.measureText("threaten these incredible biospheres.").width
             const centerX = this.canvas.width / 2
             const centerY = this.canvas.height / 2
             this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))

@@ -85,6 +85,11 @@ canvas.addEventListener("touchstart", (e)=>{
         }
         pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
+
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
 });
 
 canvas.addEventListener("touchmove", (e) => {
@@ -119,7 +124,7 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    if (!pilot.kickOffScore) {
+    if (!pilot.sound.kickOffIntroScore) {
         pilot.sound.playIntroScore()
         pilot.intro.sequenceStep = 1
     }
@@ -221,4 +226,19 @@ canvas.addEventListener("click", (e) => {
 window.addEventListener("resize", (e) => {
     canvas.height = e.currentTarget.innerHeight
     canvas.width = e.currentTarget.innerWidth
+    buttonHider(canvas.width)
 })
+
+
+const buttonHider = (width) => {
+    const gitButton = document.getElementById('github-button')
+    const linkButton = document.getElementById('linkedin-button')
+
+    if (width < 700) { // If media query matches
+        gitButton.classList.add("hide")
+        linkButton.classList.add("hide")
+    } else {
+        gitButton.classList.remove("hide")
+        linkButton.classList.remove("hide")
+    }
+}
