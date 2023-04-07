@@ -12,15 +12,46 @@ export default class Swimmer extends Denizen {
         this.recentlySwitchedDirections = false
         this.movementSwitchTimer()
         this.timeToSwitchMovement = false
+        this.dangerZone = [this.width + 10, this.arenaWidth - this.width - 10]
+        this.evaluateDangerZone = false
+        this.inDangerZone = false
+        this.escapingDangerZone = false
     }
 
     coreloop() {
-        this.move()
+        if (this.inDangerZone && this.escapingDangerZone) {
+            if (this.pos[0] < 0 + this.width) {
+                this.pos[0] += .3
+            } else {
+                this.pos[0] -= .3
+            }
+        } else {
+            this.move()
+        }
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
         if (this.dead && !(this.spawn && this.foodEaten === this.growUpThreshold)) this.logic.denizenCorpse(this)
         this.behaviorChanger()
+        this.dangerZoneProtocol()
+    }
+
+
+    dangerZoneProtocol() {
+        if (this.pos[0] < this.dangerZone[0] || this.pos[1] > this.dangerZone[1]) {
+            if (!this.inDangerZone) {
+                setTimeout(()=>{
+                    if (this.inDangerZone) this.escapingDangerZone = true
+                    setTimeout(() => {
+                        this.escapingDangerZone = false
+                    }, 1000)
+                }, 1000)
+
+                this.inDangerZone = true
+            }
+        } else {
+            this.inDangerZone = false
+        }
     }
 
 

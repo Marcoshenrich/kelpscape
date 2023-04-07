@@ -11,6 +11,11 @@ export default class Turtle extends Swimmer {
         this.rightImg.src = './dist/art/turtleright.png'
         this.img = this.imgSelector()
 
+        this.bobCoef = Math.floor(Math.random() * 10) + 4
+        this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
+        this.trackCoef = 0
+        this.up = [true, false][Math.floor(Math.random() * 2)]
+
         this.inArena = false
 
         this.maxEnergy = 20
@@ -73,17 +78,39 @@ export default class Turtle extends Swimmer {
         }
     }
 
+    debugger() {
+        this.ctx.fillStyle = 'rgba(255,225,225,1)';
+        this.ctx.font = "16px serif";
+        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+        this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30)
+    }
+
+    deleteTurtle() {
+        //delete turtle after leaving the arena
+    }
+
     coreloop() {
+        if (this.inDangerZone && this.escapingDangerZone) {
+            if (this.pos[0] < 0 + this.width) {
+                this.pos[0] += .3
+            } else {
+                this.pos[0] -= .3
+            }
+        }
+
+
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.speedModulator()
-        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] + 10)
+        this.debugger()
         if (this.timeToLeave) {
             this.enterArena()
+            this.deleteTurtle()
             return
         }
 
         if (this.inArena) {
             if (!this.eatingSeagrass) this.move()
+
         } else {
             this.enterArena()
         }
@@ -91,7 +118,8 @@ export default class Turtle extends Swimmer {
         this.consumeEnergy()
         if (this.hunting) this.consumeFood()
         this.behaviorChanger()
-
+        this.dangerZoneProtocol()
+        this.mouthPos = this.mouthPlacer()
         this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
     }
 
@@ -115,6 +143,7 @@ export default class Turtle extends Swimmer {
 
     consumeFood() {
         if (!this.eatingSeagrass || this.hunting.type !== "Seaweed") return
+        this.bob()
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
         this.hunting.energyVal -= this.consumptionRate
     }
@@ -122,5 +151,29 @@ export default class Turtle extends Swimmer {
     speedModulator() {
         this.speed -= .005
         if (this.speed < .2) this.speed = this.maxSpeed
+    }
+
+
+    bob() {
+
+        if (this.up) {
+            this.trackCoef -= this.bobSpeed
+            this.pos[1] -= this.bobSpeed
+        } else {
+            this.trackCoef += this.bobSpeed
+
+            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
+                this.pos[1] += this.bobSpeed
+            }
+        }
+
+        if (this.trackCoef > this.bobCoef) {
+            this.up = true
+        }
+
+        if (this.trackCoef < 0) {
+            this.up = false
+        }
+
     }
 }
