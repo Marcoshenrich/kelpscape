@@ -10,6 +10,16 @@ export default class SeaweedCluster {
         this.view = view
         this.logic = logic
 
+        this.animationStates = [
+            { name: "sway1", frames: 8},
+            { name: "sway2", frames: 8},
+            { name: "swish", frames: 8 },
+            { name: "swoosh", frames: 8 }
+        ];
+
+        this.animations = []
+        this.animationFramesSetter()
+
         this.width = 60
         this.pos = [Math.floor( Math.random() * this.view.arenaWidth -  this.width), 0]
         this.seaweedCount = options.start ? Math.floor(Math.random() * 15) + 10 : 1
@@ -66,7 +76,19 @@ export default class SeaweedCluster {
     }
 
     
-
+    animationFramesSetter() {
+        this.animationStates.forEach((spriteState,index) => {
+            let frames = {
+                loc: [],
+            }
+            for (let j = 0; j < spriteState.frames; j++) {
+                let positionX = (j * 25) + 17.5 + (35 * j)
+                let positionY = (index * 75) + 2.5 + (5 * index)
+                frames.loc.push({ x: positionX, y: positionY });
+            }
+            this.animations[spriteState.name] = frames;
+        });
+    }
 
  
 

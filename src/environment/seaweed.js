@@ -11,8 +11,8 @@ export default class Seaweed extends Denizen {
         this.numInCluster = id
         this.type = "Seaweed"
         this.id = "Cluster" + this.cluster.id + "Seaweed" + this.numInCluster
-        this.width = 60 
-        this.height = 80 
+        this.width = 25
+        this.height = 75
         this.sizeCoef = Math.floor(Math.random() * 15)
         this.pos = [options.pos[0] + Math.floor(Math.random() * 5) - 10, (this.arenaHeight - this.height) - ((id - 1) * 25)]
 
@@ -23,23 +23,16 @@ export default class Seaweed extends Denizen {
         this.img.src = './dist/art/seaweed.png'
         this.aniStateNames = ["sway1", "sway2", "swish", "swoosh"]
         this.animationState = this.aniStateNames[Math.floor(Math.random() * 2)]
-        this.animations = [];
+        this.animations = this.cluster.animations;
 
         //what if seaweed clusters could grow? and then be eaten by something over time.
 
         this.energyVal = 5
 
-        this.animationStates = [
-            { name: "sway1", frames: 8},
-            { name: "sway2", frames: 8},
-            { name: "swish", frames: 8 },
-            { name: "swoosh", frames: 8 }
-        ];
 
         this.gameFrame = Math.floor(Math.random() * 100)
         this.staggerFrame = 40
 
-        this.animationFramesSetter()
         this.placeUrchin()
     }
 
@@ -50,25 +43,18 @@ export default class Seaweed extends Denizen {
     }
 
 
-    animationFramesSetter() {
-        this.animationStates.forEach((spriteState,index) => {
-            let frames = {
-                loc: [],
-            }
-            for (let j = 0; j < spriteState.frames; j++) {
-                let positionX = j * this.width;
-                let positionY = index * this.height;
-                frames.loc.push({ x: positionX, y: positionY });
-            }
-            this.animations[spriteState.name] = frames;
-        });
-    }
+    // 60 120 180
+
+    // 17.5
+
+
+
 
     coreloop() {
 
-        let position = Math.floor((this.gameFrame / this.staggerFrame) % this.animations[this.animationState].loc.length)
-        let frameX = this.width * position;
-        let frameY = this.animations[this.animationState].loc[position].y
+        let position = Math.floor((this.gameFrame / this.staggerFrame) % this.cluster.animations[this.animationState].loc.length)
+        let frameX = this.cluster.animations[this.animationState].loc[position].x
+        let frameY = this.cluster.animations[this.animationState].loc[position].y
         this.ctx.drawImage(this.img, frameX, frameY, this.width, this.height, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width + this.sizeCoef, this.height + this.sizeCoef)
         this.gameFrame++
         if (this.energyVal < 0) {
@@ -76,11 +62,6 @@ export default class Seaweed extends Denizen {
             this.cluster.shrinkSeaweed()
         }
     }
-
-
-    
-
-    
 }
 
 
