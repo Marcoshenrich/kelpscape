@@ -86,10 +86,10 @@ canvas.addEventListener("touchstart", (e)=>{
         pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
 
-    // if (!pilot.sound.kickOffIntroScore) {
-    //     pilot.sound.playIntroScore()
-    //     pilot.intro.sequenceStep = 1
-    // }
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
 });
 
 canvas.addEventListener("touchmove", (e) => {
@@ -124,100 +124,11 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // if (!pilot.sound.kickOffIntroScore) {
-    //     pilot.sound.playIntroScore()
-    //     pilot.intro.sequenceStep = 1
-    // }
-
-
-
-    // if (pilot.intro) {
-    //     pilot.intro.simTransition = true
-    // } else {
-    // }
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
 })
-
-// canvas.addEventListener("touchmove", (e) => {
-//     let touch = e.touches[0];
-//     pilot.view.input.mouseIsDownAt = [e.clientX, e.clientY]
-//     let mouseEvent = new MouseEvent("mousemove", {
-//         x: touch.clientX,
-//         y: touch.clientY
-//     });
-//     canvas.dispatchEvent(mouseEvent);
-// }, false);
-
-// canvas.addEventListener("touchend", (e) => {
-//     pilot.view.input.mouseIsDownAt = false
-
-//     let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
-//     // if (pilot.intro) {
-//     //     pilot.intro.simTransition = true
-//     // } else {
-//     // }
-// })
-
-// canvas.addEventListener("touchstart", handleTouchStart, false);
-// canvas.addEventListener("touchmove", handleTouchMove, false);
-// canvas.addEventListener("touchend", handleTouchEnd, false);
-
-// function handleTouchStart(event) {
-//     // Get the touch coordinates
-//     var touchX = event.touches[0].clientX;
-//     var touchY = event.touches[0].clientY;
-
-//     // Convert touch coordinates to canvas coordinates
-//     var canvasX = touchX - canvas.offsetLeft;
-//     var canvasY = touchY - canvas.offsetTop;
-
-//     // Handle touch start event
-//     // ...
-// }
-
-
-
-// var isDragging = false;
-// var startX = 0;
-// var startY = 0;
-
-// function handleTouchStart(event) {
-//     // Get the touch coordinates
-//     var touchX = event.touches[0].clientX;
-//     var touchY = event.touches[0].clientY;
-
-//     // Convert touch coordinates to canvas coordinates
-//     var canvasX = touchX - canvas.offsetLeft;
-//     var canvasY = touchY - canvas.offsetTop;
-
-//     // Save the initial touch position and set the flag
-//     startX = canvasX;
-//     startY = canvasY;
-//     isDragging = true;
-// }
-
-
-
-
-
-
-// function handleTouchMove(event) {
-//     // Get the touch coordinates
-//     var touchX = event.touches[0].clientX;
-//     var touchY = event.touches[0].clientY;
-
-//     // Convert touch coordinates to canvas coordinates
-//     var canvasX = touchX - canvas.offsetLeft;
-//     var canvasY = touchY - canvas.offsetTop;
-
-//     // Handle touch move event
-//     // ...
-// }
-
-// function handleTouchEnd(event) {
-//     // Handle touch end event
-//     // ...
-// }
-
 
 
 
