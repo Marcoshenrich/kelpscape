@@ -27,7 +27,7 @@ export default class Algae extends Floater {
     placer() {
         let pos = []
         let targetCluster = Object.values(this.clustersObj)[rand(Object.values(this.clustersObj).length)]
-        pos[0] = rand(targetCluster.pos[0], targetCluster.pos[0] + targetCluster.width)
+        pos[0] = rand(targetCluster.pos[0] - targetCluster.width / 2, targetCluster.pos[0] + targetCluster.width/2)
         pos[1] = rand(targetCluster.tallestPoint, this.arenaHeight)
         return pos
     }

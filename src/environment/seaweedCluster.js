@@ -24,6 +24,7 @@ export default class SeaweedCluster {
         this.pos = [Math.floor( Math.random() * this.view.arenaWidth -  this.width), 0]
         this.seaweedCount = options.start ? Math.floor(Math.random() * 15) + 10 : 1
         this.growSeaweedInterval = 10000
+        // this.growSeaweedInterval = 5000
         this.maxHeight = 100
         this.seaweed = this.logic.tankPopulator(this.seaweedCount, Seaweed, {pos: this.pos, cluster: this})
         this.bounds = {}

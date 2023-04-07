@@ -88,7 +88,7 @@ export default class Quadtree {
         return foundDenizens;
     }
 
-    findOverlaps(range, type, opDenizen) {
+    queryRange(range, type, opDenizen,debugBool) {
         if (!opDenizen) console.log(range, type, opDenizen)
         const foundDenizens = [];
 
@@ -97,16 +97,15 @@ export default class Quadtree {
         }
 
         for (const denizen of this.denizens) {
-            if (opDenizen.id !== denizen.id && range[type](denizen)) {
+            if (opDenizen.id !== denizen.id && range[type](denizen, debugBool)) {
                 foundDenizens.push(denizen);
             }
         }
 
-
         for (const node of this.nodes) {
-            foundDenizens.push(...node.findOverlaps(range, type, opDenizen));
+            foundDenizens.push(...node.queryRange(range, type, opDenizen,debugBool));
         }
-
+        
         return foundDenizens;
     }
 }

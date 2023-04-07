@@ -77,7 +77,7 @@ canvas.addEventListener("touchstart", (e)=>{
         let touch = e.touches[0]
         pilot.touch = touch
 
-        let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
         if (collisionArr[0]) {
             textBox = collisionArr[0].textBox
             pilot.view.textBox = textBox
@@ -116,7 +116,7 @@ canvas.addEventListener("click", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        let collisionArr = pilot.view.quadtree.findOverlaps(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 1, 1), "overlaps", { id: null }, true)
         if (collisionArr[0]) {
             let textBox = collisionArr[0].textBox
             pilot.view.textBox = textBox

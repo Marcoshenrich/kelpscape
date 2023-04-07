@@ -31,6 +31,28 @@ Every entity in the Sim is a Denizen. Different types of core behaviors inherit 
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Quadtree
 
 The first type of collision detection I built was a brute force method where each denizen of the sim checked its position against every other denizen on each game frame. I knew this would be unstustainable and researched alternative data structures for my intended use case. The Quadtree data structure was the perfect solution - it is specifically designed to maximize efficiency for 2d rectangle collisions in a shared area. 
@@ -64,14 +86,6 @@ export default class Quadtree {
     }
 
     insert(denizen) {
-        if (this.nodes.length) {
-            for (const node of this.nodes) {
-                if (node.insert(denizen)) {
-                    return true;
-                }
-            }
-        }
-        
         if (!this.bounds.contains(denizen)) {
             return false;
         }
@@ -166,16 +180,85 @@ export class Rectangle {
     }
 }
 ```
+With this basis, I was able to extend the functions of both these classes in order to detect different types of collision, and leverage the data structure for other uses. 
 
-
-
+Quadtree Extensions
+Query Type allows me to pull all of a specific species out of a quadtree. 
 
 ```javascript
 
+    queryType(denizenClass) {
+        const foundDenizens = [];
+
+        for (const denizen of this.denizens) {
+            if (denizen.constructor === denizenClass) {
+                foundDenizens.push(denizen);
+            }
+        }
+
+        for (const node of this.nodes) {
+            foundDenizens.push(...node.queryType(denizenClass));
+        }
+        return foundDenizens;
+    }
 
 ```
 
+A refactor of QueryRange allows me to extend the functionality of Rectangle collision detection, and dynamically call Rectangle methods by dynamically keying into the function using the type parameter. 
 
+```javascript
 
+    queryRange(range, type, opDenizen) {
+        if (!opDenizen) console.log(range, type, opDenizen)
+        const foundDenizens = [];
+
+        if (!this.bounds.intersects(range)) {
+            return foundDenizens;
+        }
+
+        for (const denizen of this.denizens) {
+            if (opDenizen.id !== denizen.id && range[type](denizen)) {
+                foundDenizens.push(denizen);
+            }
+        }
+
+        for (const node of this.nodes) {
+            foundDenizens.push(...node.queryRange(range, type, opDenizen));
+        }
+
+        return foundDenizens;
+    }
+
+```
+Rectangle Extensions
+The original Quadtree came with the contains method, which evaluates whether a specific point is inside a rectangle. Since the XY Coordinate on canvas refers to the top-left point of the Denizen, this cause visual bugs and undesired behavior. I built the overlaps and fullyOverlaps methods to detect partial and full overlaps, which are useful for behavior such as a shark eating prey vs a jellyfish trapping a fish. 
+
+```javascript
+
+    rectangleDefiner(denizen) {
+        return [
+            { left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height },
+            { left: denizen.pos[0], right: denizen.pos[0] + denizen.width, top: denizen.pos[1], bottom: denizen.pos[1]}
+            ]
+    }
+
+    overlaps(denizen) {
+        let [recA, recB] = this.rectangleDefiner(denizen)
+        return this.recOverlapCheck(recA, recB) || this.recOverlapCheck(recB, recA)
+    }
+
+    fullyOverlaps(denizen) {
+        let [recA, recB] = this.rectangleDefiner(denizen)
+        return this.rectFullyInside(recA, recB) || this.rectFullyInside(recB, recA)
+    }
+
+    recOverlapCheck(a, b) {
+        return ((b.left <= a.right) && (b.right >= a.left) && (b.top <= a.bottom) && (b.bottom >= a.top))
+    }
+
+    rectFullyInside(a, b) {
+        return (a.left >= b.left && a.right <= b.right && a.top >= b.top && a.bottom <= b.bottom);
+    }
+```
 
 <br />

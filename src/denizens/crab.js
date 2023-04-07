@@ -66,7 +66,7 @@ export default class Crab extends Swimmer {
     seaweedFinder() {
         let seaweedSpots = {}
         Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
-            seaweedSpots[(seaweedCluster.pos[0]) + this.width + rand(-4,4)] = seaweedCluster
+            seaweedSpots[(seaweedCluster.pos[0]) + rand(-10,10)] = seaweedCluster
         })
         return seaweedSpots
     }

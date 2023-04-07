@@ -66,7 +66,7 @@ export default class View {
         this.ecosystemGraphData = []
 
         this.populateQuad()
-        this.debugging = true
+        this.debugging = false
         this.gameFrame = 0
 
         this.introFader = 1

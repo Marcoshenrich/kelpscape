@@ -11,28 +11,8 @@ import { Rectangle } from "./quadtree"
 export default class BehaviorController {
     constructor(logic) {
         this.logic = logic
-
-        this.algaeSpawnInterval= 2000
-        this.denizensSpawnInIncrements(this.algaeSpawnInterval, "algaeCount", "algae", Algae, { clustersObj: this.logic.seaweedClusters })
-
-        this.otterDiveInterval = 10000
-        this.denizensSpawnInIncrements(this.otterDiveInterval, "otterCount", "otters", Otter)
-
-        this.clusterSpawnInterval = 10000
-        this.denizensSpawnInIncrements(this.clusterSpawnInterval, "seaweedClusterCount", "seaweedClusters", SeaweedCluster, {})
-
-        this.turtleSpawnInterval = 10000
-        this.denizensSpawnInIncrements(this.turtleSpawnInterval, "turtleCount", "turtles", Turtle, {})
-
     }
 
-    denizensSpawnInIncrements(timerIncrement, countName, classObjName, className, options) {
-        setTimeout(() => {
-            this.logic[countName]++
-            this.logic[classObjName][className.name + String(this.logic[countName])] = new className(this.logic[countName], this.logic.ctx, this.logic.canvas, this.logic.view, this.logic, options)
-            this.denizensSpawnInIncrements(timerIncrement, countName, classObjName, className, options)
-        }, Math.floor(Math.random() * timerIncrement) + timerIncrement)
-    }
 
     coreloop() {
         this.denizensHuntWhenHungry()
@@ -110,7 +90,7 @@ export default class BehaviorController {
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
-            let collisionArray = this.logic.view.quadtree.findOverlaps(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), "overlaps", predator)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), "overlaps", predator)
 
             for (const prey of collisionArray) {
                 if (predator.preySpecies[prey.type]) {
@@ -137,7 +117,7 @@ export default class BehaviorController {
             if (trapper.trappedPrey) continue
             if (trapper.mating) continue
 
-            let collisionArray = this.logic.view.quadtree.findOverlaps(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), "fullyOverlaps", trapper)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), "fullyOverlaps", trapper)
 
             for (const prey of collisionArray) {
                 if (trapper.preySpecies[prey.type]) {
@@ -156,7 +136,7 @@ export default class BehaviorController {
         for (let i = 0; i < matingDenizenArr.length; i++) {
             let bachelorFish = matingDenizenArr[i]
 
-            let collisionArray = this.logic.view.quadtree.findOverlaps(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), "contains", bachelorFish)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), "contains", bachelorFish)
             let foundMate;
 
             for (const bumpedDenizen of collisionArray) {
@@ -190,7 +170,7 @@ export default class BehaviorController {
     }
 
     findNearestPredator(prey, predatorSpeciesClass) {
-        let nearbyDenizenArray = this.logic.view.quadtree.findOverlaps(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200), "overlaps", prey)
+        let nearbyDenizenArray = this.logic.view.quadtree.queryRange(new Rectangle(prey.pos[0] - 100, prey.pos[1] - 100, 200, 200), "overlaps", prey)
         let closePredator;
         for (const nearbyDenizen of nearbyDenizenArray) {
             if (nearbyDenizen instanceof predatorSpeciesClass) {
@@ -216,7 +196,7 @@ export default class BehaviorController {
             if (scavenger.scavenging) continue
             if (scavenger.mating) continue
 
-            let collisionArray = this.logic.view.quadtree.findOverlaps(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), "overlaps", scavenger)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(scavenger.pos[0], scavenger.pos[1], scavenger.width, scavenger.height), "overlaps", scavenger)
 
             for (let j = 0; j < collisionArray.length; j++) {
                 if (!(collisionArray[j] instanceof DeadCreature)) continue

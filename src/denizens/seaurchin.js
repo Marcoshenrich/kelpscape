@@ -13,7 +13,7 @@ export default class SeaUrchin extends Denizen {
         this.height = 10
         this.width = 20
 
-        this.pos = [parentPos[0] + this.width + rand(5), parentPos[1] + this.height + 20]
+        this.pos = [parentPos[0] + 8, parentPos[1] + this.height + 20]
     }
 
     coreloop() {

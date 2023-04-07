@@ -21,6 +21,8 @@ import TextBox from "./textbox"
 import BassBaby from "../denizens/Fishes/bassBaby"
 import Bass from "../denizens/Fishes/bass"
 import BehaviorController from "./behaviorController"
+import natureController from "./natureController"
+import NatureController from "./natureController"
 
 
 export default class Logic {
@@ -114,6 +116,7 @@ export default class Logic {
         this.recentlyDeadDenizens = []
 
         this.behaviorController = new BehaviorController(this)
+        this.natureController = new NatureController(this)
 
     }
 
