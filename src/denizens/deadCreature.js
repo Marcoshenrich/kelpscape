@@ -59,19 +59,37 @@ export default class DeadCreature extends Denizen {
                 this.energyVal = 40
                 break
 
-            case GarabaldiBaby || BassBaby: // temp until new image can be found
-                this.img.src = './dist/art/fishdead.png'
-                this.width = 12
+
+            case Garabaldi:
+                this.img.src = './dist/art/fishes/garabaldidead.png'
+                this.width = 30
+                this.height = 15
+                this.energyVal = 10
+                break
+
+            case GarabaldiBaby : // temp until new image can be found
+                this.img.src = './dist/art/fishes/garabaldidead.png'
+                this.width = 15
                 this.height = 8
                 this.energyVal = 5
                 break
 
-            case Garabaldi || Bass:
-                this.img.src = './dist/art/fishdead.png'
-                this.width = 25
-                this.height = 15
+
+            case Bass:
+                this.img.src = './dist/art/fishes/bassdead.png'
+                this.width = 45
+                this.height = 35
                 this.energyVal = 10
                 break
+
+
+            case BassBaby: // temp until new image can be found
+                this.img.src = './dist/art/fishes/bassdead.png'
+                this.width = 20
+                this.height = 17
+                this.energyVal = 5
+                break
+
 
             case Crab:
                 this.img.src = './dist/art/crabdead.png'
@@ -88,7 +106,7 @@ export default class DeadCreature extends Denizen {
                 break
 
             default: 
-                this.img.src = './dist/art/fishdead.png'
+                this.img.src = './dist/art/fishes/fishdead.png'
         }
 
     }

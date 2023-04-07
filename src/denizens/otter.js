@@ -1,7 +1,6 @@
 
 import { rand } from "../engine/utils";
 import Denizen from "./denizen";
-import TextBox from "../engine/textbox";
 
 export default class Otter extends Denizen{
     constructor(id, ctx, canvas, view, logic) {

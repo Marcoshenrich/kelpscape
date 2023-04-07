@@ -57,6 +57,20 @@ export default class Swimmer extends Denizen {
         setTimeout(() => { this.recentlySwitchedDirections = false },350)
     }
 
+    imgSelector() {
+        return this.right ? this.rightImg : this.leftImg
+    }
+
+    mouthPlacer() {
+        let mouthPos = []
+        if (!this.right) {
+            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2)]
+        } else {
+            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2)]
+        }
+        return mouthPos
+    }
+
     move() {
 
         if (this.trapped) {
@@ -77,13 +91,13 @@ export default class Swimmer extends Denizen {
 
         if (!this.mating && this.hunting) {
             this.moveTowardsFood()
-            this.fishOrienter()
+            this.swimmerOrienter()
             return
         }
 
         if (this.fleeing) {
             this.fleeFromPredator()
-            this.fishOrienter()
+            this.swimmerOrienter()
             return
         }
 
@@ -95,7 +109,7 @@ export default class Swimmer extends Denizen {
 
             this.movement1();
             this.movement2();
-            this.fishOrienter()
+            this.swimmerOrienter()
         }
 
 
@@ -194,7 +208,7 @@ export default class Swimmer extends Denizen {
         }
     }
 
-    fishOrienter() {
+    swimmerOrienter() {
         if (this.recentlySwitchedDirections) return
         if (this.oldPos[0] < this.pos[0]) {
             this.right = true

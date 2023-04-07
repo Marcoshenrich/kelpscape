@@ -19,15 +19,15 @@ export default class Pilot {
     }
 
     animate() {
-        if (!this.intro.simStart) {
-            this.intro.animate()
-        } else {
-            this.view.animate()
-        }
-        // this.view.animate()
-        if (this.sound.kickOffIntroScore) {
-            if (this.sound.playingSong.paused) this.sound.playNextTrack()
-        }
+        // if (!this.intro.simStart) {
+        //     this.intro.animate()
+        // } else {
+        //     this.view.animate()
+        // }
+        // if (this.sound.kickOffIntroScore) {
+        //     if (this.sound.playingSong.paused) this.sound.playNextTrack()
+        // }
+        this.view.animate()
   
         // this.ctx.fillStyle = `rgba(255,255,255,1`;
         // this.ctx.font = "25px Georgia";

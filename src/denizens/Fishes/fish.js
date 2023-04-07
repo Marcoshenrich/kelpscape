@@ -42,19 +42,6 @@ export default class Fish extends Swimmer {
         
     }
 
-    mouthPlacer() {
-        let mouthPos = []
-        if (!this.right) {
-            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2)]
-        } else {
-            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2)]
-        }
-        return mouthPos
-    }
-
-    imgSelector() {
-       return this.right ? this.rightImg : this.leftImg 
-    }
     
     placer() {
         let pos = []

@@ -125,7 +125,7 @@ export default class Intro {
             const centerY = this.canvas.height / 2
             this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
             this.ctx.fillText("Today, climate change and overfishing", centerX - line1Width/2, centerY - this.leading/2);
-            this.ctx.fillText("threatens these incredible biospheres.", centerX - line2Width/2, centerY + this.leading / 2);
+            this.ctx.fillText("threaten these incredible biospheres.", centerX - line2Width/2, centerY + this.leading / 2);
             this.fadeManger()
 
         } else if (this.sequenceStep === 5) {

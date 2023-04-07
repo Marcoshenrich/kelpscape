@@ -39,12 +39,12 @@ export default class View {
             this.logic.turtles,
             this.logic.seaweedClusters,
             this.logic.crabs, 
-            this.logic.deadCreatures, 
             this.logic.crabBabies, 
+            this.logic.deadCreatures, 
+            this.logic.otters, 
+            this.logic.seaUrchins,
             this.logic.jellyfish, 
             this.logic.rocks, 
-            this.logic.otters, 
-            this.logic.seaUrchins
         ]
         
         // this.allDenizensinQuadArr = [

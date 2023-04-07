@@ -22,6 +22,5 @@ export default class GarabaldiBaby extends FishBaby {
 
         this.eatFoodThreshold = 8
         this.huntingThreshold = 6
-
     }
 }
