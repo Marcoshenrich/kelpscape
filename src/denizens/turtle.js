@@ -14,8 +14,9 @@ export default class Turtle extends Swimmer {
         this.inArena = false
 
         this.maxEnergy = 20
+        this.eatFoodThreshold = 15
         this.energy = rand(10,20)
-        this.energyUseCoef = .004
+        this.energyUseCoef = .002
 
         this.huntingThreshold = 13
         this.mouthSize = 8

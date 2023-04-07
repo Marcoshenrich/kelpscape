@@ -86,10 +86,10 @@ canvas.addEventListener("touchstart", (e)=>{
         pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
 
-    if (!pilot.sound.kickOffIntroScore) {
-        pilot.sound.playIntroScore()
-        pilot.intro.sequenceStep = 1
-    }
+    // if (!pilot.sound.kickOffIntroScore) {
+    //     pilot.sound.playIntroScore()
+    //     pilot.intro.sequenceStep = 1
+    // }
 });
 
 canvas.addEventListener("touchmove", (e) => {
@@ -124,10 +124,10 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    if (!pilot.sound.kickOffIntroScore) {
-        pilot.sound.playIntroScore()
-        pilot.intro.sequenceStep = 1
-    }
+    // if (!pilot.sound.kickOffIntroScore) {
+    //     pilot.sound.playIntroScore()
+    //     pilot.intro.sequenceStep = 1
+    // }
 })
 
 

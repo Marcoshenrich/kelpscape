@@ -25,6 +25,7 @@ export default class Swimmer extends Denizen {
 
 
     behaviorChanger() {
+        if (!this.hunting && this.energy < this.huntingThreshold) console.log(this)
         if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
        
         if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {
@@ -33,6 +34,11 @@ export default class Swimmer extends Denizen {
         } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
             delete this.logic.matingDenizensObj[this.id]
             this.seekingMate = false
+        }
+
+        if (this.energy > this.maxEnergy - 1) {
+            this.hunting = false
+            this.eatingSeagrass = false
         }
 
     }
@@ -54,7 +60,7 @@ export default class Swimmer extends Denizen {
         this.right = !this.right;
         this.img = this.imgSelector();
         this.recentlySwitchedDirections = true
-        setTimeout(() => { this.recentlySwitchedDirections = false },350)
+        setTimeout(() => { this.recentlySwitchedDirections = false },1500)
     }
 
     imgSelector() {
@@ -214,12 +220,12 @@ export default class Swimmer extends Denizen {
             this.right = true
             this.img = this.imgSelector();
             this.recentlySwitchedDirections = true
-            setTimeout(() => { this.recentlySwitchedDirections = false }, 750)
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 1500)
         } else {
             this.right = false
             this.img = this.imgSelector();
             this.recentlySwitchedDirections = true
-            setTimeout(() => { this.recentlySwitchedDirections = false }, 750)
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 1500)
         }
     }
 

@@ -10,8 +10,8 @@ export default class SeaweedCluster {
         this.view = view
         this.logic = logic
 
-        this.pos = [Math.floor( Math.random() * this.view.arenaWidth), 0]
         this.width = 60
+        this.pos = [Math.floor( Math.random() * this.view.arenaWidth -  this.width), 0]
         this.seaweedCount = options.start ? Math.floor(Math.random() * 15) + 10 : 1
         this.growSeaweedInterval = 10000
         this.maxHeight = 100
