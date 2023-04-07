@@ -120,7 +120,11 @@ export default class Logic {
 
     spawnDenizen(parentDenizen) {
         switch(parentDenizen.constructor) {
-            case Bass || Garabaldi:
+            case Garabaldi:
+                this.eggCount += 1
+                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
+                break
+            case Bass:
                 this.eggCount += 1
                 this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
                 break
