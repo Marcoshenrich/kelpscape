@@ -18,6 +18,8 @@ export default class Turtle extends Swimmer {
         this.energyUseCoef = .004
 
         this.huntingThreshold = 13
+        this.mouthSize = 8
+
         
         this.width = 80
         this.height = 32
@@ -27,6 +29,8 @@ export default class Turtle extends Swimmer {
         this.timeToLeave = false
         this.leaveTimer()
 
+        this.mouthPos = this.mouthPlacer()
+
         this.eatingSeagrass = false
         this.consumptionRate = .005
         this.recentlyAte = false
@@ -35,6 +39,16 @@ export default class Turtle extends Swimmer {
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
+    }
+
+    mouthPlacer() {
+        let mouthPos = []
+        if (!this.right) {
+            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2) - 8]
+        } else {
+            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2) - 8]
+        }
+        return mouthPos
     }
 
     leaveTimer() {
@@ -68,20 +82,41 @@ export default class Turtle extends Swimmer {
         }
 
         if (this.inArena) {
-            this.move()
+            if (!this.eatingSeagrass) this.move()
         } else {
             this.enterArena()
         }
+
         this.consumeEnergy()
         if (this.hunting) this.consumeFood()
         this.behaviorChanger()
+
+        this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
+    }
+
+    moveTowardsFood() {
+
+        let [xhigh, xlow, yhigh, ylow] = this.inBounds()
+
+        if (this.mouthPos[0] < this.nearestFoodCords[0]) {
+            if (xhigh) this.pos[0] += this.maxSpeed
+        } else {
+            if (xlow) this.pos[0] -= this.maxSpeed
+        }
+
+        if (this.mouthPos[1] < this.nearestFoodCords[1]) {
+            if (yhigh) this.pos[1] += this.maxSpeed
+        } else {
+            if (ylow) this.pos[1] -= this.maxSpeed
+        }
+
     }
 
     consumeFood() {
-        if (!this.eatingSeagrass || this.hunting.type !== "Seagrass") return
+        if (!this.eatingSeagrass || this.hunting.type !== "Seaweed") return
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-
-        predator.hunting.energyVal -= this.consumptionRate
+        console.log(this.hunting.energyVal)
+        this.hunting.energyVal -= this.consumptionRate
     }
 
     speedModulator() {

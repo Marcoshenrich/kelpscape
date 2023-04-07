@@ -214,12 +214,12 @@ export default class Swimmer extends Denizen {
             this.right = true
             this.img = this.imgSelector();
             this.recentlySwitchedDirections = true
-            setTimeout(() => { this.recentlySwitchedDirections = false }, 350)
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 750)
         } else {
             this.right = false
             this.img = this.imgSelector();
             this.recentlySwitchedDirections = true
-            setTimeout(() => { this.recentlySwitchedDirections = false }, 350)
+            setTimeout(() => { this.recentlySwitchedDirections = false }, 750)
         }
     }
 

@@ -76,7 +76,6 @@ export default class Intro {
     }
 
     drawIntroSequence() {
-        console.log(this.sequenceStep)
         if (this.sequenceStep === 0) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             this.ctx.font = `${this.fontSize}px Georgia`;

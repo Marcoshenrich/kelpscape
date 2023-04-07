@@ -110,8 +110,9 @@ export default class BehaviorController {
 
             for (const prey of collisionArray) {
                 if (predator.preySpecies[prey.type]) {
-                    if (prey.type === "Seagrass") {
+                    if (prey.type === "Seaweed") {
                         predator.eatingSeagrass = true
+                        predator.hunting = prey
                         continue
                     }
                     if (prey.dead) continue

@@ -38,6 +38,7 @@ export default class View {
             this.logic.effects, 
             this.logic.turtles,
             this.logic.seaweedClusters,
+            this.logic.seaweed,
             this.logic.crabs, 
             this.logic.crabBabies, 
             this.logic.deadCreatures, 

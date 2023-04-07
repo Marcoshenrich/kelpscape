@@ -55,9 +55,6 @@ export default class SeaweedCluster {
             this.tallestPoint = this.tallestPointFinder()
             this.newSeaweed = false
         }
-        Object.values(this.seaweed).forEach((seaweed) => {
-            seaweed.coreloop()
-        }) 
         this.ctx.fillStyle = 'rgba(255,0,0,1)';
         // this.ctx.fillRect(this.pos[0] + 30 + this.view.offset[0], this.tallestPoint + this.view.offset[1], 10,10)
         // this.ctx.fillRect(this.pos[0] + this.view.offset[0], this.tallestPoint + this.view.offset[1], Object.values(this.seaweed)[0].width,10)

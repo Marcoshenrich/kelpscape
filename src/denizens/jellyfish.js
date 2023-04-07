@@ -21,6 +21,7 @@ export default class Jellyfish extends Swimmer {
         this.maxEnergy = 5
         this.energy = this.maxEnergy
         this.consumptionRate = .002
+        this.energyVal = 4
 
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]

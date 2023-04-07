@@ -27,6 +27,8 @@ export default class Seaweed extends Denizen {
 
         //what if seaweed clusters could grow? and then be eaten by something over time.
 
+        this.energyVal = 5
+
         this.animationStates = [
             { name: "sway1", frames: 8},
             { name: "sway2", frames: 8},
