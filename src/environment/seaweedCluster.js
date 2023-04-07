@@ -24,7 +24,11 @@ export default class SeaweedCluster {
     }
 
     shrinkSeaweed() {
-        delete this.seaweed[Object.values(this.seaweed)[Object.values(this.seaweed).length - 1].id]
+        let seaweed = this.seaweed[Object.values(this.seaweed)[Object.values(this.seaweed).length - 1].id]
+        delete this.seaweed[seaweed.id]
+        this.seaweedCount -= 1
+        this.logic.recentlyDeadDenizens.push(seaweed)
+
     }
 
 

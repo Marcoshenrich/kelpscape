@@ -256,6 +256,7 @@ export default class Logic {
         Otter.prototype.speciesObject = this.otters
         SeaUrchin.prototype.speciesObject = this.seaUrchins
         Turtle.prototype.speciesObject = this.turtles
+        Seaweed.prototype.speciesObject = this.seaweed
     }
 
     coreloop(){

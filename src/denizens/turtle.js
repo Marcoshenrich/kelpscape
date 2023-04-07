@@ -115,7 +115,6 @@ export default class Turtle extends Swimmer {
     consumeFood() {
         if (!this.eatingSeagrass || this.hunting.type !== "Seaweed") return
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-        console.log(this.hunting.energyVal)
         this.hunting.energyVal -= this.consumptionRate
     }
 
