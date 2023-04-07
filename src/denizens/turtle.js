@@ -12,6 +12,12 @@ export default class Turtle extends Swimmer {
         this.img = this.imgSelector()
 
         this.inArena = false
+
+        this.maxEnergy = 20
+        this.energy = rand(10,20)
+        this.energyUseCoef = .004
+
+        this.huntingThreshold = 13
         
         this.width = 80
         this.height = 32
@@ -20,6 +26,10 @@ export default class Turtle extends Swimmer {
         this.pos = this.placer()
         this.timeToLeave = false
         this.leaveTimer()
+
+        this.eatingSeagrass = false
+        this.consumptionRate = .005
+        this.recentlyAte = false
 
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
@@ -51,6 +61,7 @@ export default class Turtle extends Swimmer {
     coreloop() {
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
         this.speedModulator()
+        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] + 10)
         if (this.timeToLeave) {
             this.enterArena()
             return
@@ -62,7 +73,15 @@ export default class Turtle extends Swimmer {
             this.enterArena()
         }
         this.consumeEnergy()
+        if (this.hunting) this.consumeFood()
         this.behaviorChanger()
+    }
+
+    consumeFood() {
+        if (!this.eatingSeagrass || this.hunting.type !== "Seagrass") return
+        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
+
+        predator.hunting.energyVal -= this.consumptionRate
     }
 
     speedModulator() {

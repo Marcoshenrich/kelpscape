@@ -95,6 +95,7 @@ export default class Logic {
         this.turtles = this.tankPopulator(this.turtleCount, Turtle)
         this.seaUrchins = this.tankPopulator(this.seaUrchinCount, SeaUrchin)
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster, {start: true})
+        this.seaweed = {}
         this.algae = this.tankPopulator(this.algaeCount, Algae, { clustersObj: this.seaweedClusters })
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
@@ -167,7 +168,16 @@ export default class Logic {
         this.deadCreatures["DeadCreature" + this.deadCreatureCount] = new DeadCreature(this.deadCreatureCount, this.ctx, this.canvas, this.view, this, deadDenizen.pos, deadDenizen)
     }
 
+    seaweedUpdater() {
+        for (let cluster of Object.values(this.seaweedClusters)) {
+            for (let seaweed of Object.values(cluster.seaweed)) {
+                this.seaweed[seaweed.id] = seaweed
+            }
+        }
+    }
+
     reAssignDataObjs() {
+        this.seaweedUpdater()
         this.predatorsWithMouthsArr = [...Object.values(this.bassBabies), ...Object.values(this.bass) ,...Object.values(this.garabaldiBabies),...Object.values(this.garabaldi), ...Object.values(this.sharks)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
         this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
@@ -186,7 +196,8 @@ export default class Logic {
 
         Bass.prototype.preySpecies =
         {
-            "Algae": this.algae
+            "GarabaldiBaby": this.garabaldiBabies,
+            "CrabBaby": this.crabBabies,
         }
 
         BassBaby.prototype.preySpecies =
@@ -220,6 +231,12 @@ export default class Logic {
             "CrabBaby": this.crabBabies,
             "SeaUrchin": this.seaUrchins
         }
+
+        Turtle.prototype.preySpecies =
+        {
+            "Seaweed": this.seaweed,
+            "Jellyfish": this.jellyfish
+        }
     }
 
     assignSpeciesObjects() {
@@ -238,6 +255,7 @@ export default class Logic {
         CrabBaby.prototype.speciesObject = this.crabBabies
         Otter.prototype.speciesObject = this.otters
         SeaUrchin.prototype.speciesObject = this.seaUrchins
+        Turtle.prototype.speciesObject = this.turtles
     }
 
     coreloop(){

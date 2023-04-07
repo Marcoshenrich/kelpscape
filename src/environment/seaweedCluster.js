@@ -23,6 +23,12 @@ export default class SeaweedCluster {
         this.growSeaweed()
     }
 
+    shrinkSeaweed() {
+        delete this.seaweed[Object.values(this.seaweed)[Object.values(this.seaweed).length - 1].id]
+    }
+
+
+
     reframeSeaweedIds() {
         for (let i = 0; i < Object.values(this.seaweed).length; i++) {
             let seaweed = this.seaweed["Seaweed" + (i + 1)]

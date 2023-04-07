@@ -50,6 +50,7 @@ export default class BehaviorController {
 
 
     findNearestFood(predator) {
+    
         let nearestFoodCords = []
         let nearestFoundDistance = Infinity
         let foundFood;
@@ -68,6 +69,18 @@ export default class BehaviorController {
 
         predator.hunting = foundFood
         predator.nearestFoodCords = nearestFoodCords
+
+    }
+
+    seagrassEatersEatSeagrass() {
+        //use the hungrydenizensArr and find nearest food to get them to the seagrass, once they collide with the seagrass
+        //bring them here
+        for (let i = 0; i < this.logic.seagrassEaters.length; i++) {
+            let seagrassEaters = this.logic.seagrassEaters[i]
+            if (predator.energy > predator.eatFoodThreshold) continue
+            if (predator.mating) continue
+        }
+
     }
 
     unpackAllPreySpecies(denizen) {
@@ -80,7 +93,7 @@ export default class BehaviorController {
         for (let i = 0; i < this.logic.predatorsWithMouthsArr.length; i++) {
             let predator = this.logic.predatorsWithMouthsArr[i]
             if (!predator.hunting) continue
-            if (!(predator.hunting in predator.preySpecies[predator.hunting.type])) {
+            if (!(predator.hunting.id in predator.preySpecies[predator.hunting.type])) {
                 predator.hunting = false
                 predator.nearestFoodCords = []
             }
@@ -97,6 +110,10 @@ export default class BehaviorController {
 
             for (const prey of collisionArray) {
                 if (predator.preySpecies[prey.type]) {
+                    if (prey.type === "Seagrass") {
+                        predator.eatingSeagrass = true
+                        continue
+                    }
                     if (prey.dead) continue
                     prey.dead = true
                     this.logic.recentlyDeadDenizens.push(prey)

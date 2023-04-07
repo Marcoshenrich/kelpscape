@@ -69,6 +69,10 @@ export default class Seaweed extends Denizen {
         let frameY = this.animations[this.animationState].loc[position].y
         this.ctx.drawImage(this.img, frameX, frameY, this.width, this.height, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width + this.sizeCoef, this.height + this.sizeCoef)
         this.gameFrame++
+        if (this.energyVal < 0) {
+            this.energyVal = 5
+            this.cluster.shrinkSeaweed()
+        }
     }
 
 
