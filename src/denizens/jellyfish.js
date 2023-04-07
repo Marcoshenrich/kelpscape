@@ -39,7 +39,7 @@ export default class Jellyfish extends Swimmer {
     }
 
     trapPlacer() {
-        this.trapPos[0] = this.pos[0] + 3
+        this.trapPos[0] = this.pos[0]
         this.trapPos[1] = this.pos[1] + 10
     }
 

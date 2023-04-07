@@ -156,7 +156,7 @@ export default class BehaviorController {
         for (let i = 0; i < matingDenizenArr.length; i++) {
             let bachelorFish = matingDenizenArr[i]
 
-            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), bachelorFish)
+            let collisionArray = this.logic.view.quadtree.findOverlaps(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), "contains", bachelorFish)
             let foundMate;
 
             for (const bumpedDenizen of collisionArray) {

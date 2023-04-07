@@ -33,7 +33,149 @@ Every entity in the Sim is a Denizen. Different types of core behaviors inherit 
 
 Quadtree
 
-The first type of collision detection I built was a brute force method where 
+The first type of collision detection I built was a brute force method where each denizen of the sim checked its position against every other denizen on each game frame. I knew this would be unstustainable and researched alternative data structures for my intended use case. The Quadtree data structure was the perfect solution - it is specifically designed to maximize efficiency for 2d rectangle collisions in a shared area. 
+
+I asked ChatGPT for an example and it gladly gave me broken code. I examined the code example, parsed what it was trying to do, and fixed the bugs (subdivision logic and recantle collision logic were broken), and had my first working Quadtree. I then extended it to detect different types of collision. 
+
+How it Works
+
+A Quadtree is made of two classes
+
+Quadtree - holds references to the denizens within its area, OR it holds 4 child quadtrees that subdivide it. A Quadtree can never have Denizens and Child Quadtrees. The bounds of the Quadtree are defined by a Rectangle. 
+
+Rectangle - defines an area by an XY coordinate, a width, and a length. Contains all the collision logic.
+
+Crucially, the Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child.
+
+To Query a Quadtree, you pass in a Rectangle to the query, which is compared against the Quadtree's Rectangle (and those of its children) until an appropriate match is found. All Quadtrees that spatially match query their Denizens (or or those of its children), are then returned in an Array.
+
+Chat GPT's Basic Quadtree
+
+```javascript
+
+export default class Quadtree {
+    constructor(bounds, capacity, view) {
+        this.bounds = bounds;
+        this.capacity = capacity;
+        this.denizens = [];
+        this.nodes = [];
+        this.ctx = view.ctx
+        this.view = view
+    }
+
+    insert(denizen) {
+        if (this.nodes.length) {
+            for (const node of this.nodes) {
+                if (node.insert(denizen)) {
+                    return true;
+                }
+            }
+        }
+        
+        if (!this.bounds.contains(denizen)) {
+            return false;
+        }
+
+        if (this.denizens.length < this.capacity) {
+            this.denizens.push(denizen);
+            return true;
+        }
+
+        if (!this.nodes.length) {
+            this.subdivide();
+        }
+
+        for (const node of this.nodes) {
+            if (node.insert(denizen)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    subdivide() {
+        const x = this.bounds.x;
+        const y = this.bounds.y;
+        const halfWidth = this.bounds.width / 2;
+        const halfHeight = this.bounds.height / 2;
+
+        const nw = new Quadtree(new Rectangle(x, y, halfWidth, halfHeight), this.capacity, this.view);
+        const ne = new Quadtree(new Rectangle(x + halfWidth, y, halfWidth, halfHeight), this.capacity, this.view);
+        const sw = new Quadtree(new Rectangle(x, y + halfHeight, halfWidth, halfHeight), this.capacity, this.view);
+        const se = new Quadtree(new Rectangle(x + halfWidth, y + halfHeight, halfWidth, halfHeight), this.capacity, this.view);
+
+        this.nodes = [nw, ne, sw, se];
+
+        for (const denizen of this.denizens) {
+            for (const node of this.nodes) {
+                node.insert(denizen);
+            }
+        }
+
+        this.denizens = [];
+    }
+
+    queryRange(range) {
+        const foundDenizens = [];
+
+        if (!this.bounds.intersects(range)) {
+            return foundDenizens;
+        }
+
+        for (const denizen of this.denizens) {
+            if (range.contains(denizen)) {
+                foundDenizens.push(denizen);
+            }
+        }
+
+        for (const node of this.nodes) {
+            foundDenizens.push(...node.queryRange(range));
+        }
+
+        return foundDenizens;
+    }
+}
+
+export class Rectangle {
+    constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+    }
+
+
+    contains(denizen) {
+        let [x,y] = denizen.pos
+        return (
+            x >= this.x &&
+            x <= this.x + this.width &&
+            y >= this.y &&
+            y <= this.y + this.height
+        );
+    }
+
+    intersects(range) {
+        return !(
+            range.x - range.width > this.x + this.width ||
+            range.x + range.width < this.x - this.width ||
+            range.y - range.height > this.y + this.height ||
+            range.y + range.height < this.y - this.height
+        );
+    }
+}
+```
+
+
+
+
+```javascript
+
+
+```
+
+
 
 
 <br />

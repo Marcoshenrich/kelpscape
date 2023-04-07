@@ -56,7 +56,6 @@ export default class Swimmer extends Denizen {
 
 
     behaviorChanger() {
-        if (!this.hunting && this.energy < this.huntingThreshold) console.log(this)
         if (!this.hunting && this.energy < this.huntingThreshold) this.logic.hungryDenizenArr.push(this)
        
         if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {

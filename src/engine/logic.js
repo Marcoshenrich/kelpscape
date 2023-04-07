@@ -283,14 +283,6 @@ export default class Logic {
 
 
 
-    deadCreatureDebugLoop() {
-        for (let i = 0; i < Object.values(this.deadCreatures).length; i++) {
-            let deadc = Object.values(this.deadCreatures)[i]
-            let collisionArray = this.view.quadtree.queryRange(new Rectangle(deadc.pos[0], deadc.pos[1], deadc.width, deadc.height), deadc)
-        }
-    }
-
-
     tankPopulator(objnum, className, options) {
 
         let denizenObj = {}
