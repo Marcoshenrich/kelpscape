@@ -131,12 +131,12 @@ export default class Intro {
 
             this.ctx.font = `${this.fontSize}px Georgia`;
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
-            const line1Width = this.ctx.measureText("Welcome to").width
-            const line2Width = this.ctx.measureText("Kelpscape").width
+            const line1Width = this.ctx.measureText("Dive into the hidden").width
+            const line2Width = this.ctx.measureText("world of Kelpscape").width
             const centerX = this.canvas.width / 2
             const centerY = this.canvas.height / 2
-            this.ctx.fillText("Welcome to", centerX - line1Width / 2, centerY - this.leading / 2);
-            this.ctx.fillText("Kelpscape", centerX - line2Width / 2, centerY + this.leading / 2);
+            this.ctx.fillText("Dive into the hidden", centerX - line1Width / 2, centerY - this.leading / 2);
+            this.ctx.fillText("world of Kelpscape", centerX - line2Width / 2, centerY + this.leading / 2);
             this.fadeManger()
             
         } else if (this.sequenceStep === 6) {
