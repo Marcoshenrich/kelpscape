@@ -1,3 +1,5 @@
+import { rand } from "../engine/utils"
+
 
 
 export default class Effect {
@@ -12,6 +14,10 @@ export default class Effect {
         this.coef1 = 0
         this.coef2 = 0
         this.dead = false
+        this.bobCoef = Math.floor(Math.random() * 10) + 4
+        this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
+        this.trackCoef = 0
+        this.up = [true, false][Math.floor(Math.random() * 2)]
     }
 
     coreloop() {
@@ -31,14 +37,20 @@ export default class Effect {
     }
 
     gametes() {
-        this.ctx.fillStyle = 'rgba(255,255,255,1)';
+        this.ctx.fillStyle = 'rgba(0,255,255,1)';
+        this.ctx.globalAlpha = .3
+        this.ctx.fillRect(this.pos[0] + this.view.offset[0], this.pos[1] + 15 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 5 + this.view.offset[0], this.pos[1] + 10 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 10 + this.view.offset[0], this.pos[1] + 15 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 15 + this.view.offset[0], this.pos[1] + 10 + this.view.offset[1], this.size, this.size)
         this.ctx.fillRect(this.pos[0] + this.view.offset[0], this.pos[1] + 5 + this.view.offset[1], this.size, this.size)
-        this.ctx.fillRect(this.pos[0] + 10 + this.view.offset[0], this.pos[1] + this.view.offset[1], this.size, this.size)
-        this.ctx.fillRect(this.pos[0] + 20 + this.view.offset[0], this.pos[1] + 5 + this.view.offset[1], this.size, this.size)
-        this.ctx.fillRect(this.pos[0] + 30 + this.view.offset[0], this.pos[1] + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 5 + this.view.offset[0], this.pos[1] + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 10 + this.view.offset[0], this.pos[1] + 5 + this.view.offset[1], this.size, this.size)
+        this.ctx.fillRect(this.pos[0] + 15 + this.view.offset[0], this.pos[1] + this.view.offset[1], this.size, this.size)
 
-        this.pos[1] -= .1
+        this.pos[1] += .1
     
+        this.ctx.globalAlpha = 1
         if (this.pos[1] < 0) {
             this.dead = true
             this.view.logic.recentlyDeadDenizens.push(this)

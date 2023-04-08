@@ -121,6 +121,7 @@ canvas.addEventListener("click", (e) => {
             let textBox = collisionArr[0].textBox
             pilot.view.textBox = textBox
             pilot.view.fadeInScore = .5
+            pilot.view.showScore = true
             if (!pilot.view.logic.scoreTrackObj[textBox.type]) {
                 pilot.view.logic.scoreTrackObj[textBox.type] = true
                 pilot.view.logic.score += 1

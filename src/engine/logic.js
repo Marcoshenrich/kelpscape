@@ -118,6 +118,9 @@ export default class Logic {
 
         this.recentlyDeadDenizens = []
 
+        this.effectCount++
+        this.effects["Effect" + this.effectCount] = new Effect(this.effectCount, this.ctx, this.canvas, this.view, "gametes", [100,100], { size: 2 })
+
     }
 
 
