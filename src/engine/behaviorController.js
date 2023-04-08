@@ -50,7 +50,7 @@ export default class BehaviorController {
                 foundFood = prey
             }
         }
-        c
+    
         predator.hunting = foundFood
         predator.nearestFoodCords = nearestFoodCords
     }
