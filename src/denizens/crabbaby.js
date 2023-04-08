@@ -4,8 +4,8 @@ import Crab from "./crab";
 
 export default class CrabBaby extends Crab {
 
-    constructor(id, ctx, canvas, view, logic, pos) {
-        super(id, ctx, canvas, view, logic)
+    constructor(id, ctx, canvas, view, logic, options) {
+        super(id, ctx, canvas, view, logic,{})
         this.type = "CrabBaby"
         this.id = this.type + id
         this.spawn = true
@@ -13,9 +13,10 @@ export default class CrabBaby extends Crab {
         this.img.src = './dist/art/crab.png'
         this.height = 7.5
         this.width = 15
-        this.pos = [pos[0] + miniRandomizer(), this.arenaHeight - this.height]
+        this.pos = [options.pos[0] + miniRandomizer(), this.arenaHeight - this.height]
         this.speed = Math.floor(Math.random() * 4) / 20
         this.maxSpeed = .25
+        this.energyVal = 5
 
         this.consumptionRate = .002
         this.growUpThreshold = 1

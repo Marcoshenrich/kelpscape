@@ -31,7 +31,6 @@ export default class Polyp extends Denizen {
     dieEventually() {
         setTimeout(()=>{
             this.dead = true
-            console.log(this)
             this.logic.recentlyDeadDenizens.push(this)
         }, rand(60000) + 60000)
     }

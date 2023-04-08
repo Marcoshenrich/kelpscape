@@ -14,7 +14,6 @@ export default class SeaUrchin extends Denizen {
         this.width = 20
         this.seaweed = options.parent
         this.pos = [options.pos[0] + 8, options.pos[1] + this.height + 20]
-        console.log(this.pos)
     }
 
     coreloop() {

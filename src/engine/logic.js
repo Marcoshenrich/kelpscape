@@ -22,7 +22,7 @@ import Bass from "../denizens/Fishes/bass"
 import BehaviorController from "./behaviorController"
 import NatureController from "./natureController"
 import Polyp from "../denizens/polyp"
-
+import { rand } from "./utils"
 
 export default class Logic {
 
@@ -84,10 +84,10 @@ export default class Logic {
         this.sharkCount = 2
         this.eggCount = 0
         this.effectCount = 0
-        this.turtleCount = 10
+        this.turtleCount = 1
         this.deadCreatureCount = 0
         this.crabCount = 10
-        this.crabBabyCount = 0
+        this.crabBabyCount = 6
         this.jellyfishCount = 50
         this.rockCount = 20
         this.otterCount = 0
@@ -106,12 +106,11 @@ export default class Logic {
         this.algae = this.tankPopulator(this.algaeCount, Algae, { clustersObj: this.seaweedClusters })
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab,{})
-        this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby,{})
+        this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby,{pos:[rand(50, this.view.arenaWidth - 50)]})
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish,{})
         this.rocks = this.tankPopulator(this.rockCount, Rock,{})
         this.polyps = {}
         this.otters = {}
-        // this.crabs = {}
 
         
         this.hungryDenizenArr = []
@@ -146,7 +145,7 @@ export default class Logic {
                 break
             case Crab:
                 this.crabBabyCount += 1
-                this.crabBabies["CrabBaby" + this.crabBabyCount] = new CrabBaby(this.crabBabyCount, this.ctx, this.canvas, this.view, this, [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])])
+                this.crabBabies["CrabBaby" + this.crabBabyCount] = new CrabBaby(this.crabBabyCount, this.ctx, this.canvas, this.view, this, {pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])]})
                 break
             case CrabBaby:
                 this.crabCount += 1
@@ -217,7 +216,7 @@ export default class Logic {
 
         Bass.prototype.preySpecies =
         {
-            "GarabaldiBaby": this.garabaldiBabies,
+            // "GarabaldiBaby": this.garabaldiBabies,
             "CrabBaby": this.crabBabies,
         }
 

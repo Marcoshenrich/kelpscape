@@ -36,7 +36,7 @@ export default class NatureController {
     seaweedFinder() {
         if (!this.logic.seaweedClusters) return
         Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
-            this.logic.seaweedSpots[(seaweedCluster.pos[0]) + rand(-10, 10)] = seaweedCluster
+            this.logic.seaweedSpots[(seaweedCluster.pos[0]) + rand(-10, 0)] = seaweedCluster
         })
     }
 

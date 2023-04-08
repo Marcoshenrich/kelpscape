@@ -38,7 +38,7 @@ export default class Crab extends Swimmer {
         this.maxEnergy = 10
         this.energy = this.maxEnergy
         this.fadeThreshold = 5
-        
+        this.energyVal = 10
 
         this.energyUseCoef = .0007
         this.matingThreshold = 6
