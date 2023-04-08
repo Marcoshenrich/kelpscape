@@ -23,6 +23,7 @@ import BehaviorController from "./behaviorController"
 import NatureController from "./natureController"
 import Polyp from "../denizens/polyp"
 import { rand } from "./utils"
+import Rockfish from "../denizens/Fishes/rockfish"
 
 export default class Logic {
 
@@ -74,11 +75,10 @@ export default class Logic {
         this.garabaldiCount = 10
         this.garabaldiBabyCount =  10
 
-
         this.bassCount = 10
         this.bassbabyCount = 10
 
-        this.testCount = 0
+        this.rockfishCount = 10
 
         this.algaeCount = 100
         this.sharkCount = 2
@@ -98,6 +98,8 @@ export default class Logic {
         
         this.bass = this.tankPopulator(this.bassCount, Bass, {})
         this.bassBabies = this.tankPopulator(this.bassbabyCount, BassBaby, {})
+
+        this.rockfish = this.tankPopulator(this.rockfishCount, Rockfish, {})
         
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggs = this.tankPopulator(this.eggCount, Fishegg, {})
