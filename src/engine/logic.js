@@ -201,12 +201,12 @@ export default class Logic {
                 this.garabaldiBabies["GarabaldiBaby" + this.garabaldiBabyCount] = new GarabaldiBaby(this.garabaldiBabyCount, this.ctx, this.canvas, this.view, this, {pos:[Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])]})
                 break
             case Bass:
-                this.bassBaByCount += 1
-                this.bassBabies["BassBaby" + this.bassBaByCount] = new BassBaby(this.bassBaByCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
+                this.bassBabyCount += 1
+                this.bassBabies["BassBaby" + this.bassBabyCount] = new BassBaby(this.bassBabyCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
                 break
             case Rockfish:
-                this.rockfishBaByCount += 1
-                this.rockfishBabies["RockfishBaby" + this.rockfishBaByCount] = new BassBaby(this.rockfishBaByCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
+                this.rockfishBabyCount += 1
+                this.rockfishBabies["RockfishBaby" + this.rockfishBabyCount] = new RockfishBaby(this.rockfishBabyCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
                 break
         }
     }

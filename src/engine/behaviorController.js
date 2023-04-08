@@ -50,21 +50,9 @@ export default class BehaviorController {
                 foundFood = prey
             }
         }
-
+        c
         predator.hunting = foundFood
         predator.nearestFoodCords = nearestFoodCords
-
-    }
-
-    seagrassEatersEatSeagrass() {
-        //use the hungrydenizensArr and find nearest food to get them to the seagrass, once they collide with the seagrass
-        //bring them here
-        for (let i = 0; i < this.logic.seagrassEaters.length; i++) {
-            let seagrassEaters = this.logic.seagrassEaters[i]
-            if (predator.energy > predator.eatFoodThreshold) continue
-            if (predator.mating) continue
-        }
-
     }
 
     unpackAllPreySpecies(denizen) {

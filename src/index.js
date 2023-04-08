@@ -70,6 +70,13 @@ canvas.addEventListener("mouseup", (e) => {
 canvas.addEventListener("click", (e) => {
     pilot.view.input.mouseIsDownAt = false
 
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
+    
+    if (!pilot.intro.simStart) return
+
     if (pilot.view.textBox) {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
@@ -94,11 +101,6 @@ canvas.addEventListener("click", (e) => {
                 pilot.view.scoreFontSize = 42
             }
         }
-    }
-
-    if (!pilot.sound.kickOffIntroScore) {
-        pilot.sound.playIntroScore()
-        pilot.intro.sequenceStep = 1
     }
 })
 
