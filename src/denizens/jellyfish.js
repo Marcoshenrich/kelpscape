@@ -3,7 +3,7 @@ import { rand } from "../engine/utils";
 import Swimmer from "./swimmer";
 
 export default class Jellyfish extends Swimmer {
-    constructor(id, ctx, canvas, view, logic){
+    constructor(id, ctx, canvas, view, logic, options){
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Jellyfish"]
         this.type = "Jellyfish"
@@ -12,7 +12,7 @@ export default class Jellyfish extends Swimmer {
         this.img.src = ['./dist/art/jelly1.png', './dist/art/jelly2.png'][rand(2)]
         this.height = 25
         this.width =  15
-        this.pos = this.placer()
+        this.pos = options.pos || this.placer()
         this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
 
         this.maxSpeed = .5

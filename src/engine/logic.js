@@ -21,6 +21,7 @@ import BassBaby from "../denizens/Fishes/bassBaby"
 import Bass from "../denizens/Fishes/bass"
 import BehaviorController from "./behaviorController"
 import NatureController from "./natureController"
+import Polyp from "../denizens/polyp"
 
 
 export default class Logic {
@@ -90,6 +91,7 @@ export default class Logic {
         this.jellyfishCount = 50
         this.rockCount = 20
         this.otterCount = 0
+        this.polypCount = 1
 
         this.garabaldi = this.tankPopulator(this.garabaldiCount, Garabaldi, {})
         this.garabaldiBabies = this.tankPopulator(this.garabaldiBabyCount, GarabaldiBaby, {})
@@ -99,14 +101,15 @@ export default class Logic {
         
         this.sharks = this.tankPopulator(this.sharkCount, Shark)
         this.eggs = this.tankPopulator(this.eggCount, Fishegg, {})
-        this.effects = this.tankPopulator(this.effectCount, Effect)
-        this.turtles = this.tankPopulator(this.turtleCount, Turtle)
+        this.effects = this.tankPopulator(this.effectCount, Effect,{})
+        this.turtles = this.tankPopulator(this.turtleCount, Turtle,{})
         this.algae = this.tankPopulator(this.algaeCount, Algae, { clustersObj: this.seaweedClusters })
         this.deadCreatures = {}
-        this.crabs = this.tankPopulator(this.crabCount, Crab)
-        this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby)
-        this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish)
-        this.rocks = this.tankPopulator(this.rockCount, Rock)
+        this.crabs = this.tankPopulator(this.crabCount, Crab,{})
+        this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby,{})
+        this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish,{})
+        this.rocks = this.tankPopulator(this.rockCount, Rock,{})
+        this.polyps = this.tankPopulator(this.polypCount, Polyp, {})
         this.otters = {}
 
         
@@ -148,11 +151,15 @@ export default class Logic {
                 break
             case CrabBaby:
                 this.crabCount += 1
-                this.crabs["Crab" + this.crabCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                this.crabs["Crab" + this.crabCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, {pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
                 break
             case Seaweed:
                 this.seaUrchinCount += 1
                 this.seaUrchins["SeaUrchin" + this.seaUrchinCount] = new SeaUrchin(this.seaUrchinCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                break
+            case Polyp:
+                this.jellyfishCount += 1
+                this.jellyfish["Jellyfish" + this.jellyfishCount] = new Jellyfish(this.jellyfishCount, this.ctx, this.canvas, this.view, this, {pos:[parentDenizen.pos[0], parentDenizen.pos[1]]})
                 break
             case Fishegg:
                 this.spawnDenizenFish(parentDenizen)
@@ -267,6 +274,7 @@ export default class Logic {
         SeaUrchin.prototype.speciesObject = this.seaUrchins
         Turtle.prototype.speciesObject = this.turtles
         Seaweed.prototype.speciesObject = this.seaweed
+        Polyp.prototype.speciesObject = this.polyps
     }
 
     coreloop(){
@@ -283,7 +291,6 @@ export default class Logic {
     deleteDeadDenizens(){
         while (this.recentlyDeadDenizens.length) {
             let deadDenizen = this.recentlyDeadDenizens.pop()
-            deadDenizen.clearCallbacksOnDeath()
             delete deadDenizen.speciesObject[deadDenizen.id]
         }
     }

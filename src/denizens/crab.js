@@ -6,7 +6,7 @@ import { rand } from "../engine/utils";
 
 export default class Crab extends Swimmer {
 
-    constructor(id, ctx, canvas, view, logic, pos) {
+    constructor(id, ctx, canvas, view, logic, options) {
 
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Crab"]
@@ -17,7 +17,7 @@ export default class Crab extends Swimmer {
         this.img.src = './dist/art/crab.png'
         this.height = 15
         this.width = 30
-        this.pos = pos || [Math.floor(Math.random() * this.arenaWidth - this.width), this.arenaHeight - this.height]
+        this.pos = options.pos || [Math.floor(Math.random() * this.arenaWidth - this.width), this.arenaHeight - this.height]
         this.speed = Math.floor(Math.random() * 4)/10
         this.maxSpeed = .4
         this.up = false
