@@ -1,5 +1,6 @@
 import TextBox from "../engine/textbox";
 import { rand } from "../engine/utils";
+import Effect from "./effect";
 import Swimmer from "./swimmer";
 
 export default class Jellyfish extends Swimmer {
@@ -36,6 +37,15 @@ export default class Jellyfish extends Swimmer {
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
+
+        this.dropGametes()
+    }
+
+    dropGametes() {
+        setTimeout(()=>{
+            this.logic.effectCount++
+            this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, "gametes", [this.pos[0], this.pos[1]], { size: 2 })
+        }, 3000000)
     }
 
     trapPlacer() {

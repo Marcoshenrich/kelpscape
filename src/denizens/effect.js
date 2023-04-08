@@ -51,9 +51,10 @@ export default class Effect {
         this.pos[1] += .1
     
         this.ctx.globalAlpha = 1
-        if (this.pos[1] < 0) {
+        if (this.pos[1] > this.view.arenaHeight) {
             this.dead = true
             this.view.logic.recentlyDeadDenizens.push(this)
+            this.view.logic.spawnDenizen(this)
         }
     }
 

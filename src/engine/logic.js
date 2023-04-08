@@ -91,7 +91,7 @@ export default class Logic {
         this.jellyfishCount = 50
         this.rockCount = 20
         this.otterCount = 0
-        this.polypCount = 1
+        this.polypCount = 0
 
         this.garabaldi = this.tankPopulator(this.garabaldiCount, Garabaldi, {})
         this.garabaldiBabies = this.tankPopulator(this.garabaldiBabyCount, GarabaldiBaby, {})
@@ -109,7 +109,7 @@ export default class Logic {
         this.crabBabies = this.tankPopulator(this.crabBabyCount, CrabBaby,{})
         this.jellyfish = this.tankPopulator(this.jellyfishCount, Jellyfish,{})
         this.rocks = this.tankPopulator(this.rockCount, Rock,{})
-        this.polyps = this.tankPopulator(this.polypCount, Polyp, {})
+        this.polyps = {}
         this.otters = {}
 
         
@@ -121,8 +121,6 @@ export default class Logic {
 
         this.recentlyDeadDenizens = []
 
-        this.effectCount++
-        this.effects["Effect" + this.effectCount] = new Effect(this.effectCount, this.ctx, this.canvas, this.view, "gametes", [100,100], { size: 2 })
 
     }
 
@@ -160,6 +158,11 @@ export default class Logic {
             case Polyp:
                 this.jellyfishCount += 1
                 this.jellyfish["Jellyfish" + this.jellyfishCount] = new Jellyfish(this.jellyfishCount, this.ctx, this.canvas, this.view, this, {pos:[parentDenizen.pos[0], parentDenizen.pos[1]]})
+                break
+
+            case Effect:
+                this.polypCount += 1
+                this.polyps["Polyp" + this.polypCount] = new Polyp(this.polypCount, this.ctx, this.canvas, this.view, this, { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] })
                 break
             case Fishegg:
                 this.spawnDenizenFish(parentDenizen)

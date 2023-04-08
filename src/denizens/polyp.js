@@ -10,7 +10,7 @@ export default class Polyp extends Denizen {
         this.id = this.type + id
         this.width = 20
         this.height = 20
-        this.pos = [100, this.arenaHeight - this.height]
+        this.pos = [options.pos[0], this.arenaHeight - this.height]
         this.img = new Image()
         this.img.src = './dist/art/polyp.png'
         this.dieEventually()
@@ -25,7 +25,7 @@ export default class Polyp extends Denizen {
         setTimeout(() => {
             this.logic.spawnDenizen(this)
             this.spawnJellyFish() 
-        }, rand(1000) + 1000)
+        }, rand(10000) + 10000)
     }
 
     dieEventually() {
