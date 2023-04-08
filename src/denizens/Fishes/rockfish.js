@@ -8,6 +8,8 @@ export default class Rockfish extends Fish {
         this.leftImg.src = './dist/art/fishes/fishleft.png'
         this.rightImg.src = './dist/art/fishes/fishright.png'
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
+        this.textBox = this.logic.textContentObj["Rockfish"]
+
 
         this.oldPos = this.pos
         this.maxEnergy = 20

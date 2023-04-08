@@ -29,6 +29,8 @@ export default class View {
             this.logic.garabaldiBabies, 
             this.logic.bass,
             this.logic.bassBabies,
+            this.logic.rockfish,
+            this.logic.rockfishBabies,
             this.logic.algae, 
             this.logic.eggs, 
             this.logic.sharks, 
@@ -39,8 +41,8 @@ export default class View {
             this.logic.crabs, 
             this.logic.crabBabies, 
             this.logic.deadCreatures, 
-            this.logic.otters, 
             this.logic.seaUrchins,
+            this.logic.otters, 
             this.logic.rocks, 
             this.logic.jellyfish, 
             this.logic.polyps

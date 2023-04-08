@@ -8,6 +8,7 @@ export default class RockfishBaby extends FishBaby {
         this.id = this.type + id
         this.leftImg.src = './dist/art/fishes/fishleft.png'
         this.rightImg.src = './dist/art/fishes/fishright.png'
+        this.textBox = this.logic.textContentObj["Rockfish"]
 
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
 

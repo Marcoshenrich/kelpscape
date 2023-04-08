@@ -8,6 +8,7 @@ export default class BassBaby extends FishBaby {
         this.id = this.type + id
         this.leftImg.src = './dist/art/fishes/bassleft.png'
         this.rightImg.src = './dist/art/fishes/bassright.png'
+        this.textBox = this.logic.textContentObj["Kelp Bass"]
 
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
 

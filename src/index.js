@@ -65,7 +65,65 @@ canvas.addEventListener("mouseup", (e) => {
     pilot.view.input.mouseIsDownAt = false
 })
 
-canvas.addEventListener("touchstart", (e)=>{
+
+
+canvas.addEventListener("click", (e) => {
+    pilot.view.input.mouseIsDownAt = false
+
+    if (pilot.view.textBox) {
+        pilot.view.textBox.resetTextBox()
+        pilot.view.textBox = null
+    } else {
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 10, 10), "overlaps", { id: null }, true)
+        if (collisionArr.length) {
+            let textBox;
+            for (let i = 0; i < collisionArr.length; i++) {
+     
+                if (collisionArr[i].type !== "Seaweed" || i === collisionArr.length - 1 ) {
+                    textBox = collisionArr[i].textBox
+                    break
+                }
+            }
+
+            pilot.view.textBox = textBox
+            pilot.view.fadeInScore = .5
+            pilot.view.showScore = true
+            if (!pilot.view.logic.scoreTrackObj[textBox.type]) {
+                pilot.view.logic.scoreTrackObj[textBox.type] = true
+                pilot.view.logic.score += 1
+                pilot.view.scoreFontSize = 42
+            }
+        }
+    }
+
+    // if (!pilot.sound.kickOffIntroScore) {
+    //     pilot.sound.playIntroScore()
+    //     pilot.intro.sequenceStep = 1
+    // }
+})
+
+window.addEventListener("resize", (e) => {
+    canvas.height = e.currentTarget.innerHeight
+    canvas.width = e.currentTarget.innerWidth
+    buttonHider(window.innerWidth)
+})
+
+
+const buttonHider = (width) => {
+    const gitButton = document.getElementById('github-button')
+    const linkButton = document.getElementById('linkedin-button')
+
+    if (width < 700) { // If media query matches
+        gitButton.classList.add("hide")
+        linkButton.classList.add("hide")
+    } else {
+        gitButton.classList.remove("hide")
+        linkButton.classList.remove("hide")
+    }
+}
+
+
+canvas.addEventListener("touchstart", (e) => {
     e.preventDefault()
     let touch = e.touches[0]
     pilot.view.input.mouseIsDownAt = [touch.clientX, touch.clientY]
@@ -104,58 +162,3 @@ canvas.addEventListener("touchend", (e) => {
     e.preventDefault()
     pilot.view.input.mouseIsDownAt = false
 })
-
-
-
-
-
-canvas.addEventListener("click", (e) => {
-    pilot.view.input.mouseIsDownAt = false
-
-    if (pilot.view.textBox) {
-        pilot.view.textBox.resetTextBox()
-        pilot.view.textBox = null
-    } else {
-        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 1, 1), "overlaps", { id: null }, true)
-        if (collisionArr[0]) {
-            let textBox = collisionArr[0].textBox
-            pilot.view.textBox = textBox
-            pilot.view.fadeInScore = .5
-            pilot.view.showScore = true
-            if (!pilot.view.logic.scoreTrackObj[textBox.type]) {
-                pilot.view.logic.scoreTrackObj[textBox.type] = true
-                pilot.view.logic.score += 1
-                pilot.view.scoreFontSize = 42
-            }
-        }
-    }
-
-    // if (!pilot.sound.kickOffIntroScore) {
-    //     pilot.sound.playIntroScore()
-    //     pilot.intro.sequenceStep = 1
-    // }
-})
-
-
-
-
-
-window.addEventListener("resize", (e) => {
-    canvas.height = e.currentTarget.innerHeight
-    canvas.width = e.currentTarget.innerWidth
-    buttonHider(window.innerWidth)
-})
-
-
-const buttonHider = (width) => {
-    const gitButton = document.getElementById('github-button')
-    const linkButton = document.getElementById('linkedin-button')
-
-    if (width < 700) { // If media query matches
-        gitButton.classList.add("hide")
-        linkButton.classList.add("hide")
-    } else {
-        gitButton.classList.remove("hide")
-        linkButton.classList.remove("hide")
-    }
-}

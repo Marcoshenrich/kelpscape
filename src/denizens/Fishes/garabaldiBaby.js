@@ -5,6 +5,8 @@ export default class GarabaldiBaby extends FishBaby {
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic, { ...options, width: 15, height: 8, mouthSize: 4 })
         this.type = "GarabaldiBaby"
+        this.textBox = this.logic.textContentObj["Garibaldi"]
+
         this.id = this.type + id
         this.leftImg.src = './dist/art/fishes/garabaldileft.png'
         this.rightImg.src = './dist/art/fishes/garabaldiright.png'

@@ -9,6 +9,7 @@ export default class Seaweed extends Denizen {
         this.textBox = this.logic.textContentObj["Algae"]
         this.cluster = options.cluster
         this.numInCluster = id
+        this.textBox = this.logic.textContentObj["Kelp"]
         this.type = "Seaweed"
         this.id = "Cluster" + this.cluster.id + "Seaweed" + this.numInCluster
         this.width = 25

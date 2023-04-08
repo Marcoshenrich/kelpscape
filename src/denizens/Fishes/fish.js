@@ -7,10 +7,8 @@ export default class Fish extends Swimmer {
 
     constructor(ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
-        this.textBox = this.logic.textContentObj["Fish"]
         this.spawn = false
  
-        
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
         this.moveChangerOne()

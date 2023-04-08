@@ -9,6 +9,9 @@ export default class Bass extends Fish {
         this.rightImg.src = './dist/art/fishes/bassright.png'
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
 
+        this.textBox = this.logic.textContentObj["Kelp Bass"]
+
+
         this.oldPos = this.pos
         this.maxEnergy = 25
         this.energy = this.maxEnergy
