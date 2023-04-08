@@ -70,7 +70,7 @@ export default class Fish extends Swimmer {
         //debugging function
         this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.font = "12px serif";
-        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] +  this.offset[1])
+        // this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] +  this.offset[1])
     }
 
     mate(spawnBool) {

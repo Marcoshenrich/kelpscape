@@ -104,7 +104,7 @@ export default class View {
         // this.drawEcosystemGraph()
 
 
-        if (this.showScore && !this.textBox) this.drawScore()
+        if (this.showScore && !this.textBox && !this.mobile) this.drawScore()
 
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()

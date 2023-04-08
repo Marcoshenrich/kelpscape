@@ -1,9 +1,8 @@
 
 export default class Intro {
-    constructor(canvas, view) {
+    constructor(canvas, mobile) {
         this.canvas = canvas
         this.ctx = this.canvas.getContext('2d')
-        this.view = view
         this.background = new Image()
         this.background.src = './dist/art/intro.png'
         this.bgHeight = 648
@@ -14,7 +13,7 @@ export default class Intro {
         this.simTransition = false
         this.simStart = false
         this.fader = 0
-        this.textMargin = 100
+        this.textMargin = mobile ? 10 : 100
 
         this.sequenceStep = 0
         this.fontSize = 42

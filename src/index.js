@@ -81,11 +81,10 @@ canvas.addEventListener("click", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0], e.y - pilot.view.offset[1], 10, 10), "overlaps", { id: null }, true)
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0] - 5, e.y - pilot.view.offset[1] - 5, 10, 10), "overlaps", { id: null }, true)
         if (collisionArr.length) {
             let textBox;
             for (let i = 0; i < collisionArr.length; i++) {
-     
                 if (collisionArr[i].type !== "Seaweed" || i === collisionArr.length - 1 ) {
                     textBox = collisionArr[i].textBox
                     break
@@ -115,7 +114,7 @@ const buttonHider = (width) => {
     const gitButton = document.getElementById('github-button')
     const linkButton = document.getElementById('linkedin-button')
 
-    if (width < 700) { // If media query matches
+    if (width < 700 || pilot.mobile) { // If media query matches
         gitButton.classList.add("hide")
         linkButton.classList.add("hide")
     } else {
@@ -123,6 +122,8 @@ const buttonHider = (width) => {
         linkButton.classList.remove("hide")
     }
 }
+
+buttonHider()
 
 
 canvas.addEventListener("touchstart", (e) => {
