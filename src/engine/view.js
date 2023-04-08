@@ -41,8 +41,8 @@ export default class View {
             this.logic.deadCreatures, 
             this.logic.otters, 
             this.logic.seaUrchins,
-            this.logic.jellyfish, 
             this.logic.rocks, 
+            this.logic.jellyfish, 
             this.logic.polyps
         ]
 
@@ -78,9 +78,9 @@ export default class View {
         this.ctx.fillStyle = `rgba(0,0,0,${this.introFader})`;
         this.introFader -= .005
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-        this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
-        this.ctx.fillText("mobile intro test", this.canvas.width / 2, this.canvas.height / 2)
-
+        //text to show during fade-in
+        // this.ctx.fillStyle = `rgba(255,255,255,${this.introFader})`;
+        // this.ctx.fillText("mobile intro test", this.canvas.width / 2, this.canvas.height / 2)
     }
 
     drawInfoText() {

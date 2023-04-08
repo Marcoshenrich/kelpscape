@@ -111,6 +111,7 @@ export default class Logic {
         this.rocks = this.tankPopulator(this.rockCount, Rock,{})
         this.polyps = {}
         this.otters = {}
+        // this.crabs = {}
 
         
         this.hungryDenizenArr = []
@@ -153,7 +154,7 @@ export default class Logic {
                 break
             case Seaweed:
                 this.seaUrchinCount += 1
-                this.seaUrchins["SeaUrchin" + this.seaUrchinCount] = new SeaUrchin(this.seaUrchinCount, this.ctx, this.canvas, this.view, this, [parentDenizen.pos[0], parentDenizen.pos[1]])
+                this.seaUrchins["SeaUrchin" + this.seaUrchinCount] = new SeaUrchin(this.seaUrchinCount, this.ctx, this.canvas, this.view, this, { parent: parentDenizen, pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
                 break
             case Polyp:
                 this.jellyfishCount += 1

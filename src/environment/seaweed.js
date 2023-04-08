@@ -16,19 +16,13 @@ export default class Seaweed extends Denizen {
         this.sizeCoef = Math.floor(Math.random() * 15)
         this.pos = [options.pos[0] + Math.floor(Math.random() * 5) - 10, (this.arenaHeight - this.height) - ((id - 1) * 25)]
 
-        // this.pos[0] = Math.floor(Math.random() * this.arenaWidth - this.width/2)
-        // this.pos[1] = this.arenaHeight - this.height - Math.floor(Math.random() * 200)
-
         this.img = new Image()
         this.img.src = './dist/art/seaweed.png'
         this.aniStateNames = ["sway1", "sway2", "swish", "swoosh"]
         this.animationState = this.aniStateNames[Math.floor(Math.random() * 2)]
         this.animations = this.cluster.animations;
 
-        //what if seaweed clusters could grow? and then be eaten by something over time.
-
         this.energyVal = 5
-
 
         this.gameFrame = Math.floor(Math.random() * 100)
         this.staggerFrame = 40
