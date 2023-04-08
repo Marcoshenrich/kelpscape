@@ -130,6 +130,11 @@ canvas.addEventListener("touchstart", (e) => {
     let touch = e.touches[0]
     pilot.view.input.mouseIsDownAt = [touch.clientX, touch.clientY]
 
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
+
     if (pilot.view.textBox) {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
@@ -145,11 +150,6 @@ canvas.addEventListener("touchstart", (e) => {
         // }
         // pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
-
-    // if (!pilot.sound.kickOffIntroScore) {
-    //     pilot.sound.playIntroScore()
-    //     pilot.intro.sequenceStep = 1
-    // }
 });
 
 canvas.addEventListener("touchmove", (e) => {

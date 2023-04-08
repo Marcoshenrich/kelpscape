@@ -56,8 +56,8 @@ export default class Fish extends Swimmer {
         // this.drawMouths()
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1] - this.width, 15, 15)
         if (this.view.debugging) {
-            this.drawId()
         }
+        this.drawId()
         this.ctx.globalAlpha = 1
     }
 
@@ -68,9 +68,9 @@ export default class Fish extends Swimmer {
 
     drawId() {
         //debugging function
-        this.ctx.fillStyle = 'rgba(0,0,0,1)';
+        this.ctx.fillStyle = 'rgba(255,255,255,1)';
         this.ctx.font = "12px serif";
-        this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] +  this.offset[1])
+        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] +  this.offset[1])
     }
 
     mate(spawnBool) {
