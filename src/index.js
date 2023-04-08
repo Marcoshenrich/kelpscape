@@ -120,7 +120,12 @@ canvas.addEventListener("click", (e) => {
         if (collisionArr[0]) {
             let textBox = collisionArr[0].textBox
             pilot.view.textBox = textBox
-            pilot.view.logic.scoreTrackObj[textBox.type] = true
+            pilot.view.fadeInScore = .5
+            if (!pilot.view.logic.scoreTrackObj[textBox.type]) {
+                pilot.view.logic.scoreTrackObj[textBox.type] = true
+                pilot.view.logic.score += 1
+                pilot.view.scoreFontSize = 42
+            }
         }
     }
 

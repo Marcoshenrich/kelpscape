@@ -47,6 +47,8 @@ export default class Crab extends Swimmer {
         this.carryingEggs = false
         this.seekingMate = false
 
+        this.hasGivenBirth = false
+
         this.trapHeight = 10
         this.trapWidth = this.width + 10
         this.trapPos = []
@@ -96,7 +98,7 @@ export default class Crab extends Swimmer {
     } 
 
     behaviorChanger(){
-        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte && !this.carryingEggs) {
+        if (!this.spawn && !this.hasGivenBirth && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte && !this.carryingEggs) {
             this.logic.matingDenizensObj[this.id] = this
             this.seekingMate = true
         } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
@@ -122,6 +124,7 @@ export default class Crab extends Swimmer {
                 if (this.trapped) return
                 this.img.src = './dist/art/crab.png'
                 this.carryingEggs = false
+                this.hasGivenBirth = true
                 let i = Math.floor(Math.random() * 3) + 2
                 while (i > 0) {
                     i--

@@ -19,13 +19,10 @@ export default class View {
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.input = new Input(this)
 
-
-        // this.seaweed = {}
-        // Object.values(this.logic.seaweedClusters).forEach((cluster)=>{
-        //     Object.values(cluster.seaweed).forEach((seaweed) => {
-        //         this.seaweed[String(seaweed.id) + String(cluster.id) ] = seaweed
-        //     })
-        // })
+        this.scoreFontSize = 24
+        this.showScore = false
+        setTimeout(() => { this.showScore = true}, 1000)
+        this.fadeInScore = 0
 
         this.allDenizensArr = [
             this.logic.garabaldi, 
@@ -116,7 +113,7 @@ export default class View {
         // this.drawEcosystemGraph()
 
 
-        this.drawScore()
+        if (this.showScore && !this.textBox) this.drawScore()
 
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
@@ -124,15 +121,52 @@ export default class View {
     }
 
     drawScore() {
+        if (this.fadeInScore < 1) this.fadeInScore += .0025
+        this.ctx.globalAlpha = this.fadeInScore
+  
+        let startX = 50
+        let startY = 75
+
+        //title
+        let text = "Denizens Found"
+        this.ctx.fillStyle = `rgba(255,255,255,${.9 * this.fadeInScore})`;
+        this.ctx.font = `24px Georgia`;
+        this.ctx.fillText(text, startX, startY)
+        let centerText = this.ctx.measureText(text).width / 2
+
+        
+        //score
         let maxScore = Object.values(this.logic.scoreTrackObj).length
         let score = 0
-        Object.values(this.logic.scoreTrackObj).forEach((found)=>{
+        Object.values(this.logic.scoreTrackObj).forEach((found) => {
             if (found) score++
         })
 
-        this.ctx.fillStyle = 'rgba(255,255,255,.3)';
-        this.ctx.fillText(`maxScore ${maxScore}`, this.canvas.width - 300, 100)
-        this.ctx.fillText(`score ${score}`, this.canvas.width - 300, 150)
+        if (this.scoreFontSize > 24) this.scoreFontSize -= .1
+        this.ctx.font = `${this.scoreFontSize}px Georgia`;
+        this.ctx.fillText(score, startX + 67, startY + 67)
+       
+        this.ctx.font = `24px Georgia`;
+        this.ctx.fillText(maxScore, startX + 93, startY + 93)
+
+
+        //score line
+        this.ctx.beginPath();
+        this.ctx.moveTo(startX + 67, startY + 93);
+        this.ctx.lineTo(startX + 103, startY + 57);
+        // this.ctx.fillStyle = `rgba(255,255,255,${.1 * this.fadeInScore})`;
+
+        this.ctx.lineWidth = 3
+        this.ctx.stroke();
+
+
+        //fill circle
+
+        this.ctx.beginPath();
+        this.ctx.arc(startX + centerText, startY + 75, 50 + this.scoreFontSize/2 - 12, 0, 2 * Math.PI);
+        this.ctx.fillStyle = `rgba(255,255,255,${.4 * this.fadeInScore})`;
+        this.ctx.fill();
+        this.ctx.globalAlpha = 1
     }
 
     drawBackround() {

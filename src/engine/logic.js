@@ -30,6 +30,7 @@ export default class Logic {
         this.canvas = canvas
         this.view = view
 
+        this.score = 0
         this.scoreTrackObj = {
             "Fish": false,
             "Algae": false,

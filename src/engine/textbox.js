@@ -25,8 +25,8 @@ export default class TextBox {
         
         this.img = new Image()
         this.img.src = `./dist/images/${path}`
-        this.imgWidth = this.canvas.width/4
-        this.imgHeight = this.imgWidth * .66
+        this.imgHeight = (this.canvas.height - (this.textBoxOuterMargin * 2)) / 3
+        this.imgWidth = this.imgHeight * 1.5
 
         this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
 
@@ -38,7 +38,7 @@ export default class TextBox {
         this.textG = 212
 
         this.textFader = 0
-        this.fadeInSpeed = .005
+        this.fadeInSpeed = .025
     }
 
     resetTextBox() {
@@ -53,8 +53,8 @@ export default class TextBox {
         this.topPlacementOfImage = this.canvas.height - this.textBoxInnerMargin - this.textBoxOuterMargin - this.imgHeight
         this.rightLimitOfText = this.canvas.width - this.textBoxInnerMargin - this.textBoxOuterMargin
         this.bottomLimitOfText = this.topPlacementOfImage - this.textBoxInnerMargin
-        this.imgWidth = this.canvas.width / 4
-        this.imgHeight = this.imgWidth * .66
+        this.imgHeight = (this.canvas.height - (this.textBoxOuterMargin * 2)) / 3
+        this.imgWidth = this.imgHeight * 1.5
         this.startTextAtX = this.textBoxOuterMargin + this.textBoxInnerMargin
         this.startHeaderAtY = this.startTextAtX + 15
         this.startTextAtY = this.ctx.measureText(this.type).actualBoundingBoxDescent + this.textBoxInnerMargin/2 + this.startHeaderAtY
