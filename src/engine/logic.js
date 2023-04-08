@@ -151,6 +151,14 @@ export default class Logic {
                 this.eggCount += 1
                 this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
                 break
+            case Rockfish:
+                this.eggCount += 1
+                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
+                break
+            case RockfishBaby:
+                this.rockCount += 1
+                this.rockfish["Rockfish" + this.rockfishCount] = new Rockfish(this.rockfish, this.ctx, this.canvas, this.view, this, { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] })
+                break
             case BassBaby:
                 this.bassCount += 1
                 this.bass["Bass" + this.bassCount] = new Bass(this.bassCount, this.ctx, this.canvas, this.view, this, {pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
@@ -195,6 +203,10 @@ export default class Logic {
             case Bass:
                 this.bassBaByCount += 1
                 this.bassBabies["BassBaby" + this.bassBaByCount] = new BassBaby(this.bassBaByCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
+                break
+            case Rockfish:
+                this.rockfishBaByCount += 1
+                this.rockfishBabies["RockfishBaby" + this.rockfishBaByCount] = new BassBaby(this.rockfishBaByCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
                 break
         }
     }

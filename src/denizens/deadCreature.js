@@ -8,6 +8,8 @@ import GarabaldiBaby from "./Fishes/garabaldiBaby"
 import Garabaldi from "./Fishes/garabaldi"
 import BassBaby from "./Fishes/bassBaby"
 import Bass from "./Fishes/bass"
+import Rockfish from "./Fishes/rockfish"
+import RockfishBaby from "./Fishes/rockfishbaby"
 
 export default class DeadCreature extends Denizen {
     constructor(id, ctx, canvas, view, logic, pos, deadDenizen) {
@@ -71,7 +73,7 @@ export default class DeadCreature extends Denizen {
                 this.img.src = './dist/art/fishes/garabaldidead.png'
                 this.width = 15
                 this.height = 8
-                this.energyVal = 5
+                this.energyVal = 4
                 break
 
 
@@ -90,6 +92,20 @@ export default class DeadCreature extends Denizen {
                 this.energyVal = 5
                 break
 
+
+            case Rockfish:
+                this.img.src = './dist/art/fishes/fishdead.png'
+                this.width = 30
+                this.height = 19
+                this.energyVal = 7
+                break
+
+            case RockfishBaby: 
+                this.img.src = './dist/art/fishes/fishdead.png'
+                this.width = 30
+                this.height = 19
+                this.energyVal = 4
+                break
 
             case Crab:
                 this.img.src = './dist/art/crabdead.png'
