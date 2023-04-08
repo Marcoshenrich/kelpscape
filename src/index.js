@@ -96,10 +96,10 @@ canvas.addEventListener("click", (e) => {
         }
     }
 
-    // if (!pilot.sound.kickOffIntroScore) {
-    //     pilot.sound.playIntroScore()
-    //     pilot.intro.sequenceStep = 1
-    // }
+    if (!pilot.sound.kickOffIntroScore) {
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
 })
 
 window.addEventListener("resize", (e) => {
@@ -132,16 +132,16 @@ canvas.addEventListener("touchstart", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        let touch = e.touches[0]
-        pilot.touch = touch
+        // let touch = e.touches[0]
+        // pilot.touch = touch
 
-        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
-        if (collisionArr[0]) {
-            textBox = collisionArr[0].textBox
-            pilot.view.textBox = textBox
-            pilot.view.logic.scoreTrackObj[textBox.type] = true
-        }
-        pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
+        // let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
+        // if (collisionArr[0]) {
+        //     textBox = collisionArr[0].textBox
+        //     pilot.view.textBox = textBox
+        //     pilot.view.logic.scoreTrackObj[textBox.type] = true
+        // }
+        // pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
     }
 
     // if (!pilot.sound.kickOffIntroScore) {

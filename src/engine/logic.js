@@ -35,7 +35,7 @@ export default class Logic {
 
         this.score = 0
         this.scoreTrackObj = {
-            "Garabaldi": false,
+            "Garibaldi": false,
             "Rockfish": false,
             "Kelp Bass": false,
             "Algae": false,
@@ -46,7 +46,7 @@ export default class Logic {
             "Shark": false,
             "Turtle": false,
             "Sea Urchin": false,
-            "Seaweed": false,
+            "Kelp": false,
             "Fish Egg": false,
             "Corpse": false,
         }
