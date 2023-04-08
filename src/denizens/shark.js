@@ -48,7 +48,7 @@ export default class Shark extends Swimmer {
 
         this.afterIEatCB = () => {
             this.logic.effectCount++
-            this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, "bloodSpurt", [this.mouthPos[0], this.mouthPos[1]], this.logic.ctx, this.logic.canvas, this.logic.view)
+            this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.logic.ctx, this.logic.canvas, this.logic.view, "bloodSpurt", [this.mouthPos[0], this.mouthPos[1]], {size: 10})
         }
 
     }

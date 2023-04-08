@@ -21,7 +21,7 @@ export default class View {
 
         this.scoreFontSize = 24
         this.showScore = false
-        setTimeout(() => { this.showScore = true}, 1000)
+        setTimeout(() => { this.showScore = true}, 60000)
         this.fadeInScore = 0
 
         this.allDenizensArr = [
