@@ -9,7 +9,7 @@ export default class SeaUrchin extends Denizen {
         this.id = this.type + id
         this.img = new Image()
         this.img.src = './dist/art/sea_urchin.png'
-
+        
         this.height = 10
         this.width = 20
 

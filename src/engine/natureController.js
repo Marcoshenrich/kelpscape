@@ -3,6 +3,8 @@ import Algae from "../denizens/algae"
 import Otter from "../denizens/otter"
 import SeaweedCluster from "../environment/seaweedCluster"
 import Turtle from "../denizens/turtle"
+import { rand } from "./utils"
+
 
 export default class NatureController {
     constructor(logic) {
@@ -21,6 +23,21 @@ export default class NatureController {
 
         this.turtleSpawnInterval = 10000
         this.denizensSpawnInIncrements(this.turtleSpawnInterval, "turtleCount", "turtles", Turtle, {})
+
+        
+    }
+
+    coreloop () {
+        //does not account for when a cluster is destroyed by the last bit being eaten
+        //frankly that doesn't happen yet anyway
+        this.seaweedFinder()
+    }
+
+    seaweedFinder() {
+        if (!this.logic.seaweedClusters) return
+        Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
+            this.logic.seaweedSpots[(seaweedCluster.pos[0]) + rand(-10, 10)] = seaweedCluster
+        })
     }
 
     denizensSpawnInIncrements(timerIncrement, countName, classObjName, className, options) {

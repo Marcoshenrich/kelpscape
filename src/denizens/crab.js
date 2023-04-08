@@ -28,7 +28,7 @@ export default class Crab extends Swimmer {
         this.timeToClimbSeaweed = false
         this.onSeaweed = false
 
-        this.seaweedSpots = this.seaweedFinder()
+        this.seaweedSpots = this.logic.seaweedSpots
         this.climbSeaweedTimer()
 
         this.scavenging = false
@@ -47,12 +47,18 @@ export default class Crab extends Swimmer {
         this.carryingEggs = false
         this.seekingMate = false
 
-        this.trapHeight = 6
-        this.trapWidth = this.width
-        this.trapPos = this.pos
+        this.trapHeight = 10
+        this.trapWidth = this.width + 10
+        this.trapPos = []
+        this.trapPlacer()
         this.trappedPrey = false
 
         this.totalEnergyConsumed = 0
+    }
+
+    trapPlacer() {
+        this.trapPos[0] = this.pos[0] - 5
+        this.trapPos[1] = this.pos[1]
     }
 
 
@@ -63,13 +69,6 @@ export default class Crab extends Swimmer {
         }, Math.floor(Math.random() * (this.timeToClimbSeaweed ? 60000 : 30000)))
     }
 
-    seaweedFinder() {
-        let seaweedSpots = {}
-        Object.values(this.logic.seaweedClusters).forEach((seaweedCluster) => {
-            seaweedSpots[(seaweedCluster.pos[0]) + rand(-10,10)] = seaweedCluster
-        })
-        return seaweedSpots
-    }
 
     movementSwitchTimer() {
         setTimeout(() => {
@@ -89,6 +88,7 @@ export default class Crab extends Swimmer {
         this.consumeEnergy()
         this.behaviorChanger()
         this.draw()
+        this.trapPlacer()
         // if (this.view.gameFrame % 10 !== 0) return
         if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.logic.denizenCorpse(this)
         
@@ -182,9 +182,9 @@ export default class Crab extends Swimmer {
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(255,255,255,1)';
             this.ctx.font = "12px serif";
+            this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
             this.ctx.fillText(`${this.id}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillText(`[${Math.floor(this.pos[0])},${Math.floor(this.pos[1])}]`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - this.height)
-            this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
         }
         
     }

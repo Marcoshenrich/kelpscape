@@ -1,7 +1,7 @@
-import { Rectangle } from "./quadtree"
 import FishBaby from "../denizens/Fishes/fishbaby"
-import Algae from "../denizens/algae"
 import Fish from "../denizens/Fishes/fish"
+import SeaUrchin from "../denizens/seaurchin"
+import Algae from "../denizens/algae"
 import Garabaldi from "../denizens/Fishes/garabaldi"
 import GarabaldiBaby from "../denizens/Fishes/garabaldiBaby"
 import Shark from "../denizens/shark"
@@ -15,13 +15,11 @@ import Rock from "../environment/rock"
 import DeadCreature from "../denizens/deadCreature"
 import Jellyfish from "../denizens/jellyfish"
 import Otter from "../denizens/otter"
-import SeaUrchin from "../denizens/seaurchin"
 import Turtle from "../denizens/turtle"
 import TextBox from "./textbox"
 import BassBaby from "../denizens/Fishes/bassBaby"
 import Bass from "../denizens/Fishes/bass"
 import BehaviorController from "./behaviorController"
-import natureController from "./natureController"
 import NatureController from "./natureController"
 
 
@@ -60,30 +58,37 @@ export default class Logic {
             "Corpse": new TextBox(ctx, canvas, view, this, "Corpse", "Death is an inevitable part of life in the Pacific kelp forest, and the corpses of the denizens of this underwater world play an important role in sustaining the ecosystem. When a fish or other animal dies, its body sinks to the ocean floor, where it becomes a feast for scavengers like crabs and sea stars. As the corpse decomposes, it releases nutrients into the water, which are absorbed by algae and other plants in the kelp forest. This process, known as nutrient cycling, helps to maintain the health and productivity of the ecosystem. In addition to providing nutrients, dead organisms can also create new habitats for other creatures. For example, the hollow shells of dead snails and clams can provide shelter for small fish and invertebrates. While death may seem like a grim topic, it is an essential part of the natural cycle of life in the Pacific kelp forest.", "corpse.jpeg"),
         }
 
-        this.garabaldiCount = 40
-        this.garabaldiBabyCount =  40
+        this.seaweedClusterCount = 15
+        this.seaUrchinCount = 0
+        this.seaUrchins = {}
+        this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster, { start: true })
+        this.seaweed = {}
+        this.seaweedSpots = {}
+        this.behaviorController = new BehaviorController(this)
+        this.natureController = new NatureController(this)
+
+
+
+        this.garabaldiCount = 10
+        this.garabaldiBabyCount =  10
 
 
         this.bassCount = 10
         this.bassbabyCount = 10
 
-
         this.testCount = 0
-
 
         this.algaeCount = 100
         this.sharkCount = 2
         this.eggCount = 0
         this.effectCount = 0
         this.turtleCount = 10
-        this.seaweedClusterCount = 15
         this.deadCreatureCount = 0
         this.crabCount = 10
         this.crabBabyCount = 0
         this.jellyfishCount = 50
         this.rockCount = 20
         this.otterCount = 0
-        this.seaUrchinCount = 0
 
         this.garabaldi = this.tankPopulator(this.garabaldiCount, Garabaldi, {})
         this.garabaldiBabies = this.tankPopulator(this.garabaldiBabyCount, GarabaldiBaby, {})
@@ -95,9 +100,6 @@ export default class Logic {
         this.eggs = this.tankPopulator(this.eggCount, Fishegg, {})
         this.effects = this.tankPopulator(this.effectCount, Effect)
         this.turtles = this.tankPopulator(this.turtleCount, Turtle)
-        this.seaUrchins = this.tankPopulator(this.seaUrchinCount, SeaUrchin)
-        this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster, {start: true})
-        this.seaweed = {}
         this.algae = this.tankPopulator(this.algaeCount, Algae, { clustersObj: this.seaweedClusters })
         this.deadCreatures = {}
         this.crabs = this.tankPopulator(this.crabCount, Crab)
@@ -114,9 +116,6 @@ export default class Logic {
         this.matingDenizensObj = {}
 
         this.recentlyDeadDenizens = []
-
-        this.behaviorController = new BehaviorController(this)
-        this.natureController = new NatureController(this)
 
     }
 
@@ -271,6 +270,7 @@ export default class Logic {
         // if (this.view.gameFrame % 10 !== 0) return
         this.deleteDeadDenizens()
         this.reAssignDataObjs()
+        this.natureController.coreloop()
         this.behaviorController.coreloop()
         this.deleteDeadDenizens()
         // this.deadCreatureDebugLoop()
