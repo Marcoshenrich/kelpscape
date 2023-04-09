@@ -2,13 +2,14 @@ import CrabBaby from "./crabbaby";
 import DeadCreature from "./deadCreature";
 import Swimmer from "./swimmer";
 import { rand } from "../engine/utils";
-
+import Trapper from "../behaviors/trapper";
 
 export default class Crab extends Swimmer {
 
     constructor(id, ctx, canvas, view, logic, options) {
 
         super(ctx, canvas, view, logic)
+
         this.textBox = this.logic.textContentObj["Crab"]
         this.type = "Crab"
         this.id = this.type + id
@@ -49,18 +50,12 @@ export default class Crab extends Swimmer {
 
         this.hasGivenBirth = false
 
-        this.trapHeight = 10
-        this.trapWidth = this.width + 10
-        this.trapPos = []
-        this.trapPlacer()
         this.trappedPrey = false
 
         this.totalEnergyConsumed = 0
-    }
 
-    trapPlacer() {
-        this.trapPos[0] = this.pos[0] - 5
-        this.trapPos[1] = this.pos[1]
+        this.trapper = options.spawn ? null : new Trapper(this, { trapHeight: 10, trapWidth: this.width + 10, trapYAdjustment: 0, trapXAdjustment: -5, denizenEatsImmediately: true })
+
     }
 
 
@@ -82,9 +77,9 @@ export default class Crab extends Swimmer {
     }
 
     coreloop() {
-        if (this.trappedPrey) {
-            this.consumeFod(this.trappedPrey, "trapped")
-        } else if (this.scavenging) {
+
+        if (this.trapper)this.trapper.coreloop()
+        if (this.scavenging) {
             this.consumeFod(this.scavenging, "scavenge")
         }
         if (!this.scavenging) this.move()
@@ -92,7 +87,6 @@ export default class Crab extends Swimmer {
         this.consumeEnergy()
         this.behaviorChanger()
         this.draw()
-        this.trapPlacer()
         // if (this.view.gameFrame % 10 !== 0) return
         if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.logic.denizenCorpse(this)
         
@@ -138,32 +132,6 @@ export default class Crab extends Swimmer {
         }, 3000)
 
         this.clearOnDeath.push(baseId)
-    }
-
-    consumeFod(foodSource, foodType) {
-        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-        if (foodType === "scavenge") {
-            foodSource.energyVal -= this.consumptionRate
-            if (foodSource.pos[1] > this.pos[1] + this.height ) this.scavenging = false
-        } else {
-            foodSource.energy -= this.consumptionRate
-        }
-        
-        this.totalEnergyConsumed += this.consumptionRate
-        if (foodSource.dead) {
-            this.speed = .3
-            foodType === "scavenge" ? this.scavenging = false : this.trappedPrey = false
-        }
-
-        if (this.spawn && this.totalEnergyConsumed > this.growUpThreshold) {
-            this.growUp()
-            
-        }
-
-        if (!this.recentlyAte && !this.scavenging) {
-            this.recentlyAte = true
-            setTimeout(() =>  this.recentlyAte = false, 10000) 
-        }
     }
 
     consumeEnergy() {
@@ -307,6 +275,31 @@ export default class Crab extends Swimmer {
         })
     }
 
+
+
+    consumeFod(foodSource, foodType) {
+        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
+
+        foodSource.energyVal -= this.consumptionRate
+        this.totalEnergyConsumed += this.consumptionRate
+
+        if (foodSource.pos[1] > this.pos[1] + this.height) this.scavenging = false
+
+
+        if (foodSource.dead) {
+            this.speed = .3
+            this.scavenging = false
+        }
+
+        if (this.spawn && this.totalEnergyConsumed > this.growUpThreshold) {
+            this.growUp()
+        }
+
+        if (!this.recentlyAte && !this.scavenging) {
+            this.recentlyAte = true
+            setTimeout(() => this.recentlyAte = false, 10000)
+        }
+    }
 
 
 

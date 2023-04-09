@@ -26,26 +26,26 @@ export default class View {
         this.fadeInScore = 0
 
         this.allDenizensArr = [
-            this.logic.algae, 
             this.logic.eggs, 
             this.logic.sharks, 
             this.logic.turtles,
+            this.logic.bass,
+            this.logic.rockfish,
+            this.logic.garabaldi, 
             this.logic.seaweedClusters,
             this.logic.seaweed,
+            this.logic.algae, 
             this.logic.crabs, 
             this.logic.crabBabies, 
             this.logic.deadCreatures, 
             this.logic.seaUrchins,
             this.logic.otters, 
-            this.logic.rocks, 
             this.logic.jellyfish, 
             this.logic.polyps,
-            this.logic.garabaldi, 
             this.logic.garabaldiBabies, 
-            this.logic.bass,
             this.logic.bassBabies,
-            this.logic.rockfish,
             this.logic.rockfishBabies,
+            this.logic.rocks, 
             this.logic.effects
         ]
 

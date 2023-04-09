@@ -22,6 +22,9 @@ export default class Trapper {
         }
         if (!this.denizenEatsImmediately) return
         if (this.denizen.trappedPrey) this.eatTrappedPrey(this.denizen.trappedPrey)
+
+        // this.denizen.ctx.fillStyle = 'rgba(0,255,255,1)';
+        // this.denizen.ctx.fillRect(this.trapPos[0] + this.denizen.offset[0], this.trapPos[1] + this.denizen.offset[1], this.trapWidth, this.trapHeight)
     }
 
     eatTrappedPrey(foodSource) {

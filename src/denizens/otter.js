@@ -46,6 +46,14 @@ export default class Otter extends Denizen{
         this.imgSelector()
     }
 
+    beforeIDieCB() {
+        if (this.trappedPrey) this.trappedPrey.trapped = false
+        this.clearOnDeath.forEach((timerId) => {
+            clearTimeout(timerId)
+        })
+    }
+
+
     imgSelector() {
         this.img = this.right ? this.downRight : this.downLeft
     }
@@ -73,11 +81,6 @@ export default class Otter extends Denizen{
         if (this.appearedOnScreen && this.pos[1] + this.height < 0 || (this.pos[0] + this.width < 0 || this.pos[0] - this.width > this.arenaWidth)) {
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
-
-            if (this.trappedPrey) {
-                this.trappedPrey.dead = true
-                this.logic.recentlyDeadDenizens.push(this.trappedPrey)
-            }
         }
     }
 
@@ -120,8 +123,8 @@ export default class Otter extends Denizen{
         this.trapper.trapPos[0] = bottomPosX;
         this.trapper.trapPos[1] = bottomPosY;
 
-        this.ctx.fillStyle = 'rgba(0,255,255,1)';
-        this.ctx.fillRect(this.trapper.trapPos[0] + this.offset[0], this.trapper.trapPos[1] + this.offset[1], this.trapper.trapWidth, this.trapper.trapHeight)
+        // this.ctx.fillStyle = 'rgba(0,255,255,1)';
+        // this.ctx.fillRect(this.trapper.trapPos[0] + this.offset[0], this.trapper.trapPos[1] + this.offset[1], this.trapper.trapWidth, this.trapper.trapHeight)
     }
 
 }

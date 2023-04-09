@@ -5,10 +5,10 @@ import Crab from "./crab";
 export default class CrabBaby extends Crab {
 
     constructor(id, ctx, canvas, view, logic, options) {
-        super(id, ctx, canvas, view, logic,{})
+        super(id, ctx, canvas, view, logic,{spawn:true})
+        this.spawn = true
         this.type = "CrabBaby"
         this.id = this.type + id
-        this.spawn = true
         this.img = new Image()
         this.img.src = './dist/art/crab.png'
         this.height = 7.5
@@ -25,9 +25,6 @@ export default class CrabBaby extends Crab {
         this.energy = this.maxEnergy
         this.energyUseCoef = .0007
         this.fadeThreshold = 2.5
-
-        this.trapHeight = 3
-        this.trapWidth = this.width
  
     }
 
