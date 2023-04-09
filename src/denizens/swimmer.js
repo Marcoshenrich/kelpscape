@@ -28,6 +28,11 @@ export default class Swimmer extends Denizen {
         } else {
             this.move()
         }
+        if (this.mouthEater) {
+            this.mouthEater.coreloop()
+        } else {
+            this.mouthPos = this.mouthPlacer();
+        }
         this.consumeEnergy()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
@@ -98,16 +103,6 @@ export default class Swimmer extends Denizen {
         return this.right ? this.rightImg : this.leftImg
     }
 
-    mouthPlacer() {
-        let mouthPos = []
-        if (!this.right) {
-            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2)]
-        } else {
-            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2)]
-        }
-        return mouthPos
-    }
-
     move() {
 
         if (this.trapped) {
@@ -120,7 +115,6 @@ export default class Swimmer extends Denizen {
             this.switchDirections()
         }
         if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
-        this.mouthPos = this.mouthPlacer();
 
         if (this.speed < .01) this.speed = .3
 
@@ -264,17 +258,33 @@ export default class Swimmer extends Denizen {
 
         let [xhigh, xlow, yhigh, ylow] = this.inBounds()
 
-        if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            if (xhigh) this.pos[0] += this.maxSpeed 
+        if (this.mouthEater) {
+            if (this.mouthEater.mouthPos[0] < this.nearestFoodCords[0]) {
+                if (xhigh) this.pos[0] += this.maxSpeed
+            } else {
+                if (xlow) this.pos[0] -= this.maxSpeed
+            }
+
+            if (this.mouthEater.mouthPos[1] < this.nearestFoodCords[1]) {
+                if (yhigh) this.pos[1] += this.maxSpeed
+            } else {
+                if (ylow) this.pos[1] -= this.maxSpeed
+            }
         } else {
-            if (xlow) this.pos[0] -= this.maxSpeed
+            if (this.mouthPos[0] < this.nearestFoodCords[0]) {
+                if (xhigh) this.pos[0] += this.maxSpeed
+            } else {
+                if (xlow) this.pos[0] -= this.maxSpeed
+            }
+
+            if (this.mouthPos[1] < this.nearestFoodCords[1]) {
+                if (yhigh) this.pos[1] += this.maxSpeed
+            } else {
+                if (ylow) this.pos[1] -= this.maxSpeed
+            }
         }
 
-        if (this.mouthPos[1] < this.nearestFoodCords[1]) {
-            if (yhigh) this.pos[1] += this.maxSpeed
-        } else {
-            if (ylow) this.pos[1] -= this.maxSpeed
-        }
+
     
     }
 
@@ -305,6 +315,17 @@ export default class Swimmer extends Denizen {
             this.logic.recentlyDeadDenizens.push(this)
             this.logic.denizenCorpse(this)
         }
+    }
+
+
+    mouthPlacer() {
+        let mouthPos = []
+        if (!this.right) {
+            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2)]
+        } else {
+            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2)]
+        }
+        return mouthPos
     }
 
 

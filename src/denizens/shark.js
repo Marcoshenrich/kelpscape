@@ -1,6 +1,7 @@
 
 import Effect from "./effect"
 import Swimmer from "./swimmer"
+import MouthEater from "../behaviors/moutheater"
 
 export default class Shark extends Swimmer {
 
@@ -19,8 +20,6 @@ export default class Shark extends Swimmer {
         this.height = spawn ? 8 : 41
         this.pos = this.placer()
         this.oldPos = this.pos
-        this.mouthSize = spawn ? 4 : 12
-        this.mouthPos = this.mouthPlacer()
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
@@ -48,27 +47,11 @@ export default class Shark extends Swimmer {
 
         this.afterIEatCB = () => {
             this.logic.effectCount++
-            this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic, {type: "bloodSpurt", pos: [this.mouthPos[0], this.mouthPos[1]], size: 10})
+            this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic, {type: "bloodSpurt", pos: [this.mouthEater.mouthPos[0], this.mouthEater.mouthPos[1]], size: 10})
         }
 
-    }
+        this.mouthEater = new MouthEater(this, { mouthHeight: 12, mouthWidth: 12, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 5, rightMouthXAdjustment: (this.width - 12) - 5, rightMouthYAdjustment: (this.height / 2) })
 
-    growUp() {
-        this.spawn = false
-        this.maxSpeed = .6
-        this.mouthSize = 8
-        this.width = 25
-        this.height = 16
-    }
-
-    mouthPlacer() {
-        let mouthPos = []
-        if (!this.right) {
-            mouthPos = [this.pos[0] + 5, this.pos[1] + (this.height / 2)]
-        } else {
-            mouthPos = [this.pos[0] + (this.width - this.mouthSize) - 5, this.pos[1] + (this.height / 2)]
-        }
-        return mouthPos
     }
 
     imgSelector() {
@@ -95,10 +78,6 @@ export default class Shark extends Swimmer {
         this.ctx.globalAlpha = 1
     }
 
-    drawMouths() {
-        //debugging function
-        this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
-    }
 
     drawId() {
         //debugging function

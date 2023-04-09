@@ -1,6 +1,6 @@
 import Swimmer from "../swimmer"
 
-
+import MouthEater from "../../behaviors/moutheater"
 
 export default class Fish extends Swimmer {
 
@@ -36,6 +36,9 @@ export default class Fish extends Swimmer {
         this.afterIEatCB = () => {
             //nothing required, spawn grow up separately
         }
+
+        this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) })
+
         
     }
 
@@ -52,17 +55,11 @@ export default class Fish extends Swimmer {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
-        // this.drawMouths()
-        if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1] - this.width, 15, 15)
+        if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1] - this.width, 15, 15)
         if (this.view.debugging) {
         }
         this.drawId()
         this.ctx.globalAlpha = 1
-    }
-
-    drawMouths() {
-        //debugging function
-        this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
     }
 
     drawId() {

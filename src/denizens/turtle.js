@@ -2,6 +2,7 @@ import { rand } from "../engine/utils";
 import Effect from "./effect";
 import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater";
+import MouthEater from "../behaviors/moutheater";
 
 export default class Turtle extends Swimmer {
     constructor(id, ctx, canvas, view, logic, options) {
@@ -42,8 +43,6 @@ export default class Turtle extends Swimmer {
 
         this.playingSeagrassEffect = false
 
-        this.mouthPos = this.mouthPlacer()
-
         this.eatingSeagrass = false
         this.consumptionRate = .005
         this.recentlyAte = false
@@ -52,16 +51,9 @@ export default class Turtle extends Swimmer {
         this.movement2 = this.moveSelector()
         this.moveChangerOne()
         this.moveChangerTwo()
-    }
 
-    mouthPlacer() {
-        let mouthPos = []
-        if (!this.right) {
-            mouthPos = [this.pos[0], this.pos[1] + (this.height / 2) - 8]
-        } else {
-            mouthPos = [this.pos[0] + (this.width - this.mouthSize), this.pos[1] + (this.height / 2) - 8]
-        }
-        return mouthPos
+        this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2) - 8, leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) - 8 })
+
     }
 
     leaveTimer() {
@@ -120,6 +112,7 @@ export default class Turtle extends Swimmer {
                 this.pos[0] -= .3
             }
         }
+        this.mouthEater.coreloop()
 
         if (!this.hunting) this.eatingSeagrass = false
         if (this.hunting && this.eatingSeagrass && !this.playingSeagrassEffect) this.seagrassEffect()
@@ -145,26 +138,7 @@ export default class Turtle extends Swimmer {
         if (this.hunting) this.consumeFood()
         this.behaviorChanger()
         this.dangerZoneProtocol()
-        this.mouthPos = this.mouthPlacer()
         // this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
-    }
-
-    moveTowardsFood() {
-
-        let [xhigh, xlow, yhigh, ylow] = this.inBounds()
-
-        if (this.mouthPos[0] < this.nearestFoodCords[0]) {
-            if (xhigh) this.pos[0] += this.maxSpeed
-        } else {
-            if (xlow) this.pos[0] -= this.maxSpeed
-        }
-
-        if (this.mouthPos[1] < this.nearestFoodCords[1]) {
-            if (yhigh) this.pos[1] += this.maxSpeed
-        } else {
-            if (ylow) this.pos[1] -= this.maxSpeed
-        }
-
     }
 
     consumeFood() {

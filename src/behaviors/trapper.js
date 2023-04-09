@@ -1,9 +1,6 @@
 
 export default class Trapper {
 
-    //algae, fishegg -> direct
-    //jellyfish, turtle -> indirect
-
     constructor(denizen, options) {
         this.denizen = denizen
         this.trapHeight = options.trapHeight
@@ -44,33 +41,6 @@ export default class Trapper {
         this.trapPos[1] = this.denizen.pos[1] + this.trapYAdjustment
     }
 
-    bob() {
-        if (this.denizen.trapped) {
-            this.denizen.pos[0] = this.denizen.trapped[0] - this.denizen.trappedPosDelta[0]
-            this.denizen.pos[1] = this.denizen.trapped[1] - this.denizen.trappedPosDelta[1]
-            return
-        }
-
-        if (this.up) {
-            this.trackCoef -= this.bobSpeed
-            this.denizen.pos[1] -= this.bobSpeed
-        } else {
-            this.trackCoef += this.bobSpeed
-
-            if (!(this.denizen.pos[1] > (this.arenaHeight - this.height))) {
-                this.denizen.pos[1] += this.bobSpeed
-            }
-        }
-
-        if (this.trackCoef > this.bobCoef) {
-            this.up = true
-        }
-
-        if (this.trackCoef < 0) {
-            this.up = false
-        }
-
-    }
 
 
 }

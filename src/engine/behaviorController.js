@@ -78,7 +78,7 @@ export default class BehaviorController {
             if (predator.energy > predator.eatFoodThreshold) continue
             if (predator.mating) continue
 
-            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(predator.mouthPos[0], predator.mouthPos[1], predator.mouthSize, predator.mouthSize), "overlaps", predator)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(predator.mouthEater.mouthPos[0], predator.mouthEater.mouthPos[1], predator.mouthEater.mouthWidth, predator.mouthEater.mouthHeight), "overlaps", predator)
 
             for (const prey of collisionArray) {
                 if (predator.preySpecies[prey.type]) {
