@@ -42,6 +42,15 @@ soundButton.addEventListener("click", (e) => {
 
 })
 
+window.addEventListener('keydown', e => {
+    if (pilot.sound.kickOffIntroScore) return
+    if(e.code === 'Space') {
+        e.preventDefault();
+        pilot.sound.playIntroScore()
+        pilot.intro.sequenceStep = 1
+    }
+});
+
 //mobile size
 //w: 980
 //h: 1793
@@ -70,12 +79,12 @@ canvas.addEventListener("mouseup", (e) => {
 canvas.addEventListener("click", (e) => {
     pilot.view.input.mouseIsDownAt = false
 
-    if (!pilot.sound.kickOffIntroScore) {
+    if (!pilot.sound.kickOffIntroScore && pilot.showIntro) {
         pilot.sound.playIntroScore()
         pilot.intro.sequenceStep = 1
     }
     
-    if (!pilot.intro.simStart) return
+    if (!pilot.intro.simStart && pilot.showIntro) return
 
     if (pilot.view.textBox) {
         pilot.view.textBox.resetTextBox()

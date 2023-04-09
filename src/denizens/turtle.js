@@ -26,6 +26,7 @@ export default class Turtle extends Swimmer {
 
         this.huntingThreshold = 13
         this.mouthSize = 8
+        this.hunting = false
 
         
         this.width = 80
@@ -80,10 +81,12 @@ export default class Turtle extends Swimmer {
     }
 
     debugger() {
-        // this.ctx.fillStyle = 'rgba(255,225,225,1)';
+        this.ctx.fillStyle = 'rgba(255,225,225,1)';
         // this.ctx.font = "16px serif";
         // this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-        // this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30)
+        this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
+
+        this.ctx.fillText(`${this.hunting}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30)
     }
 
     deleteTurtle() {
@@ -98,6 +101,8 @@ export default class Turtle extends Swimmer {
                 this.pos[0] -= .3
             }
         }
+
+        if (!this.hunting) this.eatingSeagrass = false
 
 
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)

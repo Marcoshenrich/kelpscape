@@ -24,7 +24,15 @@ export default class SeaUrchin extends Denizen {
             this.pos[1] = this.trapped[1] - this.trappedPosDelta[1]
             return
         }
+        this.dieWhenSeaweedDies() 
 
+    }
+
+    dieWhenSeaweedDies() {
+        if (this.seaweed.dead) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
     }
 
 }

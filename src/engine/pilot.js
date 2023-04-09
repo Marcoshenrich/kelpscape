@@ -13,21 +13,28 @@ export default class Pilot {
 
         this.touch = null
         this.collisionArr = null
+        this.showIntro = false
         
         this.animate()
 
     }
 
     animate() {
-        if (!this.intro.simStart) {
-            this.intro.animate()
+        if (this.showIntro) {
+            if (!this.intro.simStart) {
+                this.intro.animate()
+            } else {
+                this.view.animate()
+            }
+            if (this.sound.kickOffIntroScore) {
+                if (this.sound.playingSong.paused) this.sound.playNextTrack()
+            }
         } else {
+
             this.view.animate()
         }
-        if (this.sound.kickOffIntroScore) {
-            if (this.sound.playingSong.paused) this.sound.playNextTrack()
-        }
-        // this.view.animate()
+
+
   
         // this.ctx.fillStyle = `rgba(255,255,255,1`;
         // this.ctx.font = "25px Georgia";

@@ -24,11 +24,9 @@ export default class SeaweedCluster {
         this.pos = [rand(this.width, this.view.arenaWidth - this.width), 0]
         this.seaweedCount = options.start ? Math.floor(Math.random() * 35) + 10 : 1
         this.growSeaweedInterval = 20000
-        // this.growSeaweedInterval = 5000
         this.maxHeight = 100
-        this.seaweed = this.logic.tankPopulator(this.seaweedCount, Seaweed, {pos: this.pos, cluster: this})
+        this.seaweed = this.tankPopulator(this.seaweedCount, Seaweed, {pos: this.pos, cluster: this})
         this.bounds = {}
-        this.reframeSeaweedIds()
         this.tallestPoint = this.tallestPointFinder()
         this.newSeaweed = false
         this.growSeaweed()
@@ -43,13 +41,15 @@ export default class SeaweedCluster {
     }
 
 
+    tankPopulator(objnum, className, options) {
+        let denizenObj = {}
 
-    reframeSeaweedIds() {
-        for (let i = 0; i < Object.values(this.seaweed).length; i++) {
-            let seaweed = this.seaweed["Seaweed" + (i + 1)]
-            this.seaweed["Cluster" + this.id + "Seaweed" + seaweed.numInCluster] = seaweed
-            delete this.seaweed["Seaweed" + seaweed.numInCluster]
+        let i = 1
+        while (i <= objnum) {
+            denizenObj["Cluster" + this.id + className.name + i] = new className(i, this.ctx, this.canvas, this.view, this.logic, options)
+            i++
         }
+        return denizenObj
     }
 
     growSeaweed() {
@@ -65,12 +65,21 @@ export default class SeaweedCluster {
         return Object.values(this.seaweed)[Object.values(this.seaweed).length - 1].pos[1] + 10
     }
 
+    dieWhenNoSeaweed() {
+        if (this.seaweedCount === 0) {
+            this.dead = true
+            this.seaweed = {}
+            this.logic.recentlyDeadDenizens.push(this)
+        }
+    }
+
     coreloop() {
         if (this.newSeaweed) {
             this.tallestPoint = this.tallestPointFinder()
             this.newSeaweed = false
         }
-        this.ctx.fillStyle = 'rgba(255,0,0,1)';
+        this.dieWhenNoSeaweed()
+        // this.ctx.fillStyle = 'rgba(255,0,0,1)';
         // this.ctx.fillRect(this.pos[0] + 30 + this.view.offset[0], this.tallestPoint + this.view.offset[1], 10,10)
         // this.ctx.fillRect(this.pos[0] + this.view.offset[0], this.tallestPoint + this.view.offset[1], Object.values(this.seaweed)[0].width,10)
 

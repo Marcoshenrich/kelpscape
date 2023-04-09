@@ -10,8 +10,7 @@ export default class InputHandler {
             if((e.code === 'ArrowDown' ||
                 e.code === 'ArrowUp' ||
                 e.code === 'ArrowLeft' ||
-                e.code === 'ArrowRight' ||
-                e.code === "Space")
+                e.code === 'ArrowRight')
             && this.keys.indexOf(e.code) === -1){
                 this.keys.push(e.code);
             }
@@ -22,8 +21,7 @@ export default class InputHandler {
             if (e.code === 'ArrowDown' ||
                 e.code === 'ArrowUp' ||
                 e.code === 'ArrowLeft' ||
-                e.code === 'ArrowRight' ||
-                e.code === "Space") {
+                e.code === 'ArrowRight') {
                 this.keys.splice(this.keys.indexOf(e.code), 1);
             }
             e.preventDefault();
