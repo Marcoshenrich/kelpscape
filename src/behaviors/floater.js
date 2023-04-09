@@ -1,62 +1,46 @@
-import Denizen from "./denizen"
 
-
-export default class Floater extends Denizen {
+export default class Floater {
 
     //algae, fishegg -> direct
     //jellyfish, turtle -> indirect
 
-    constructor(ctx, canvas, view, logic) {
-        super(ctx, canvas, view, logic)
+    constructor(denizen) {
+        this.denizen = denizen
         this.bobCoef = Math.floor(Math.random() * 10) + 4
         this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
         this.trackCoef = 0
-        this.up = [true, false][Math.floor(Math.random() * 2)]
-        this.energy = 5
+        this.bobUp = [true, false][Math.floor(Math.random() * 2)]
     }
 
     coreloop() {
         this.bob()
-        this.deathChecker()
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
-        if (this.view.debugging) {
-            this.ctx.fillStyle = 'rgba(0,0,0,1)';
-            this.ctx.font = "12px serif";
-            this.ctx.fillText(`${this.pos[1]}`, this.pos[0], this.pos[1])
-        }
     }
 
-    deathChecker() {
-        if (this.energy === 0 || this.energyVal === 0) {
-            this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
-        }
-    }
 
     bob() {
-        if (this.trapped) {
-            this.pos[0] = this.trapped[0] - this.trappedPosDelta[0]
-            this.pos[1] = this.trapped[1] - this.trappedPosDelta[1]
+        if (this.denizen.trapped) {
+            this.denizen.pos[0] = this.denizen.trapped[0] - this.denizen.trappedPosDelta[0]
+            this.denizen.pos[1] = this.denizen.trapped[1] - this.denizen.trappedPosDelta[1]
             return
         }
 
-        if (this.up) {
+        if (this.bobUp) {
             this.trackCoef -= this.bobSpeed
-            this.pos[1] -= this.bobSpeed
+            this.denizen.pos[1] -= this.bobSpeed
         } else {
             this.trackCoef += this.bobSpeed
             
-            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
-                this.pos[1] += this.bobSpeed
+            if (!(this.denizen.pos[1] > (this.arenaHeight - this.height))) {
+                this.denizen.pos[1] += this.bobSpeed
             }
         }
 
         if (this.trackCoef > this.bobCoef) {
-            this.up = true
+            this.bobUp = true
         }
 
         if (this.trackCoef < 0) {
-            this.up = false
+            this.bobUp = false
         }
 
     }

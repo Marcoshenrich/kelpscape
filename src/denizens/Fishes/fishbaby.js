@@ -1,5 +1,5 @@
 import Fish from "./fish"
-import { rand, miniRandomizer } from "../../engine/utils"
+import { miniRandomizer } from "../../engine/utils"
 
 export default class FishBaby extends Fish {
 

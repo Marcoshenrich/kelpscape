@@ -85,7 +85,7 @@ export default class Logic {
 
 
         this.garabaldiCount = 40
-        this.garabaldiBabyCount =  10
+        this.garabaldiBabyCount =  100
 
         this.bassCount = 10
         this.bassBabyCount = 10
@@ -308,7 +308,9 @@ export default class Logic {
         this.seaweedUpdater()
         this.predatorsWithMouthsArr = [...Object.values(this.turtles), ...Object.values(this.bassBabies), ...Object.values(this.bass), ...Object.values(this.garabaldiBabies), ...Object.values(this.garabaldi), ...Object.values(this.sharks), ...Object.values(this.rockfish), ...Object.values(this.rockfishBabies)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
-        this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
+        // this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
+        this.trappersArr = [...Object.values(this.jellyfish)]
+
     }
 
     coreloop(){

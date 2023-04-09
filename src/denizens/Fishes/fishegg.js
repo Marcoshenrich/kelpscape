@@ -1,12 +1,13 @@
-
-import Floater from "../floater"
 import { rand, miniRandomizer } from "../../engine/utils"
-import FishBaby from "./fishbaby"
+import Floater from "../../behaviors/floater"
+import Denizen from "../denizen"
 
-export default class Fishegg extends Floater {
+
+export default class Fishegg extends Denizen {
 
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
+        this.floater = new Floater(this)
         this.textBox = this.logic.textContentObj["Fish Egg"]
         this.id = "Fishegg" + id
         this.pos = [options.pos[0] + miniRandomizer(), options.pos[1] + miniRandomizer()]
@@ -19,6 +20,18 @@ export default class Fishegg extends Floater {
         this.width = this.dims
 
         this.energyVal = 2
+    }
+
+    coreloop() {
+        this.floater.coreloop()
+        this.deathChecker()
+    }
+
+    deathChecker() {
+        if (this.energy < 0 || this.energyVal < 0) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
     }
 
 

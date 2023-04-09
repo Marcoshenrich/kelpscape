@@ -101,23 +101,44 @@ export default class BehaviorController {
 
     trappersTrapPrey() {
         for (let i = 0; i < this.logic.trappersArr.length; i++) {
-            let trapper = this.logic.trappersArr[i]
-            if (trapper.trappedPrey) continue
-            if (trapper.mating) continue
+            let trapperDenizen = this.logic.trappersArr[i]
+            let trap = trapperDenizen.trapper
+            if (trapperDenizen.trappedPrey) continue
+            if (trapperDenizen.mating) continue
 
-            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), "fullyOverlaps", trapper)
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(trap.trapPos[0], trap.trapPos[1], trap.trapWidth, trap.trapHeight), "fullyOverlaps", trapperDenizen)
 
             for (const prey of collisionArray) {
-                if (trapper.preySpecies[prey.type]) {
+                if (trapperDenizen.preySpecies[prey.type]) {
                     if (prey.dead) continue
-                    prey.trapped = trapper.trapPos
-                    prey.trappedPosDelta = [trapper.trapPos[0] - prey.pos[0], trapper.trapPos[1] - prey.pos[1]]
-                    trapper.trappedPrey = prey
-                    trapper.afterITrapCB()
+                    prey.trapped = trap.trapPos
+                    prey.trappedPosDelta = [trap.trapPos[0] - prey.pos[0], trap.trapPos[1] - prey.pos[1]]
+                    trapperDenizen.trappedPrey = prey
+                    trapperDenizen.afterITrapCB()
                 }
             }
         }
     }
+
+    // trappersTrapPrey() {
+    //     for (let i = 0; i < this.logic.trappersArr.length; i++) {
+    //         let trapper = this.logic.trappersArr[i]
+    //         if (trapper.trappedPrey) continue
+    //         if (trapper.mating) continue
+
+    //         let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(trapper.trapPos[0], trapper.trapPos[1], trapper.trapWidth, trapper.trapHeight), "fullyOverlaps", trapper)
+
+    //         for (const prey of collisionArray) {
+    //             if (trapper.preySpecies[prey.type]) {
+    //                 if (prey.dead) continue
+    //                 prey.trapped = trapper.trapPos
+    //                 prey.trappedPosDelta = [trapper.trapPos[0] - prey.pos[0], trapper.trapPos[1] - prey.pos[1]]
+    //                 trapper.trappedPrey = prey
+    //                 trapper.afterITrapCB()
+    //             }
+    //         }
+    //     }
+    // }
 
     denizensMate() {
         let matingDenizenArr = Object.values(this.logic.matingDenizensObj)

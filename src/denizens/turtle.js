@@ -1,10 +1,12 @@
 import { rand } from "../engine/utils";
 import Effect from "./effect";
 import Swimmer from "./swimmer";
+import Floater from "../behaviors/floater";
 
 export default class Turtle extends Swimmer {
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
+        this.floater = new Floater(this)
         this.textBox = this.logic.textContentObj["Turtle"]
         this.type = "Turtle"
         this.id = this.type + id
@@ -167,7 +169,7 @@ export default class Turtle extends Swimmer {
 
     consumeFood() {
         if (!this.eatingSeagrass || this.hunting.type !== "Seaweed") return
-        this.bob()
+        this.floater.coreloop()
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
         this.hunting.energyVal -= this.consumptionRate
     }
@@ -175,29 +177,5 @@ export default class Turtle extends Swimmer {
     speedModulator() {
         this.speed -= .005
         if (this.speed < .2) this.speed = this.maxSpeed
-    }
-
-
-    bob() {
-
-        if (this.up) {
-            this.trackCoef -= this.bobSpeed
-            this.pos[1] -= this.bobSpeed
-        } else {
-            this.trackCoef += this.bobSpeed
-
-            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
-                this.pos[1] += this.bobSpeed
-            }
-        }
-
-        if (this.trackCoef > this.bobCoef) {
-            this.up = true
-        }
-
-        if (this.trackCoef < 0) {
-            this.up = false
-        }
-
     }
 }

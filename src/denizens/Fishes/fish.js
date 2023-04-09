@@ -1,6 +1,5 @@
-import Fishegg from "./fishegg"
 import Swimmer from "../swimmer"
-import TextBox from "../../engine/textbox"
+
 
 
 export default class Fish extends Swimmer {

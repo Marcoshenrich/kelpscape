@@ -1,11 +1,13 @@
 import TextBox from "../engine/textbox"
 import { rand } from "../engine/utils"
-import Floater from "./floater"
+import Denizen from "./denizen"
+import Floater from "../behaviors/floater"
 
-export default class Algae extends Floater {
+export default class Algae extends Denizen {
 
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
+        this.floater = new Floater(this)
         this.textBox = this.logic.textContentObj["Algae"]
 
         this.clustersObj = options.clustersObj
@@ -35,6 +37,7 @@ export default class Algae extends Floater {
 
     coreloop() {
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.floater.coreloop()
         this.clustersObj = this.logic.seaweedClusters
     }
 

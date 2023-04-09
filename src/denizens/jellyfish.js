@@ -1,11 +1,15 @@
-import TextBox from "../engine/textbox";
 import { rand } from "../engine/utils";
 import Effect from "./effect";
 import Swimmer from "./swimmer";
+import Floater from "../behaviors/floater"
+import Trapper from "../behaviors/trapper";
 
 export default class Jellyfish extends Swimmer {
     constructor(id, ctx, canvas, view, logic, options){
         super(ctx, canvas, view, logic)
+        this.floater = new Floater(this)
+        this.trapper = new Trapper(this, { trapHeight: 18, trapWidth: 18, trapYAdjustment: 10, trapXAdjustment: 0})
+        this.trappedPrey = false
         this.textBox = this.logic.textContentObj["Jellyfish"]
         this.type = "Jellyfish"
         this.id = this.type + id
@@ -14,7 +18,6 @@ export default class Jellyfish extends Swimmer {
         this.height = 25
         this.width =  15
         this.pos = options.pos || this.placer()
-        this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
 
         this.maxSpeed = .5
         this.speed = rand(1, 5) / 100
@@ -26,12 +29,6 @@ export default class Jellyfish extends Swimmer {
 
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
-
-        this.trapHeight = 18
-        this.trapWidth = 18
-        this.trapPos = []
-        this.trapPlacer()
-        this.trappedPrey = false
 
         this.movement1 = this.moveSelector()
         this.movement2 = this.moveSelector()
@@ -56,45 +53,9 @@ export default class Jellyfish extends Swimmer {
         })
     }
 
-
-    trapPlacer() {
-        this.trapPos[0] = this.pos[0]
-        this.trapPos[1] = this.pos[1] + 10
-    }
-
     moveSelector = () => {
         return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
     }
-
-    bob() {
-        if (this.trapped) {
-            this.pos[0] = this.trapped.pos[0] - this.trappedPosDelta[0]
-            this.pos[1] = this.trapped.pos[1] - this.trappedPosDelta[1]
-            return
-        }
-
-        if (this.up) {
-            this.trackCoef -= this.bobSpeed
-            this.pos[1] -= this.bobSpeed
-        } else {
-            this.trackCoef += this.bobSpeed
-
-            if (!(this.pos[1] > (this.arenaHeight - this.height))) {
-                this.pos[1] += this.bobSpeed
-            }
-        }
-
-        if (this.trackCoef > this.bobCoef) {
-            this.up = true
-        }
-
-        if (this.trackCoef < 0) {
-            this.up = false
-        }
-
-    }
-
-
 
     placer() {
         let pos = [rand(1, this.arenaWidth - this.width), rand(1, this.arenaHeight - this.height)]
@@ -103,9 +64,8 @@ export default class Jellyfish extends Swimmer {
 
     coreloop() {
 
-        if (this.trappedPrey) this.consumeFod(this.trappedPrey, "trapped")
-
-        this.bob()
+        this.trapper.coreloop()
+        this.floater.coreloop()
         this.move()
         this.draw()
         // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
@@ -120,17 +80,6 @@ export default class Jellyfish extends Swimmer {
             
         }
     }
-
-    consumeFod(foodSource, foodType) {
-        this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-        foodSource.energy -= this.consumptionRate
-        this.totalEnergyConsumed += this.consumptionRate
-
-        if (foodSource.dead) {
-            this.speed = .2
-            this.trappedPrey = false
-        }
-    }
     
     move() {
         if (this.timeToSwitchMovement) {
@@ -139,7 +88,7 @@ export default class Jellyfish extends Swimmer {
         }    
         if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
         if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
-        this.trapPlacer()
+        this.trapper.coreloop()
         this.movement1();
         this.movement2();
     }
@@ -165,6 +114,22 @@ export default class Jellyfish extends Swimmer {
     draw() {
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
     }
+
+    // trapPlacer() {
+    //     this.trapPos[0] = this.pos[0]
+    //     this.trapPos[1] = this.pos[1] + 10
+    // }
+
+    // consumeFood(foodSource, foodType) {
+    //     this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
+    //     foodSource.energy -= this.consumptionRate
+    //     this.totalEnergyConsumed += this.consumptionRate
+
+    //     if (foodSource.dead) {
+    //         this.speed = .2
+    //         this.trappedPrey = false
+    //     }
+    // }
 }
 
 
