@@ -1,22 +1,22 @@
-Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - seeking out food and mating partners, avoiding predators, and impacting the other denizens in the interwoven ecosystem. 
+Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - they seek out food and mates, they avoid predators, and their actions impact the other denizens in an interwoven ecosystem. 
 
 Kelpscape was built using vanilla javascript and the Canvas API. 
 
 ## Features
-
-Over a dozen species of inhabitants in the ecosystem
-Educational blurbs on each species
+20 species of inhabitants in the ecosystem
+Discoverable educational text on most species
 Systemically emergent ecosystem 
 Music and mute functionality
+Chill vibes
 
 ## Technology and Approach
 At the top level, a Pilot controller manages the state changes between the opening cinematic and initializing the Sim. It also contains the Sound class to manage music looping and volume. 
 
 The View class manages the graphical representation of all denizens in the Sim. It manages user inputs which move the camera on the Canvas, as well as the textboxes which appear when a user clicks on a denizen. 
 
-View also continually recreates the Quadtree. The Quadtree data structure organizes the spatial placement of each denizen on the 2d arena, and makes collision detection significantly more effecient. You cna learn more about the Quadtree below. 
+View also continually recreates the Quadtree. The Quadtree data structure organizes the spatial placement of each denizen on the 2d arena, and makes collision detection significantly more effecient. You can learn more about the Quadtree below. 
 
-Logic is initialized by View, and is the core engine of the Sim. Logic initializes all the starting denizens and sets up various data structures needed for the Sim to run. 
+Logic is initialized by View. It is the core engine of the Sim. Logic initializes all the starting denizens and sets up various data structures needed for the Sim to run. 
 
 NatureController contains various data structures that must be continually recalculated for denizens to correctly interact with a changing landscape. For example, the shifting placement of Seaweed throughout the course of the sim changes the available area where Algae can spawn and where Crabs can climb. Doing this calculation at the top level prevents each individual Denizen from having to track these changes.
 
@@ -211,7 +211,9 @@ FishBaby.growUp() inserts the instance to logic.recentlyDeadDenizens() which rem
 
 ```
 
-On each frame, any denizens that have added themselves to logic.recentlyDeadDenizens are removed from their species object!
+On each frame, any denizens that have added themselves to logic.recentlyDeadDenizens are removed from their species object, deleting them from memory. DeadDenizen.beforeIDieCB() clears up any unfinished business, like removing setTimeouts and freeing trapped prey. 
+
+Honestly, these four lines of code are probably what I'm proudest of in the whole project. It's so clean!
 
 ```javascript
 
@@ -225,21 +227,63 @@ On each frame, any denizens that have added themselves to logic.recentlyDeadDeni
 
 ```
 
+But wait! did you notice that some creatures leave behind corpses when they die? How is that handled?
+
+We call a different logic method under death conditions where we want to leave a corpse behind. A DeadCreature instance is created, and the dynamic attributes are set in a factory-like pattern.
+
+Dead creatures will slowly drift to the bottom of the sea where they will be eaten by scavengers. Gnarly!
+
+```javascript
+    //Swimmer.consumeEnergy
+    consumeEnergy() {
+        this.energy -= this.energyUseCoef * this.speed
+        if (this.energy < .05) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+            this.logic.denizenCorpse(this)
+        }
+    }
+
+    //Logic.denizenCorpse
+    denizenCorpse(deadDenizen) {
+        this.deadCreatureCount++
+        this.deadCreatures["DeadCreature" + this.deadCreatureCount] = new DeadCreature(this.deadCreatureCount, this.ctx, this.canvas, this.view, this, deadDenizen.pos, deadDenizen)
+    }
+
+    //DeadCreature.typeSelector
+    typeSelector() {
+        switch (this.deadDenizen.constructor) {
+            case Shark:
+                this.img.src = './dist/art/sharkdead.png'
+                this.width = 100
+                this.height = 30
+                this.energyVal = 40
+                break
 
 
+            case Garabaldi:
+                this.img.src = './dist/art/fishes/garabaldidead.png'
+                this.width = 30
+                this.height = 15
+                this.energyVal = 10
+                break
+        //...
+        }
+    }
+```
 
 
-Next, let's deep dive into the trapper process. 
+We talked about trappers freeing prey - But how does trapping work?
 
-Logic defines a trappersArr which contains all denizens which can trap. Trappers are always ready to trap, so they don't add themselves.  
+Logic defines a trappersArr which contains all denizens which can trap. Trappers are always ready to trap, so they don't add themselves to an object the way bachelor fish do.  
 
 If the trapper already has trapped prey or is currently mating, it cannot trap any prey. 
 
-QueryRange checks if any creatures fully overlap the trap, which means any dimension of the prey is fully inside the trap, or vice versa. 
+Quadtree.QueryRange checks if any creatures fully overlap the trap, which means any dimension of the prey is fully inside the trap, or vice versa. 
 
-Next, trappersTrapPrey checks that the denizen that is inside the trap is something the trapper actually wants to eat. If it is, the trapped prey records the difference in position between itself and the trapper. Once trapped, the prey ignores all movement logic, and updates its position to match the position of its trapper, modified by the recored position delta. This means wherever the trapper goes, the trapee goes with it.
+Next, we check that the denizen inside the trap is something the trapper actually wants to eat. If it is, the trapped prey records the difference in position between itself and the trapper. Once trapped, the prey ignores all movement logic, and updates its position to match the position of its trapper, modified by the recored position delta. This means wherever the trapper goes, the trapped prey goes with it.
 
-Finally, the trapper calls afterITrapCB(), which allows for any variances or specific behaviors I need from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
+Finally, the trapper calls afterITrapCB(), which allows for any variances or specific behaviors needed from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
 
 ![trappedFish](https://user-images.githubusercontent.com/110189879/230758713-5e989d0c-e1c5-497c-a7d2-88ad03f5a857.gif)
 
@@ -277,28 +321,9 @@ Finally, the trapper calls afterITrapCB(), which allows for any variances or spe
 ```
 
 
+Quadtree and Collision Detection
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Quadtree
+Enough about simulating ecosystem behavior, let's talk about the Quadtree!
 
 The first type of collision detection I built was a brute force method where each denizen of the sim checked its position against every other denizen on each game frame - But I knew this would be unstustainable as the biosphere grew. I researched alternative data structures, and found that the Quadtree data structure was the perfect solution - it is specifically designed to maximize efficiency for 2d rectangle collisions in a shared area. 
 
@@ -308,8 +333,8 @@ How it Works
 
 A Quadtree is made of two classes, Quadtree and Rectangle.
 
-Quadtree - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
 Rectangle - Defines an area by an XY coordinate, a width, and a length. Mangages collision logic.
+Quadtree - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
 
 The Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child based on spatial location and area.
 
@@ -448,7 +473,7 @@ queryType allows me to pull all of a specific species out of a quadtree.
 
 ```
 
-A refactor of QueryRange allows me to extend the functionality of Rectangle collision detection, and dynamically call Rectangle methods by dynamically keying into the function using the type parameter. 
+A refactor of QueryRange allows me to extend the functionality of Rectangle collision detection, and dynamically call different collision methods on the Rectnagle by using the type parameter.
 
 ```javascript
 
@@ -500,5 +525,4 @@ The original Quadtree came with the contains method, which evaluates whether a s
         return (a.left >= b.left && a.right <= b.right && a.top >= b.top && a.bottom <= b.bottom);
     }
 ```
-
-<br />
+Thanks for reading. This was such a challenging and fun project, and I'm excited to release it in the wild. 
