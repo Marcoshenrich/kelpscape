@@ -3,6 +3,9 @@ import Denizen from "./denizen"
 
 export default class Floater extends Denizen {
 
+    //algae, fishegg -> direct
+    //jellyfish, turtle -> indirect
+
     constructor(ctx, canvas, view, logic) {
         super(ctx, canvas, view, logic)
         this.bobCoef = Math.floor(Math.random() * 10) + 4

@@ -21,6 +21,7 @@ export default class View {
 
         this.scoreFontSize = 24
         this.showScore = false
+        this.turnOffScore = true
         setTimeout(() => { this.showScore = true}, 40000)
         this.fadeInScore = 0
 
@@ -112,6 +113,7 @@ export default class View {
     }
 
     drawScore() {
+        if (this.turnOffScore) return
         if (this.fadeInScore < 1) this.fadeInScore += .0025
         this.ctx.globalAlpha = this.fadeInScore
   

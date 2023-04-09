@@ -84,7 +84,7 @@ export default class Logic {
 
 
 
-        this.garabaldiCount = 100
+        this.garabaldiCount = 40
         this.garabaldiBabyCount =  10
 
         this.bassCount = 10
@@ -99,7 +99,7 @@ export default class Logic {
         this.effectCount = 0
         this.turtleCount = 1
         this.deadCreatureCount = 0
-        this.crabCount = 100
+        this.crabCount = 40
         this.crabBabyCount = 6
         this.jellyfishCount = 50
         this.rockCount = 20
