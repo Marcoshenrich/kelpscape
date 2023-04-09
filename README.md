@@ -1,13 +1,15 @@
+# Kelpscape
+
 Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - they seek out food and mates, they avoid predators, and their actions impact the other denizens in an interwoven ecosystem. 
 
 Kelpscape was built using vanilla javascript and the Canvas API. 
 
 ## Features
-20 species of inhabitants in the ecosystem
-Discoverable educational text on most species
-Systemically emergent ecosystem 
-Music and mute functionality
-Chill vibes
+* 20 species of inhabitants in the ecosystem
+* Discoverable educational text on most species
+* Systemically emergent ecosystem 
+* Music and mute functionality
+* Chill vibes
 
 ## Technology and Approach
 At the top level, a Pilot controller manages the state changes between the opening cinematic and initializing the Sim. It also contains the Sound class to manage music looping and volume. 
@@ -47,7 +49,7 @@ To generalize denizen behavior, I placed shared behavior logic inside of the beh
 
 Let's take a look at how Denizens mate. 
 
-Each frame, denizens that can mate evalute if they meet their mating conditions. For Fish to mate, they only need to have their energy above a certain threshold (and not be a lil baby).
+Each frame, denizens that can mate evalute if they meet their mating conditions. For Fish to mate, they only need to have their energy above a certain threshold (and not be a baby fish).
 
 Once these conditions are met, they add themselves to Logic's matingDenizensObj where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
 
@@ -101,7 +103,8 @@ If so, the mate function is called on both, and they are both deleted from matin
     }
 ```
 
-When mating, fish will temporarily stop in place and trigger a heart animation (because they are in love). A timeout is triggered to reactivate fish movement and spawn the fish eggs using the Logic.spawnDenizen() factory method.
+When mating, fish will temporarily stop in place and trigger a heart animation (because they are in love). A timeout is triggered to reactivate fish movement and spawn the fish eggs using the Logic.spawnDenizen() factory method. The timeout's id is stored so that it can be cleared if the denizen dies before it triggers. 
+
 
 ``` javascript
     //Fish.mate()
@@ -109,7 +112,7 @@ When mating, fish will temporarily stop in place and trigger a heart animation (
         this.mating = true
         this.speed = 0
         this.energy -= this.matingEnergyCost
-        setTimeout(()=>{
+        let id = setTimeout(()=>{
             this.speed += .5
             this.mating = false
             if (spawnBool) return
@@ -119,12 +122,13 @@ When mating, fish will temporarily stop in place and trigger a heart animation (
                 this.logic.spawnDenizen(this) 
             }
         }, 1500)
+        this.clearOnDeath.push(id)
     }
 ```
 
 spawnDenizen is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
 
-Most denizens only spawn one other type of denizen, but all fish can spawn fish eggs, which can spawn various types of baby fish. A helper method is needed that evaluates the parent of the fishegg, and spawns the appropiate baby fish.
+Most denizens only spawn one other type of denizen, but all fish spawn fish eggs, which can spawn various types of baby fish. A helper method is needed that evaluates the parent of the fishegg, and spawns the appropiate baby fish.
 
 ```javascript
 //Logic.spawnDenizen()
@@ -193,7 +197,7 @@ To complete the cycle, let's look at how baby fish become big fish.
 
 All denizens have an afterIEatCB() which triggers specific events after a meal. Baby fish grow into big fish after they eat a set number of times. 
 
-FishBaby.growUp() inserts the instance to logic.recentlyDeadDenizens() which removes it from memory. It leverages the logic.spawnDenizen() factory to spawn a brand-new adult fish in its current position.
+FishBaby.growUp() inserts the baby fish to logic.recentlyDeadDenizens() which removes it from memory. Then, we call the logic.spawnDenizen() factory to spawn a brand-new adult fish in its current position.
 
 ```javascript
 
@@ -211,7 +215,7 @@ FishBaby.growUp() inserts the instance to logic.recentlyDeadDenizens() which rem
 
 ```
 
-On each frame, any denizens that have added themselves to logic.recentlyDeadDenizens are removed from their species object, deleting them from memory. DeadDenizen.beforeIDieCB() clears up any unfinished business, like removing setTimeouts and freeing trapped prey. 
+On each frame, any denizens in logic.recentlyDeadDenizens are removed from their species object, deleting them from memory. DeadDenizen.beforeIDieCB() clears up any unfinished business, such as removing setTimeouts and freeing trapped prey. 
 
 Honestly, these four lines of code are probably what I'm proudest of in the whole project. It's so clean!
 
