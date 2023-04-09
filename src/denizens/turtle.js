@@ -1,4 +1,5 @@
 import { rand } from "../engine/utils";
+import Effect from "./effect";
 import Swimmer from "./swimmer";
 
 export default class Turtle extends Swimmer {
@@ -36,6 +37,8 @@ export default class Turtle extends Swimmer {
         this.pos = this.placer()
         this.timeToLeave = false
         this.leaveTimer()
+
+        this.playingSeagrassEffect = false
 
         this.mouthPos = this.mouthPlacer()
 
@@ -93,6 +96,19 @@ export default class Turtle extends Swimmer {
         //delete turtle after leaving the arena
     }
 
+    seagrassEffect() {
+        this.playingSeagrassEffect = true
+        let effectPos;
+        if (this.right) {
+            effectPos = [this.pos[0] + this.width, this.pos[1] + 10 ]
+        } else {
+            effectPos = [this.pos[0], this.pos[1] + 10]
+        }
+
+        this.logic.effectCount++
+        this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic, { type: "eatingSeaweed", pos: effectPos, parent: this })
+    }
+
     coreloop() {
         if (this.inDangerZone && this.escapingDangerZone) {
             if (this.pos[0] < 0 + this.width) {
@@ -103,6 +119,7 @@ export default class Turtle extends Swimmer {
         }
 
         if (!this.hunting) this.eatingSeagrass = false
+        if (this.hunting && this.eatingSeagrass && !this.playingSeagrassEffect) this.seagrassEffect()
 
 
         this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)

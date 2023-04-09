@@ -40,7 +40,7 @@ export default class Logic {
             "Kelp Bass": false,
             "Algae": false,
             "Jellyfish": false,
-            "Sea Otter": false,
+            "Otter": false,
             "Crab": false,
             "Rock": false,
             "Shark": false,
@@ -65,7 +65,7 @@ export default class Logic {
             "Corpse": new TextBox(ctx, canvas, view, this, "Corpse", "Death is an inevitable part of life in the Pacific kelp forest, and the corpses of the denizens of this underwater world play an important role in sustaining the ecosystem. When a fish or other animal dies, its body sinks to the ocean floor, where it becomes a feast for scavengers like crabs and sea stars. As the corpse decomposes, it releases nutrients into the water, which are absorbed by algae and other plants in the kelp forest. This process, known as nutrient cycling, helps to maintain the health and productivity of the ecosystem. In addition to providing nutrients, dead organisms can also create new habitats for other creatures. ", "corpse.jpeg"),
             "Shark": new TextBox(ctx, canvas, view, this, "Shark", "Sharks are some of the most iconic predators of the ocean, and several species can be found in the Pacific kelp forest. One of the most commonly encountered species is the leopard shark (Triakis semifasciata), which is named for its distinctive pattern of dark spots and stripes. Leopard sharks are not considered dangerous to humans, and are commonly seen by divers and snorkelers in shallow waters. Another species that can be found in the kelp forest is the soupfin shark (Galeorhinus galeus), which is sometimes called the school shark. These sharks can grow up to six feet in length, and are known for their ability to form large schools in the ocean.", "shark.png"),
             
-            "Sea Otter": new TextBox(ctx, canvas, view, this, "Sea Otter", "The sea otter (Enhydra lutris) is a crucial player in maintaining the health of the kelp forest. These adorable creatures are known for their love of shellfish, which they crack open with rocks using their impressive dexterity. Sea otters also play an important role in keeping the kelp forests healthy. They feed on sea urchins, which can overgraze kelp if left unchecked. Sea otters are one of the few animals that use tools, and they have even been known to hold hands while sleeping to keep from drifting away from each other. Sadly, sea otters were hunted to near extinction for their fur in the 18th and 19th centuries, but conservation efforts have helped their populations rebound in some areas.", "sea_otter.webp"),
+            "Otter": new TextBox(ctx, canvas, view, this, "Otter", "The sea otter (Enhydra lutris) is a crucial player in maintaining the health of the kelp forest. These adorable creatures are known for their love of shellfish, which they crack open with rocks using their impressive dexterity. Sea otters also play an important role in keeping the kelp forests healthy. They feed on sea urchins, which can overgraze kelp if left unchecked. Sea otters are one of the few animals that use tools, and they have even been known to hold hands while sleeping to keep from drifting away from each other. Sadly, sea otters were hunted to near extinction for their fur in the 18th and 19th centuries, but conservation efforts have helped their populations rebound in some areas.", "sea_otter.webp"),
             "Rock": new TextBox(ctx, canvas, view, this, "Rock", "Congratulations, you clicked on a rock. This was very insightful and brave. Most people would just ignore the rock and say “no reason to click on any rocks.” Not you. You’ll click on rocks all day. No stone left unturned, as your dad used to say.", "rock.png"),
             
             "Garibaldi": new TextBox(ctx, canvas, view, this, "Garibaldi", "The Garibaldi (Hypsypops rubicundus) is a brightly-colored fish that is native to the rocky reefs and kelp forests of the eastern Pacific Ocean. Their bright orange coloration serves as a warning to potential predators that they are venomous, thanks to a coating of mucus on their skin. These fish are an important part of the kelp forest ecosystem, feeding on small invertebrates and algae, and providing food for larger predators such as sea lions and sharks. Despite being protected in some areas, Garibaldi populations are threatened by overfishing and habitat destruction.", "garabaldi.jpeg"),
@@ -130,12 +130,16 @@ export default class Logic {
 
         
         this.hungryDenizenArr = []
-        this.assignFoodWeb()
-        this.assignSpeciesObjects() 
+        this.natureController.assignFoodWeb()
+        this.natureController.assignSpeciesObjects() 
 
         this.matingDenizensObj = {}
 
         this.recentlyDeadDenizens = []
+
+
+        this.effectCount++
+        this.effects["Effect" + this.effectCount] = new Effect(this.effectCount, this.ctx, this.canvas, this.view, this, {type: "eatingSeaweed", pos: [500,500], })
 
 
     }
@@ -229,98 +233,6 @@ export default class Logic {
         this.predatorsWithMouthsArr = [...Object.values(this.turtles), ...Object.values(this.bassBabies), ...Object.values(this.bass), ...Object.values(this.garabaldiBabies), ...Object.values(this.garabaldi), ...Object.values(this.sharks), ...Object.values(this.rockfish), ...Object.values(this.rockfishBabies)]
         this.scavengersArr = [...Object.values(this.crabs), ...Object.values(this.crabBabies)]
         this.trappersArr = [...Object.values(this.crabs), ...Object.values(this.jellyfish), ...Object.values(this.otters)]
-    }
-
-    assignFoodWeb() {
-        Garabaldi.prototype.preySpecies = 
-        {
-            "Algae": this.algae
-        }
-
-        GarabaldiBaby.prototype.preySpecies = 
-        {
-            "Algae": this.algae
-        }
-
-        Rockfish.prototype.preySpecies =
-        {
-            "Algae": this.algae,
-            "GarabaldiBaby": this.garabaldiBabies,
-            "CrabBaby": this.crabBabies,
-        }
-
-        RockfishBaby.prototype.preySpecies =
-        {
-            "Algae": this.algae
-        }
-
-        Bass.prototype.preySpecies =
-        {
-            "RockfishBaby": this.rockfishBabies,
-            "GarabaldiBaby": this.garabaldiBabies,
-            "CrabBaby": this.crabBabies,
-        }
-
-        BassBaby.prototype.preySpecies =
-        {
-            "Algae": this.algae
-        }
-
-        Shark.prototype.preySpecies = {
-            "Garabaldi": this.garabaldi, 
-            "GarabaldiBaby": this.garabaldiBabies,
-            "Bass": this.bass,
-            "BassBaby": this.bassBabies
-        }
-
-        Crab.prototype.preySpecies = 
-        {
-            "GarabaldiBaby": this.garabaldiBabies,
-            "BassBaby": this.bassBabies
-        }
-
-        Jellyfish.prototype.preySpecies = 
-        {
-            "GarabaldiBaby": this.garabaldiBabies,
-            "BassBaby": this.bassBabies,
-            "FishEgg": this.eggs
-        }
-
-        Otter.prototype.preySpecies = 
-        {
-            "Crab": this.crabs,
-            "CrabBaby": this.crabBabies,
-            "SeaUrchin": this.seaUrchins
-        }
-
-        Turtle.prototype.preySpecies =
-        {
-            "Seaweed": this.seaweed,
-            "Jellyfish": this.jellyfish
-        }
-    }
-
-    assignSpeciesObjects() {
-        Garabaldi.prototype.speciesObject = this.garabaldi
-        GarabaldiBaby.prototype.speciesObject = this.garabaldiBabies
-        Rockfish.prototype.speciesObject = this.rockfish
-        RockfishBaby.prototype.speciesObject = this.rockfishBabies
-        Bass.prototype.speciesObject = this.bass
-        BassBaby.prototype.speciesObject = this.bassBabies
-        Algae.prototype.speciesObject = this.algae
-        Shark.prototype.speciesObject = this.sharks
-        Fishegg.prototype.speciesObject = this.eggs
-        Effect.prototype.speciesObject = this.effects
-        SeaweedCluster.prototype.speciesObject = this.seaweedClusters
-        DeadCreature.prototype.speciesObject = this.deadCreatures
-        Jellyfish.prototype.speciesObject = this.jellyfish
-        Crab.prototype.speciesObject = this.crabs
-        CrabBaby.prototype.speciesObject = this.crabBabies
-        Otter.prototype.speciesObject = this.otters
-        SeaUrchin.prototype.speciesObject = this.seaUrchins
-        Turtle.prototype.speciesObject = this.turtles
-        Seaweed.prototype.speciesObject = this.seaweed
-        Polyp.prototype.speciesObject = this.polyps
     }
 
     coreloop(){

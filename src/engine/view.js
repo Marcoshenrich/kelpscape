@@ -34,7 +34,6 @@ export default class View {
             this.logic.algae, 
             this.logic.eggs, 
             this.logic.sharks, 
-            this.logic.effects, 
             this.logic.turtles,
             this.logic.seaweedClusters,
             this.logic.seaweed,
@@ -45,7 +44,8 @@ export default class View {
             this.logic.otters, 
             this.logic.rocks, 
             this.logic.jellyfish, 
-            this.logic.polyps
+            this.logic.polyps,
+            this.logic.effects
         ]
 
 
