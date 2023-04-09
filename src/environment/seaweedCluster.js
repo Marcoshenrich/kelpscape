@@ -1,9 +1,12 @@
+import Denizen from "../denizens/denizen";
 import { rand } from "../engine/utils";
 import Seaweed from "./seaweed";
 
 
-export default class SeaweedCluster {
+
+export default class SeaweedCluster extends Denizen{
     constructor(id, ctx, canvas, view, logic, options) {
+        super(ctx, canvas, view, logic)
         this.id = id
         this.ctx = ctx
         this.canvas = canvas
@@ -53,12 +56,13 @@ export default class SeaweedCluster {
     }
 
     growSeaweed() {
-        setTimeout(()=>{
+        let id = setTimeout(()=>{
             this.seaweedCount++
             this.seaweed["Cluster" + this.id + "Seaweed" + this.seaweedCount] = new Seaweed(this.seaweedCount, this.ctx, this.canvas, this.view, this.logic, { pos: this.pos, cluster: this })
             this.newSeaweed = true
             if (this.tallestPoint > this.maxHeight) this.growSeaweed()
         }, rand(this.growSeaweedInterval) + this.growSeaweedInterval)
+        this.clearOnDeath.push(id)
     }
 
     tallestPointFinder() {

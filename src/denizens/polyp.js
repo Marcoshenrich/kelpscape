@@ -17,15 +17,12 @@ export default class Polyp extends Denizen {
         this.spawnJellyFish()
     }
 
-    clearCallbacksOnDeath() {
-
-    }
-
     spawnJellyFish() {
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.logic.spawnDenizen(this)
             this.spawnJellyFish() 
         }, rand(10000) + 10000)
+        this.clearOnDeath.push(id)
     }
 
     dieEventually() {

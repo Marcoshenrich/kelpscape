@@ -74,10 +74,11 @@ export default class Swimmer extends Denizen {
     }
 
     movementSwitchTimer() {
-        setTimeout(()=>{
+        let id = setTimeout(()=>{
             this.timeToSwitchMovement = true
             this.movementSwitchTimer()
         },Math.floor(Math.random() * 25000) + 7000)
+        this.clearOnDeath.push(id)
     }
 
     imgSelector() {
@@ -283,16 +284,18 @@ export default class Swimmer extends Denizen {
 
     moveChangerOne() {
         this.movement1 = this.moveSelector()
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.moveChangerOne()
         }, Math.floor(Math.random() * 3000))
+        this.clearOnDeath.push(id)
     }
 
     moveChangerTwo() {
         this.movement2 = this.moveSelector()
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.moveChangerTwo()
         }, Math.floor(Math.random() * 3000))
+        this.clearOnDeath.push(id)
     }
 
     consumeEnergy() {

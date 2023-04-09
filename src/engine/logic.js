@@ -84,8 +84,8 @@ export default class Logic {
 
 
 
-        this.garabaldiCount = 10
-        this.garabaldiBabyCount =  100
+        this.garabaldiCount = 100
+        this.garabaldiBabyCount =  10
 
         this.bassCount = 10
         this.bassBabyCount = 10
@@ -140,73 +140,155 @@ export default class Logic {
 
 
     spawnDenizen(parentDenizen) {
+        let count;
+        let babyObj;
+        let typeString;
+        let className;
+        let options;
+
         switch(parentDenizen.constructor) {
             case Garabaldi:
                 this.eggCount += 1
-                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
+                count = this.eggCount
+                babyObj = this.eggs
+                typeString = "Fishegg"
+                className = Fishegg
+                options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor }
                 break
+
             case Bass:
                 this.eggCount += 1
-                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
+                count = this.eggCount
+                babyObj = this.eggs
+                typeString = "Fishegg"
+                className = Fishegg
+                options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor }
                 break
+
             case Rockfish:
                 this.eggCount += 1
-                this.eggs["Fishegg" + this.eggCount] = new Fishegg(this.eggCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor })
+                count = this.eggCount
+                babyObj = this.eggs
+                typeString = "Fishegg"
+                className = Fishegg
+                options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor }
                 break
+
             case RockfishBaby:
-                this.rockCount += 1
-                this.rockfish["Rockfish" + this.rockfishCount] = new Rockfish(this.rockfish, this.ctx, this.canvas, this.view, this, { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] })
+                this.rockCount += 1            
+                count = this.rockCount
+                babyObj = this.rockfish
+                typeString = "Rockfish"
+                className = Rockfish
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+                
             case BassBaby:
                 this.bassCount += 1
-                this.bass["Bass" + this.bassCount] = new Bass(this.bassCount, this.ctx, this.canvas, this.view, this, {pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
+                count = this.bassCount
+                babyObj = this.bass
+                typeString = "Bass"
+                className = Bass
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
             case GarabaldiBaby:
                 this.garabaldiCount += 1
-                this.garabaldi["Garabaldi" + this.garabaldiCount] = new Garabaldi(this.garabaldiCount, this.ctx, this.canvas, this.view, this, { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] })
+                count = this.garabaldiCount
+                babyObj = this.garabaldi
+                typeString = "Garabaldi"
+                className = Garabaldi
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
             case Crab:
                 this.crabBabyCount += 1
-                this.crabBabies["CrabBaby" + this.crabBabyCount] = new CrabBaby(this.crabBabyCount, this.ctx, this.canvas, this.view, this, {pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])]})
+                count = this.crabBabyCount
+                babyObj = this.crabBabies
+                typeString = "CrabBaby"
+                className = CrabBaby
+                options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] }
                 break
+
             case CrabBaby:
                 this.crabCount += 1
-                this.crabs["Crab" + this.crabCount] = new Crab(this.crabCount, this.ctx, this.canvas, this.view, this, {pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
+                count = this.crabCount
+                babyObj = this.crabs
+                typeString = "Crab"
+                className = Crab
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
             case Seaweed:
                 this.seaUrchinCount += 1
-                this.seaUrchins["SeaUrchin" + this.seaUrchinCount] = new SeaUrchin(this.seaUrchinCount, this.ctx, this.canvas, this.view, this, { parent: parentDenizen, pos: [parentDenizen.pos[0], parentDenizen.pos[1]]})
+                count = this.seaUrchinCount
+                babyObj = this.seaUrchins
+                typeString = "SeaUrchin"
+                className = SeaUrchin
+                options = { parent: parentDenizen, pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
             case Polyp:
                 this.jellyfishCount += 1
-                this.jellyfish["Jellyfish" + this.jellyfishCount] = new Jellyfish(this.jellyfishCount, this.ctx, this.canvas, this.view, this, {pos:[parentDenizen.pos[0], parentDenizen.pos[1]]})
+                count = this.jellyfishCount
+                babyObj = this.jellyfish
+                typeString = "Jellyfish"
+                className = Jellyfish
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
 
             case Effect:
                 this.polypCount += 1
-                this.polyps["Polyp" + this.polypCount] = new Polyp(this.polypCount, this.ctx, this.canvas, this.view, this, { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] })
+                count = this.polypCount
+                babyObj = this.polyps
+                typeString = "Polyp"
+                className = Polyp
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
                 break
+
             case Fishegg:
                 this.spawnDenizenFish(parentDenizen)
-                break
+                return
         }
+
+        babyObj[typeString + count] = new className(count, this.ctx, this.canvas, this.view, this, options)
     }
 
     spawnDenizenFish(parentDenizen) {
+        let count;
+        let babyObj;
+        let typeString;
+        let className;
+        let options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] }
+
         switch (parentDenizen.parent) {
             case Garabaldi:
-                this.garabaldiBabyCount += 1
-                this.garabaldiBabies["GarabaldiBaby" + this.garabaldiBabyCount] = new GarabaldiBaby(this.garabaldiBabyCount, this.ctx, this.canvas, this.view, this, {pos:[Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])]})
+                this.garabaldiBabyCount++
+                count = this.garabaldiBabyCount
+                babyObj = this.garabaldiBabies
+                typeString = "GarabaldiBaby"
+                className = GarabaldiBaby
+
                 break
             case Bass:
-                this.bassBabyCount += 1
-                this.bassBabies["BassBaby" + this.bassBabyCount] = new BassBaby(this.bassBabyCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
+                this.bassBabyCount++
+                count = this.bassBabyCount
+                babyObj = this.bassBabies
+                typeString = "BassBaby"
+                className = BassBaby
+
                 break
             case Rockfish:
-                this.rockfishBabyCount += 1
-                this.rockfishBabies["RockfishBaby" + this.rockfishBabyCount] = new RockfishBaby(this.rockfishBabyCount, this.ctx, this.canvas, this.view, this, { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] })
+                this.rockfishBabyCount++
+                count = this.rockfishBabyCount
+                babyObj = this.rockfishBabies
+                typeString = "RockfishBaby"
+                className = RockfishBaby
                 break
         }
+
+        babyObj[typeString + count] = new className(count, this.ctx, this.canvas, this.view, this, options)
     }
 
     denizenCorpse(deadDenizen) {

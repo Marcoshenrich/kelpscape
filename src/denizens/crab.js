@@ -65,18 +65,20 @@ export default class Crab extends Swimmer {
 
 
     climbSeaweedTimer() {
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.timeToClimbSeaweed = !this.timeToClimbSeaweed
             this.climbSeaweedTimer()
         }, Math.floor(Math.random() * (this.timeToClimbSeaweed ? 60000 : 30000)))
+        this.clearOnDeath.push(id)
     }
 
 
     movementSwitchTimer() {
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.timeToSwitchMovement = true
             this.movementSwitchTimer()
         }, Math.floor(Math.random() * 2500) + 7000)
+        this.clearOnDeath.push(id)
     }
 
     coreloop() {
@@ -296,6 +298,13 @@ export default class Crab extends Swimmer {
         this.right = !this.right;
         this.recentlySwitchedDirections = true
         setTimeout(() => { this.recentlySwitchedDirections = false }, 350)
+    }
+
+    beforeIDieCB() {
+        if (this.trappedPrey) this.trappedPrey.trapped = false
+        this.clearOnDeath.forEach((timerId) => {
+            clearTimeout(timerId)
+        })
     }
 
 

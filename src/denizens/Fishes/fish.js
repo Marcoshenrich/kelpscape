@@ -77,7 +77,7 @@ export default class Fish extends Swimmer {
         this.mating = true
         this.speed = 0
         this.energy -= this.matingEnergyCost
-        setTimeout(()=>{
+        let id = setTimeout(()=>{
             this.speed += .5
             this.mating = false
             if (spawnBool) return
@@ -87,5 +87,6 @@ export default class Fish extends Swimmer {
                 this.logic.spawnDenizen(this) 
             }
         }, 1500)
+        this.clearOnDeath.push(id)
     }
 }

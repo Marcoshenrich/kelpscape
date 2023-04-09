@@ -18,7 +18,7 @@ export default class Denizen {
         this.trappedPosDelta = []
     }
 
-    clearCallbacksOnDeath() {
+    beforeIDieCB() {
         this.clearOnDeath.forEach((timerId)=>{
             clearTimeout(timerId)
         })

@@ -63,9 +63,10 @@ export default class Turtle extends Swimmer {
     }
 
     leaveTimer() {
-        setTimeout(() => {
+        let id = setTimeout(() => {
             this.timeToLeave = true
         }, Math.floor(Math.random() * 60000) + 60000)
+        this.clearOnDeath.push(id)
     }
 
     placer() {

@@ -23,13 +23,13 @@ export default class Fishegg extends Floater {
 
 
     spawn() {
-        let timerId = setTimeout(()=>{
+        let id = setTimeout(()=>{
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
             if (this.trapped) return
             this.logic.spawnDenizen(this)
         },rand(15000,25000))
 
-        this.clearOnDeath.push(timerId)
+        this.clearOnDeath.push(id)
     }
 }

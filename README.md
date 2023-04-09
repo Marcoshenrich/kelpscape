@@ -45,15 +45,201 @@ To generalize denizen behavior, I placed shared behavior logic inside of the beh
     }
 ```
 
-Let's deep dive into the trapper process. 
+Let's take a look at how Denizens mate. 
 
-Logic defines a trappersArr which contains all denizens which can trap. 
+Each frame, denizens that can mate evalute if they meet their mating conditions. For Fish to mate, they only need to have their energy above a certain threshold (and not be a lil baby).
+
+Once these conditions are met, they add themselves to Logic's matingDenizensObj where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
+
+```javascript
+    //Swimmer.behaviorChanger()
+    behaviorChanger() {
+        //... 
+        if (!this.spawn && !this.seekingMate && this.energy > this.matingThreshold) {
+            this.logic.matingDenizensObj[this.id] = this
+            this.seekingMate = true
+        } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
+            delete this.logic.matingDenizensObj[this.id]
+            this.seekingMate = false
+        }
+    }
+```
+
+On each frame, BehaviorController loops through the mating object and checks collisions for all eligible bachelors using the Quadtree. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
+
+The Quadtree returns an array of all creatures the bachelor is colliding with. We loop through the array and check if they are colliding with a member of the same species, and if that denizen is also ready to mate. 
+
+If so, the mate function is called on both, and they are both deleted from matingDenizensObj.
+
+```javascript
+    //BehaviorController.denizensMate()
+    denizensMate() {
+        let matingDenizenArr = Object.values(this.logic.matingDenizensObj)
+        for (let i = 0; i < matingDenizenArr.length; i++) {
+            let bachelorFish = matingDenizenArr[i]
+
+            let collisionArray = this.logic.view.quadtree.queryRange(new Rectangle(bachelorFish.pos[0], bachelorFish.pos[1], bachelorFish.width, bachelorFish.height), "contains", bachelorFish)
+            let foundMate;
+
+            for (const bumpedDenizen of collisionArray) {
+                if (bachelorFish.constructor === bumpedDenizen.constructor &&
+                    bumpedDenizen.seekingMate) {
+                    foundMate = bumpedDenizen
+                    break
+                }
+            }
+            if (foundMate) {
+                bachelorFish.mate(true)
+                bachelorFish.seekingMate = false
+                delete this.logic.matingDenizensObj[bachelorFish.id]
+
+                foundMate.mate()
+                foundMate.seekingMate = false
+                delete this.logic.matingDenizensObj[foundMate.id]
+            }
+        }
+    }
+```
+
+When mating, fish will temporarily stop in place and trigger a heart animation (because they are in love). A timeout is triggered to reactivate fish movement and spawn the fish eggs using the Logic.spawnDenizen() factory method.
+
+``` javascript
+    //Fish.mate()
+    mate(spawnBool) {
+        this.mating = true
+        this.speed = 0
+        this.energy -= this.matingEnergyCost
+        setTimeout(()=>{
+            this.speed += .5
+            this.mating = false
+            if (spawnBool) return
+            let i = Math.floor(Math.random() * 6)
+            while (i > 0) {
+                i--
+                this.logic.spawnDenizen(this) 
+            }
+        }, 1500)
+    }
+```
+
+spawnDenizen is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
+
+Most denizens only spawn one other type of denizen, but all fish can spawn fish eggs, which can spawn various types of baby fish. A helper method is needed that evaluates the parent of the fishegg, and spawns the appropiate baby fish.
+
+```javascript
+//Logic.spawnDenizen()
+ spawnDenizen(parentDenizen) {
+        let count;
+        let babyObj;
+        let typeString;
+        let className;
+        let options;
+
+        switch(parentDenizen.constructor) {
+            case Garabaldi:
+                this.eggCount += 1
+                count = this.eggCount
+                babyObj = this.eggs
+                typeString = "Fishegg"
+                className = Fishegg
+                options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])], parent: parentDenizen.constructor }
+                break
+
+            case GarabaldiBaby:
+                this.garabaldiCount += 1
+                count = this.garabaldiCount
+                babyObj = this.garabaldi
+                typeString = "Garabaldi"
+                className = Garabaldi
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
+                break
+
+        //...
+            case Fishegg:
+                this.spawnDenizenFish(parentDenizen)
+                return
+        //...
+        }
+            
+        babyObj[typeString + count] = new className(count, this.ctx, this.canvas, this.view, this, options)
+
+    }
+
+    spawnDenizenFish(parentDenizen) {
+        let count;
+        let babyObj;
+        let typeString;
+        let className;
+        let options = { pos: [Math.floor(parentDenizen.pos[0]), Math.floor(parentDenizen.pos[1])] }
+
+        switch (parentDenizen.parent) {
+            case Garabaldi:
+                this.garabaldiBabyCount++
+                count = this.garabaldiBabyCount
+                babyObj = this.garabaldiBabies
+                typeString = "GarabaldiBaby"
+                className = GarabaldiBaby
+                break
+        //...
+
+        }
+
+        babyObj[typeString + count] = new className(count, this.ctx, this.canvas, this.view, this, options)
+    }
+
+```
+
+To complete the cycle, let's look at how baby fish become big fish. 
+
+All denizens have an afterIEatCB() which triggers specific events after a meal. Baby fish grow into big fish after they eat a set number of times. 
+
+FishBaby.growUp() inserts the instance to logic.recentlyDeadDenizens() which removes it from memory. It leverages the logic.spawnDenizen() factory to spawn a brand-new adult fish in its current position.
+
+```javascript
+
+    //FishBaby.afterIEatCB
+    afterIEatCB = () => {
+        if (this.foodEaten === this.growUpThreshold) this.growUp()
+    }
+
+    //FishBaby.growUp
+    growUp() {
+        this.dead = true
+        this.logic.recentlyDeadDenizens.push(this)
+        this.logic.spawnDenizen(this)
+    }
+
+```
+
+On each frame, any denizens that have added themselves to logic.recentlyDeadDenizens are removed from their species object!
+
+```javascript
+
+    deleteDeadDenizens(){
+        while (this.recentlyDeadDenizens.length) {
+            let deadDenizen = this.recentlyDeadDenizens.pop()
+            deadDenizen.beforeIDieCB()
+            delete deadDenizen.speciesObject[deadDenizen.id]
+        }
+    }
+
+```
+
+
+
+
+
+Next, let's deep dive into the trapper process. 
+
+Logic defines a trappersArr which contains all denizens which can trap. Trappers are always ready to trap, so they don't add themselves.  
 
 If the trapper already has trapped prey or is currently mating, it cannot trap any prey. 
 
-QueryRange checks if any creatures have been trapped. A full overlap is required, which means any dimension of the trapee is fully withen the trap, or vice versa. 
+QueryRange checks if any creatures fully overlap the trap, which means any dimension of the prey is fully inside the trap, or vice versa. 
 
 Next, trappersTrapPrey checks that the denizen that is inside the trap is something the trapper actually wants to eat. If it is, the trapped prey records the difference in position between itself and the trapper. Once trapped, the prey ignores all movement logic, and updates its position to match the position of its trapper, modified by the recored position delta. This means wherever the trapper goes, the trapee goes with it.
+
+Finally, the trapper calls afterITrapCB(), which allows for any variances or specific behaviors I need from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
 
 ![trappedFish](https://user-images.githubusercontent.com/110189879/230758713-5e989d0c-e1c5-497c-a7d2-88ad03f5a857.gif)
 

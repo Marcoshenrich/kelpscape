@@ -131,7 +131,7 @@ export default class Effect {
         }
     }
 
-    clearCallbacksOnDeath(){
+    beforeIDieCB(){
         //prevents breaking on logic deathloop
     }
 

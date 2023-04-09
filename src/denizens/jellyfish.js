@@ -42,11 +42,20 @@ export default class Jellyfish extends Swimmer {
     }
 
     dropGametes() {
-        setTimeout(()=>{
+        let timeoutID = setTimeout(()=>{
             this.logic.effectCount++
             this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic,{type: "gametes", pos: [this.pos[0], this.pos[1]],  size: 2 })
         }, rand(6000000))
+        this.clearOnDeath.push(timeoutID)
     }
+
+    beforeIDieCB() {
+        if (this.trappedPrey) this.trappedPrey.trapped = false
+        this.clearOnDeath.forEach((timerId) => {
+            clearTimeout(timerId)
+        })
+    }
+
 
     trapPlacer() {
         this.trapPos[0] = this.pos[0]
