@@ -8,7 +8,7 @@ export default class Jellyfish extends Swimmer {
     constructor(id, ctx, canvas, view, logic, options){
         super(ctx, canvas, view, logic)
         this.floater = new Floater(this)
-        this.trapper = new Trapper(this, { trapHeight: 18, trapWidth: 18, trapYAdjustment: 10, trapXAdjustment: 0})
+        this.trapper = new Trapper(this, { trapHeight: 18, trapWidth: 18, trapYAdjustment: 10, trapXAdjustment: 0, denizenEatsImmediately: true})
         this.trappedPrey = false
         this.textBox = this.logic.textContentObj["Jellyfish"]
         this.type = "Jellyfish"

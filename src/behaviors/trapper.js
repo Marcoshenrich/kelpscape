@@ -10,15 +10,21 @@ export default class Trapper {
         this.trapWidth = options.trapWidth
         this.trapYAdjustment = options.trapYAdjustment
         this.trapXAdjustment = options.trapXAdjustment
+        this.denizenEatsImmediately = options.denizenEatsImmediately
         this.trapPos = [0,0]
     }
 
     coreloop() {
-        this.trapPlacer()
-        if (this.denizen.trappedPrey) this.eatTrappedPrey(this.denizen.trappedPrey, "trapped")
+        if (this.denizen.trapPlacer) {
+            this.denizen.trapPlacer()
+        } else {
+            this.trapPlacer()
+        }
+        if (!this.denizenEatsImmediately) return
+        if (this.denizen.trappedPrey) this.eatTrappedPrey(this.denizen.trappedPrey)
     }
 
-    eatTrappedPrey(foodSource, foodType) {
+    eatTrappedPrey(foodSource) {
         this.denizen.energy = Math.min(this.denizen.maxEnergy, this.denizen.energy + this.denizen.consumptionRate)
         foodSource.energy -= this.denizen.consumptionRate
         this.denizen.totalEnergyConsumed += this.denizen.consumptionRate

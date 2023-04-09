@@ -1,10 +1,12 @@
 
+import Trapper from "../behaviors/trapper";
 import { rand } from "../engine/utils";
 import Denizen from "./denizen";
 
 export default class Otter extends Denizen{
     constructor(id, ctx, canvas, view, logic) {
         super(ctx, canvas, view, logic)
+        this.trapper = new Trapper(this, { trapHeight: 4, trapWidth: 6 })
         this.textBox = this.logic.textContentObj["Otter"]
         this.type = "Otter"
         this.id = this.type + id
@@ -39,13 +41,8 @@ export default class Otter extends Denizen{
         this.right = [true,false][rand(2)]
 
         this.angle = this.right ? 135 : 0
-        this.trapPos = [null,null]
-
-        this.trapHeight = 6
-        this.trapWidth = 4
         this.trappedPrey = false
 
-        this.trapPlacer()
         this.imgSelector()
     }
 
@@ -120,11 +117,11 @@ export default class Otter extends Denizen{
         const bottomPosX = this.pos[0] + centerX + rotatedBottomX
         const bottomPosY = this.pos[1] + centerY + rotatedBottomY
 
-        this.trapPos[0] = bottomPosX;
-        this.trapPos[1] = bottomPosY;
+        this.trapper.trapPos[0] = bottomPosX;
+        this.trapper.trapPos[1] = bottomPosY;
 
-        // this.ctx.fillStyle = 'rgba(0,255,255,1)';
-        // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
+        this.ctx.fillStyle = 'rgba(0,255,255,1)';
+        this.ctx.fillRect(this.trapper.trapPos[0] + this.offset[0], this.trapper.trapPos[1] + this.offset[1], this.trapper.trapWidth, this.trapper.trapHeight)
     }
 
 }
