@@ -41,7 +41,7 @@ export default class NatureController {
         // this.clusterSpawnInterval = 1000
         this.denizensSpawnInIncrements(this.clusterSpawnInterval, "seaweedClusterCount", "seaweedClusters", SeaweedCluster, {})
 
-        this.turtleSpawnInterval = 500
+        this.turtleSpawnInterval = 20000
         this.denizensSpawnInIncrements(this.turtleSpawnInterval, "turtleCount", "turtles", Turtle, {})
 
         

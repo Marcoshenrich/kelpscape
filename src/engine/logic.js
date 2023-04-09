@@ -85,7 +85,7 @@ export default class Logic {
 
 
         this.garabaldiCount = 10
-        this.garabaldiBabyCount =  10
+        this.garabaldiBabyCount =  100
 
         this.bassCount = 10
         this.bassBabyCount = 10
@@ -99,7 +99,7 @@ export default class Logic {
         this.effectCount = 0
         this.turtleCount = 1
         this.deadCreatureCount = 0
-        this.crabCount = 10
+        this.crabCount = 100
         this.crabBabyCount = 6
         this.jellyfishCount = 50
         this.rockCount = 20
@@ -136,12 +136,6 @@ export default class Logic {
         this.matingDenizensObj = {}
 
         this.recentlyDeadDenizens = []
-
-
-        this.effectCount++
-        this.effects["Effect" + this.effectCount] = new Effect(this.effectCount, this.ctx, this.canvas, this.view, this, {type: "eatingSeaweed", pos: [500,500], })
-
-
     }
 
 
