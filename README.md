@@ -4,6 +4,8 @@ Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d enviro
 
 Kelpscape was built using vanilla javascript and the Canvas API. 
 
+![Apr-09-2023 10-59-17](https://user-images.githubusercontent.com/110189879/230788836-b743e009-82cd-4d4d-aac7-04267cb4b8c2.gif)
+
 ## Features
 * 20 species of inhabitants in the ecosystem
 * Discoverable educational text on most species
@@ -12,28 +14,25 @@ Kelpscape was built using vanilla javascript and the Canvas API.
 * Chill vibes
 
 ## Technology and Approach
-At the top level, a Pilot controller manages the state changes between the opening cinematic and initializing the Sim. It also contains the Sound class to manage music looping and volume. 
+![UML](https://user-images.githubusercontent.com/110189879/230788501-04927c2a-590c-4a73-bb3e-80adb50bfe37.png)
 
-The View class manages the graphical representation of all denizens in the Sim. It manages user inputs which move the camera on the Canvas, as well as the textboxes which appear when a user clicks on a denizen. 
+At the top level, a `Pilot` controller manages the state changes between the opening cinematic and initializing the Sim. It also contains the `Sound` class to manage music looping and volume. 
 
-View also continually recreates the Quadtree. The Quadtree data structure organizes the spatial placement of each denizen on the 2d arena, and makes collision detection significantly more effecient. You can learn more about the Quadtree below. 
+The `View` class manages the graphical representation of all denizens in the Sim. It manages user inputs which move the camera on the Canvas, as well as the textboxes which appear when a user clicks on a denizen. 
 
-Logic is initialized by View. It is the core engine of the Sim. Logic initializes all the starting denizens and sets up various data structures needed for the Sim to run. 
+View also continually recreates the `Quadtree`. The Quadtree data structure organizes the spatial placement of each denizen on the 2d arena, and makes collision detection significantly more effecient. You can learn more about the Quadtree below. 
 
-NatureController contains various data structures that must be continually recalculated for denizens to correctly interact with a changing landscape. For example, the shifting placement of Seaweed throughout the course of the sim changes the available area where Algae can spawn and where Crabs can climb. Doing this calculation at the top level prevents each individual Denizen from having to track these changes.
+`Logic` is initialized by `View`. It is the core engine of the Sim. Logic initializes all the starting denizens and sets up various data structures needed for the Sim to run. 
 
-BehaviorController manages the logic denizens use to interact with each other. It models shared behaviors such as hunting for food, eating, finding mates, spawning, etc.
+`NatureController` contains various data structures that must be continually recalculated for denizens to correctly interact with a changing landscape. For example, the shifting placement of Seaweed throughout the course of the sim changes the available area where Algae can spawn and where Crabs can climb. Doing this calculation at the top level prevents each individual Denizen from having to track these changes.
 
-Every entity in the Sim is a Denizen. Different types of core behaviors inherit from Denizen - Floater, Swimmer, Trapper. Each creature inherits from the behavior set it most closely mimics. 
+`BehaviorController` manages the logic denizens use to interact with each other. It models shared behaviors such as hunting for food, eating, finding mates, spawning, etc.
 
-
-
-
-
+Every entity in the Sim is a `Denizen`. Different types of core behaviors inherit from Denizen - Floater, Swimmer, Trapper. Each creature inherits from the behavior set it most closely mimics. 
 
 ## Behavior Controller
 
-To generalize denizen behavior, I placed shared behavior logic inside of the behaviorController class. When a denizen meets certain conditions, it adds itself to specific objects inside of Logic to signal that it is Ready to Hunt, Ready to Mate, etc. This increases efficiency by only detecting collisions for denizens that are participating in a specific behavior. 
+To generalize denizen behavior, I placed shared behavior logic inside of the `BehaviorController` class. When a denizen meets certain conditions, it adds itself to specific objects inside of `Logic` to signal that it is Ready to Hunt, Ready to Mate, etc. This increases efficiency by only detecting collisions for denizens that are participating in a specific behavior. 
 
 ```javascript
     coreloop() {
@@ -47,11 +46,15 @@ To generalize denizen behavior, I placed shared behavior logic inside of the beh
     }
 ```
 
+### Mating
+
 Let's take a look at how Denizens mate. 
 
 Each frame, denizens that can mate evalute if they meet their mating conditions. For Fish to mate, they only need to have their energy above a certain threshold (and not be a baby fish).
 
 Once these conditions are met, they add themselves to Logic's matingDenizensObj where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
+
+![mating](https://user-images.githubusercontent.com/110189879/230789148-c2c6f629-e7ac-43b9-be59-1f8c85fbe330.gif)
 
 ```javascript
     //Swimmer.behaviorChanger()
@@ -67,7 +70,7 @@ Once these conditions are met, they add themselves to Logic's matingDenizensObj 
     }
 ```
 
-On each frame, BehaviorController loops through the mating object and checks collisions for all eligible bachelors using the Quadtree. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
+On each frame, `BehaviorController` loops through the mating object and checks collisions for all eligible bachelors using the Quadtree. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
 
 The Quadtree returns an array of all creatures the bachelor is colliding with. We loop through the array and check if they are colliding with a member of the same species, and if that denizen is also ready to mate. 
 
@@ -103,7 +106,7 @@ If so, the mate function is called on both, and they are both deleted from matin
     }
 ```
 
-When mating, fish will temporarily stop in place and trigger a heart animation (because they are in love). A timeout is triggered to reactivate fish movement and spawn the fish eggs using the Logic.spawnDenizen() factory method. The timeout's id is stored so that it can be cleared if the denizen dies before it triggers. 
+When mating, fish will temporarily stop in place and trigger a heart animation (because they are in love). A timeout is triggered to reactivate fish movement and spawn the fish eggs using the `Logic.spawnDenizen()` factory method. The timeout's id is stored so that it can be cleared if the denizen dies before it triggers. 
 
 
 ``` javascript
