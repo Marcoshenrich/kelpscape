@@ -115,6 +115,7 @@ export default class View {
 
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
+        this.quadtree.draw()
         if (this.debugging) this.quadtree.draw()
     }
 
@@ -246,6 +247,14 @@ export default class View {
         } else {
             this.inputTracker = 0   
         }
+
+        if (this.offset[0] >= 0) this.offset[0] = 0;
+        if (this.offset[0] <= (-this.arenaWidth + this.canvas.width)) this.offset[0] = (-this.arenaWidth + this.canvas.width);
+        if (this.offset[1] >= 0) this.offset[1] = 0;
+        if (this.offset[1] <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight + this.canvas.height);
+
+        this.backgroundPos[0] = this.offset[0];
+        this.backgroundPos[1] = this.offset[1];
     
         if (!this.inputTracker && !input.length) return
 
@@ -307,14 +316,6 @@ export default class View {
 
 //         this.ctx.fillText(`${ [(Math.round(this.cameraSpeedX * 100) / 100).toFixed(2), (Math.round(this.cameraSpeedY * 100) / 100).toFixed(2)] }
 // `, 200,200)
-
-        if (this.offset[0] >= 0) this.offset[0] = 0;
-        if (this.offset[0] <= (-this.arenaWidth + this.canvas.width)) this.offset[0] = (-this.arenaWidth + this.canvas.width);
-        if (this.offset[1] >= 0) this.offset[1] = 0;
-        if (this.offset[1] <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight+ this.canvas.height);
-
-        this.backgroundPos[0] = this.offset[0];
-        this.backgroundPos[1] = this.offset[1];
     }
 
     denizenCoreloop() {

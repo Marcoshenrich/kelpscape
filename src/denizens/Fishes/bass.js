@@ -16,7 +16,7 @@ export default class Bass extends Fish {
         this.maxEnergy = 25
         this.energy = this.maxEnergy
 
-        this.energyUseCoef = .005
+        this.energyUseCoef = .0025
         this.matingThreshold = 18
         this.matingEnergyCost = 6
         this.maxSpeed = .45

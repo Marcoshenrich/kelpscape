@@ -42,7 +42,7 @@ export default class Jellyfish extends Swimmer {
         let timeoutID = setTimeout(()=>{
             this.logic.effectCount++
             this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic,{type: "gametes", pos: [this.pos[0], this.pos[1]],  size: 2 })
-        }, rand(6000000))
+        }, rand(600000))
         this.clearOnDeath.push(timeoutID)
     }
 
