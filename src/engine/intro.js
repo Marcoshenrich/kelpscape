@@ -151,10 +151,10 @@ export default class Intro {
             this.ctx.font = `${this.fontSize * .8}px Georgia`;
             this.ctx.fillStyle = `rgba(255,255,255,${this.textFader})`
             if (this.mobile) {
-                const line1Width = this.ctx.measureText("Navigate the sea using the touchscreen").width
+                const line1Width = this.ctx.measureText("Navigate the sea using the touchscreen.").width
                 const line2Width = this.ctx.measureText("Click on a denizen to learn more about them.").width
                 this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
-                this.ctx.fillText("Navigate the sea using the touchscreen", centerX - line1Width / 2, centerY - this.leading);
+                this.ctx.fillText("Navigate the sea using the touchscreen.", centerX - line1Width / 2, centerY - this.leading);
                 this.ctx.fillText("Click on a denizen to learn more about them.", centerX - line2Width / 2, centerY + this.leading);
             } else {
                 const line1Width = this.ctx.measureText("Use the arrow keys or mouse to move around.").width
