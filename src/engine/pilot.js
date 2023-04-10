@@ -14,6 +14,7 @@ export default class Pilot {
         this.touch = null
         this.collisionArr = null
         this.showIntro = true
+        this.touchRect = []
         
         this.animate()
 
@@ -35,7 +36,10 @@ export default class Pilot {
             this.view.animate()
         }
 
-
+        if (this.touchRect.length) {
+            this.ctx.fillStyle = `rgba(255,255,255,1`;
+            this.ctx.fillRect(this.touchRect[0], this.touchRect[1], this.touchRect[2], this.touchRect[2])
+        }
   
         // this.ctx.fillStyle = `rgba(255,255,255,1`;
         // this.ctx.font = "25px Georgia";
@@ -43,7 +47,7 @@ export default class Pilot {
         // this.ctx.fillText(`t: ${this.touch}`, 200, 200)
         // this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
 
-        this.ctx.fillText(`deploy test 5`, 200, 350)
+        this.ctx.fillText(`deploy test 6`, 200, 350)
 
 
 
