@@ -52,7 +52,7 @@ Let's take a look at how Denizens mate.
 
 Each frame, denizens that can mate evalute if they meet their mating conditions. For Fish to mate, they only need to have their energy above a certain threshold (and not be a baby fish).
 
-Once these conditions are met, they add themselves to Logic's matingDenizensObj where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
+Once these conditions are met, they add themselves to Logic's `matingDenizensObj` where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
 
 ![mating](https://user-images.githubusercontent.com/110189879/230789148-c2c6f629-e7ac-43b9-be59-1f8c85fbe330.gif)
 
@@ -70,11 +70,11 @@ Once these conditions are met, they add themselves to Logic's matingDenizensObj 
     }
 ```
 
-On each frame, `BehaviorController` loops through the mating object and checks collisions for all eligible bachelors using the Quadtree. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
+On each frame, `BehaviorController` loops through the mating object and checks collisions for all eligible bachelors using the `Quadtree`. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
 
 The Quadtree returns an array of all creatures the bachelor is colliding with. We loop through the array and check if they are colliding with a member of the same species, and if that denizen is also ready to mate. 
 
-If so, the mate function is called on both, and they are both deleted from matingDenizensObj.
+If so, the mate function is called on both, and they are both deleted from `matingDenizensObj`.
 
 ```javascript
     //BehaviorController.denizensMate()
@@ -129,7 +129,7 @@ When mating, fish will temporarily stop in place and trigger a heart animation (
     }
 ```
 
-spawnDenizen is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
+`Logic.spawnDenizen` is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
 
 Most denizens only spawn one other type of denizen, but all fish spawn fish eggs, which can spawn various types of baby fish. A helper method is needed that evaluates the parent of the fishegg, and spawns the appropiate baby fish.
 
@@ -198,9 +198,9 @@ Most denizens only spawn one other type of denizen, but all fish spawn fish eggs
 
 To complete the cycle, let's look at how baby fish become big fish. 
 
-All denizens have an afterIEatCB() which triggers specific events after a meal. Baby fish grow into big fish after they eat a set number of times. 
+All denizens have an `afterIEatCB()` which triggers specific events after a meal. Baby fish grow into big fish after they eat a set number of times. 
 
-FishBaby.growUp() inserts the baby fish to logic.recentlyDeadDenizens() which removes it from memory. Then, we call the logic.spawnDenizen() factory to spawn a brand-new adult fish in its current position.
+`FishBaby.growUp()` inserts the baby fish to `Logic.recentlyDeadDenizens()` which removes it from memory. Then, we call the `Logic.spawnDenizen()` factory to spawn a brand-new adult fish in its current position.
 
 ```javascript
 
@@ -218,7 +218,7 @@ FishBaby.growUp() inserts the baby fish to logic.recentlyDeadDenizens() which re
 
 ```
 
-On each frame, any denizens in logic.recentlyDeadDenizens are removed from their species object, deleting them from memory. DeadDenizen.beforeIDieCB() clears up any unfinished business, such as removing setTimeouts and freeing trapped prey. 
+On each frame, any denizens in `Logic.recentlyDeadDenizens` are removed from their species object, deleting them from memory. `DeadDenizen.beforeIDieCB()` clears up any unfinished business, such as removing `setTimeouts` and freeing trapped prey. 
 
 Honestly, these four lines of code are probably what I'm proudest of in the whole project. It's so clean!
 
@@ -236,7 +236,7 @@ Honestly, these four lines of code are probably what I'm proudest of in the whol
 
 But wait! did you notice that some creatures leave behind corpses when they die? How is that handled?
 
-We call a different logic method under death conditions where we want to leave a corpse behind. A DeadCreature instance is created, and the dynamic attributes are set in a factory-like pattern.
+We call a different logic method under death conditions where we want to leave a corpse behind. A `DeadCreature` instance is created, and the dynamic attributes are set in a factory-like pattern.
 
 Dead creatures will slowly drift to the bottom of the sea where they will be eaten by scavengers. Gnarly!
 
@@ -279,18 +279,19 @@ Dead creatures will slowly drift to the bottom of the sea where they will be eat
     }
 ```
 
+##Traps and Trappers
 
 We talked about trappers freeing prey - But how does trapping work?
 
-Logic defines a trappersArr which contains all denizens which can trap. Trappers are always ready to trap, so they don't add themselves to an object the way bachelor fish do.  
+Logic defines a `trappersArr` which contains all denizens which can trap. Trappers are always ready to trap, so they don't add themselves to an object the way bachelor fish do.  
 
 If the trapper already has trapped prey or is currently mating, it cannot trap any prey. 
 
-Quadtree.QueryRange checks if any creatures fully overlap the trap, which means any dimension of the prey is fully inside the trap, or vice versa. 
+`Quadtree.QueryRange` checks if any creatures fully overlap the trap, which means any dimension of the prey is fully inside the trap, or vice versa. 
 
 Next, we check that the denizen inside the trap is something the trapper actually wants to eat. If it is, the trapped prey records the difference in position between itself and the trapper. Once trapped, the prey ignores all movement logic, and updates its position to match the position of its trapper, modified by the recored position delta. This means wherever the trapper goes, the trapped prey goes with it.
 
-Finally, the trapper calls afterITrapCB(), which allows for any variances or specific behaviors needed from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
+Finally, the trapper calls `afterITrapCB()`, which allows for any variances or specific behaviors needed from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
 
 ![trappedFish](https://user-images.githubusercontent.com/110189879/230758713-5e989d0c-e1c5-497c-a7d2-88ad03f5a857.gif)
 
@@ -328,26 +329,26 @@ Finally, the trapper calls afterITrapCB(), which allows for any variances or spe
 ```
 
 
-Quadtree and Collision Detection
+##Quadtree and Collision Detection
 
-Enough about simulating ecosystem behavior, let's talk about the Quadtree!
+Enough about simulating ecosystem behavior, let's talk about the `Quadtree`!
 
 The first type of collision detection I built was a brute force method where each denizen of the sim checked its position against every other denizen on each game frame - But I knew this would be unstustainable as the biosphere grew. I researched alternative data structures, and found that the Quadtree data structure was the perfect solution - it is specifically designed to maximize efficiency for 2d rectangle collisions in a shared area. 
 
 I asked ChatGPT for an example and it gladly gave me broken code. I examined the code example, parsed what it was trying to do, and fixed the bugs (subdivision logic and rectangle collision logic were broken). I then extended it to detect different types of collision. 
 
-How it Works
+###How it Works
 
-A Quadtree is made of two classes, Quadtree and Rectangle.
+A Quadtree is made of two classes, `Quadtree` and `Rectangle`.
 
-Rectangle - Defines an area by an XY coordinate, a width, and a length. Mangages collision logic.
-Quadtree - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
+* `Rectangle` - Defines an area by an XY coordinate, a width, and a length. Mangages collision logic.
+* `Quadtree` - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
 
 The Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child based on spatial location and area.
 
 To Query collisions in a Quadtree, you pass in a Rectangle to the query, which is compared against the Quadtree's Rectangle (and those of its children) until an appropriate match is found. All Quadtrees that spatially match query their Denizens (or or those of its children), and are then returned in an Array.
 
-Chat GPT's Basic Quadtree
+###Chat GPT's Basic Quadtree
 
 ```javascript
 
@@ -458,7 +459,7 @@ export class Rectangle {
 ```
 With this basis, I was able to extend the functions of both these classes in order to detect different types of collision, and leverage the data structure for other uses. 
 
-Quadtree Extensions
+###Quadtree Extensions
 queryType allows me to pull all of a specific species out of a quadtree. 
 
 ```javascript
@@ -480,7 +481,7 @@ queryType allows me to pull all of a specific species out of a quadtree.
 
 ```
 
-A refactor of QueryRange allows me to extend the functionality of Rectangle collision detection, and dynamically call different collision methods on the Rectnagle by using the type parameter.
+A refactor of `QueryRange` allows me to extend the functionality of Rectangle collision detection, and dynamically call different collision methods on the Rectnagle by using the type parameter.
 
 ```javascript
 
@@ -502,7 +503,8 @@ A refactor of QueryRange allows me to extend the functionality of Rectangle coll
     }
 
 ```
-Rectangle Extensions
+
+###Rectangle Extensions
 The original Quadtree came with the contains method, which evaluates whether a specific point is inside a rectangle. Since the XY Coordinate on canvas refers to the top-left point of the Denizen, this caused visual bugs and undesired behavior. I built the overlaps and fullyOverlaps methods to detect partial and full overlaps, which are useful for behavior such as a shark eating prey vs a jellyfish trapping a fish. 
 
 ```javascript
@@ -532,4 +534,5 @@ The original Quadtree came with the contains method, which evaluates whether a s
         return (a.left >= b.left && a.right <= b.right && a.top >= b.top && a.bottom <= b.bottom);
     }
 ```
+
 Thanks for reading. This was such a challenging and fun project, and I'm excited to release it in the wild. 
