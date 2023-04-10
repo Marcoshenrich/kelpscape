@@ -145,16 +145,25 @@ canvas.addEventListener("touchstart", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        // let touch = e.touches[0]
-        // pilot.touch = touch
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0] - 5, touch.clientY - pilot.view.offset[1] - 5, 10, 10), "overlaps", { id: null }, true)
+        if (collisionArr.length) {
+            let textBox;
+            for (let i = 0; i < collisionArr.length; i++) {
+                if (collisionArr[i].type !== "Seaweed" || i === collisionArr.length - 1) {
+                    textBox = collisionArr[i].textBox
+                    break
+                }
+            }
 
-        // let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0], touch.clientY - pilot.view.offset[1], 1, 1), "overlaps", { id: null })
-        // if (collisionArr[0]) {
-        //     textBox = collisionArr[0].textBox
-        //     pilot.view.textBox = textBox
-        //     pilot.view.logic.scoreTrackObj[textBox.type] = true
-        // }
-        // pilot.collisionArr = `${Math.floor(touch.clientX)},${Math.floor(touch.clientY)}`
+            pilot.view.textBox = textBox
+            pilot.view.fadeInScore = .5
+            pilot.view.showScore = true
+            if (!pilot.view.logic.scoreTrackObj[textBox.type]) {
+                pilot.view.logic.scoreTrackObj[textBox.type] = true
+                pilot.view.logic.score += 1
+                pilot.view.scoreFontSize = 42
+            }
+        }
     }
 });
 

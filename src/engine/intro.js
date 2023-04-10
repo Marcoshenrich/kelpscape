@@ -13,7 +13,8 @@ export default class Intro {
         this.simTransition = false
         this.simStart = false
         this.fader = 0
-        this.textMargin = mobile ? 10 : 100
+        this.mobile = mobile
+        this.textMargin = mobile ? 25 : 100
 
         this.sequenceStep = 0
         this.fontSize = 42
@@ -75,6 +76,9 @@ export default class Intro {
     }
 
     drawIntroSequence() {
+        const centerX = this.canvas.width / 2
+        const centerY = this.canvas.height / 2
+
         if (this.sequenceStep === 0) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             this.ctx.font = `${this.fontSize}px Georgia`;
@@ -119,8 +123,6 @@ export default class Intro {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             const line1Width = this.ctx.measureText("Today, climate change and overfishing").width
             const line2Width = this.ctx.measureText("threaten these incredible biospheres.").width
-            const centerX = this.canvas.width / 2
-            const centerY = this.canvas.height / 2
             this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
             this.ctx.fillText("Today, climate change and overfishing", centerX - line1Width/2, centerY - this.leading/2);
             this.ctx.fillText("threaten these incredible biospheres.", centerX - line2Width/2, centerY + this.leading / 2);
@@ -132,8 +134,6 @@ export default class Intro {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             const line1Width = this.ctx.measureText("Dive into the hidden").width
             const line2Width = this.ctx.measureText("world of Kelpscape").width
-            const centerX = this.canvas.width / 2
-            const centerY = this.canvas.height / 2
             this.ctx.fillText("Dive into the hidden", centerX - line1Width / 2, centerY - this.leading / 2);
             this.ctx.fillText("world of Kelpscape", centerX - line2Width / 2, centerY + this.leading / 2);
             this.fadeManger()
@@ -148,15 +148,21 @@ export default class Intro {
         } else if (this.sequenceStep === 7) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.fader})`;
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
-            this.ctx.font = `${this.fontSize * .5}px Georgia`;
+            this.ctx.font = `${this.fontSize * .8}px Georgia`;
             this.ctx.fillStyle = `rgba(255,255,255,${this.textFader})`
-            const line1Width = this.ctx.measureText("Use the arrow keys or mouse to move around.").width
-            const line2Width = this.ctx.measureText("Click on a denizen to learn more about them.").width
-            const centerX = this.canvas.width / 2
-            const centerY = this.canvas.height / 2
-            this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
-            this.ctx.fillText("Use the arrow keys or mouse to move around.", centerX - line1Width / 2, centerY - this.leading);
-            this.ctx.fillText("Click on a denizen to learn more about them.", centerX - line2Width / 2, centerY + this.leading);
+            if (this.mobile) {
+                const line1Width = this.ctx.measureText("Navigate the sea using the touchscreen").width
+                const line2Width = this.ctx.measureText("Click on a denizen to learn more about them.").width
+                this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
+                this.ctx.fillText("Navigate the sea using the touchscreen", centerX - line1Width / 2, centerY - this.leading);
+                this.ctx.fillText("Click on a denizen to learn more about them.", centerX - line2Width / 2, centerY + this.leading);
+            } else {
+                const line1Width = this.ctx.measureText("Use the arrow keys or mouse to move around.").width
+                const line2Width = this.ctx.measureText("Click on a denizen to learn more about them.").width
+                this.fontAndLeadingManager(this.ctx.measureText(line2Width, true))
+                this.ctx.fillText("Use the arrow keys or mouse to move around.", centerX - line1Width / 2, centerY - this.leading);
+                this.ctx.fillText("Click on a denizen to learn more about them.", centerX - line2Width / 2, centerY + this.leading);
+            }
             this.fadeManger()
         } else if (this.sequenceStep === 8) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.fader})`;

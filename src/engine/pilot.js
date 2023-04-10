@@ -24,6 +24,7 @@ export default class Pilot {
             if (!this.intro.simStart) {
                 this.intro.animate()
             } else {
+                this.intro = null
                 this.view.animate()
             }
             if (this.sound.kickOffIntroScore) {
