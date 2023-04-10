@@ -148,8 +148,8 @@ canvas.addEventListener("touchstart", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        pilot.touchRect = [touch.clientX - 50, touch.clientY - 50, 100]
-        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0] - 50, touch.clientY - pilot.view.offset[1] -50, 100, 100), "overlaps", { id: null }, true)
+        // pilot.touchRect = [touch.clientX - 25, touch.clientY - 25, 500]
+        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(touch.clientX - pilot.view.offset[0] - 25, touch.clientY - pilot.view.offset[1] - 25, 50, 50), "overlaps", { id: null }, true)
         if (collisionArr.length) {
             let textBox;
             for (let i = 0; i < collisionArr.length; i++) {
