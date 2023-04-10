@@ -101,7 +101,7 @@ export default class Logic {
         this.deadCreatureCount = 0
         this.crabCount = 10
         this.crabBabyCount = 6
-        this.jellyfishCount = 50
+        this.jellyfishCount = 25
         this.rockCount = 20
         this.otterCount = 0
         this.polypCount = 0

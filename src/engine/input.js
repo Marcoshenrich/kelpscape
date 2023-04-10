@@ -29,10 +29,12 @@ export default class InputHandler {
     }
 
     dragScreen(moveArr) {
+        let cameraInput = []
         this.view.offset[0] += moveArr[0] - this.mouseIsDownAt[0]
         this.view.offset[1] += moveArr[1] - this.mouseIsDownAt[1]
 
         this.mouseIsDownAt = [moveArr[0], moveArr[1]] 
+        this.view.updateCamera(cameraInput)
     }
 
 

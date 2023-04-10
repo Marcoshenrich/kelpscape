@@ -18,6 +18,12 @@ export default class View {
 
         this.logic = new Logic(this.ctx, this.canvas, this)
         this.input = new Input(this)
+        this.cameraSpeedX = 0
+        this.cameraSpeedY = 0
+        this.cameraDriftTimer = 0
+        this.inputTracker = 0
+
+        this.cameraMaxSpeed = 1.5
 
         this.scoreFontSize = 24
         this.showScore = false
@@ -109,6 +115,7 @@ export default class View {
 
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
+        this.quadtree.draw()
         if (this.debugging) this.quadtree.draw()
     }
 
@@ -228,33 +235,87 @@ export default class View {
     updateCamera(input) {
         let xSpeed = 0;
         let ySpeed = 0;
+        let speed = 0
 
-        if (input.includes('ArrowRight')) {
-            xSpeed = -(1.5)
-        } else if (input.includes('ArrowLeft')) {
-            xSpeed = (1.5)
+        if ((this.cameraSpeedX || this.cameraSpeedY) && !input.length) {
+            this.inputTracker++
+            if (this.inputTracker > 200) {
+                this.cameraSpeedX = 0
+                this.cameraSpeedY = 0
+                this.inputTracker = 0
+            }
         } else {
-            xSpeed = (0)
+            this.inputTracker = 0   
         }
-
-        if (input.includes('ArrowUp')) {
-            ySpeed = (1.5)
-        } else if (input.includes('ArrowDown')) {
-            ySpeed = -(1.5)
-        } else {
-            ySpeed = (0)
-        }
-
-        this.offset[0] += xSpeed;
-        this.offset[1] += ySpeed;
 
         if (this.offset[0] >= 0) this.offset[0] = 0;
         if (this.offset[0] <= (-this.arenaWidth + this.canvas.width)) this.offset[0] = (-this.arenaWidth + this.canvas.width);
         if (this.offset[1] >= 0) this.offset[1] = 0;
-        if (this.offset[1] <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight+ this.canvas.height);
+        if (this.offset[1] <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight + this.canvas.height);
 
         this.backgroundPos[0] = this.offset[0];
         this.backgroundPos[1] = this.offset[1];
+    
+        if (!this.inputTracker && !input.length) return
+
+        if (input.includes('ArrowRight')) {
+            this.cameraSpeedX -= .025
+            this.cameraDriftTimer = 10
+        } else if (input.includes('ArrowLeft')) {
+            this.cameraSpeedX += .025
+            this.cameraDriftTimer = 10
+        } else {
+            if (this.cameraDriftTimer > 0) { 
+                this.cameraDriftTimer -= .05 
+                if (this.cameraSpeedX > 0) {
+                    this.cameraSpeedX -= .008
+                } else {
+                    this.cameraSpeedX += .008
+                }
+            } else{
+                if (this.cameraSpeedX > 0) {
+                    this.cameraSpeedX -= .025
+                } else {
+                    this.cameraSpeedX += .025
+                }
+            }
+        }
+
+        if (input.includes('ArrowUp')) {
+            this.cameraSpeedY += .025
+        } else if (input.includes('ArrowDown')) {
+            this.cameraSpeedY -= .025
+        } else {
+            if (this.cameraDriftTimer > 0) {
+                this.cameraDriftTimer -= .05
+                if (this.cameraSpeedY > 0) {
+                    this.cameraSpeedY -= .008
+                } else {
+                    this.cameraSpeedY += .008
+                }
+            } else {
+                if (this.cameraSpeedY > 0) {
+                    this.cameraSpeedY -= .025
+                } else {
+                    this.cameraSpeedY += .025
+                }
+            }
+        }
+
+
+        if (Math.abs(this.cameraSpeedX) > this.cameraMaxSpeed) this.cameraSpeedX = this.cameraMaxSpeed * (this.cameraSpeedX > 0 ? 1: -1)
+        if (Math.abs(this.cameraSpeedY) > this.cameraMaxSpeed) this.cameraSpeedY = this.cameraMaxSpeed * (this.cameraSpeedY > 0 ? 1 : -1)
+
+        this.offset[0] += this.cameraSpeedX;
+        this.offset[1] += this.cameraSpeedY;
+
+        // this.cameraSpeedX += this.cameraSpeedX > 0 ? -.05 : .05
+        // this.cameraSpeedY += this.cameraSpeedY > 0 ? -.05 : .05
+
+//         this.ctx.fillStyle = `rgba(0,0,0,1)`;
+
+//         this.ctx.fillText(`${ [(Math.round(this.cameraSpeedX * 100) / 100).toFixed(2), (Math.round(this.cameraSpeedY * 100) / 100).toFixed(2)] }
+// `, 200,200)
     }
 
     denizenCoreloop() {

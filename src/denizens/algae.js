@@ -36,7 +36,7 @@ export default class Algae extends Denizen {
 
 
     coreloop() {
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
         this.floater.coreloop()
         this.clustersObj = this.logic.seaweedClusters
     }

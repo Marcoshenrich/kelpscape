@@ -69,7 +69,7 @@ export default class Shark extends Swimmer {
     draw() {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
 
         if (this.view.debugging) {
             this.drawMouths()

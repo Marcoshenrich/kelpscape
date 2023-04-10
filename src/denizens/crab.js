@@ -147,7 +147,7 @@ export default class Crab extends Swimmer {
 
     draw(){
         this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
         this.ctx.globalAlpha = 1
 
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.pos[0] + 8.5 + this.offset[0], this.pos[1] + this.offset[1] - 17, 15, 15)

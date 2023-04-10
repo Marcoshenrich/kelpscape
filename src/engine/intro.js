@@ -22,7 +22,7 @@ export default class Intro {
         this.animate()
         this.textFader = 1
         this.fadeText = true
-        this.fadeTransitionSpeed = .008
+        this.fadeTransitionSpeed = .01
 
     }
 

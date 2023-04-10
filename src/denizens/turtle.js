@@ -118,7 +118,7 @@ export default class Turtle extends Swimmer {
         if (this.hunting && this.eatingSeagrass && !this.playingSeagrassEffect) this.seagrassEffect()
 
 
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
         this.speedModulator()
         this.debugger()
         if (this.timeToLeave) {
