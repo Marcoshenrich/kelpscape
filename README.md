@@ -130,7 +130,7 @@ When mating, fish will temporarily stop in place and trigger a heart animation (
     }
 ```
 
-###Spawning
+### Spawning
 
 `Logic.spawnDenizen` is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
 
@@ -201,7 +201,7 @@ Most denizens only spawn one other type of denizen, but all fish spawn fish eggs
 
 ```
 
-###Growing Up
+### Growing Up
 
 To complete the cycle, let's look at how baby fish become big fish. 
 
@@ -227,7 +227,7 @@ All denizens have an `afterIEatCB()` which triggers specific events after a meal
 
 ```
 
-###Death and Dying
+### Death and Dying
 
 On each frame, any denizens in `Logic.recentlyDeadDenizens` are removed from their species object, deleting them from memory. `DeadDenizen.beforeIDieCB()` clears up any unfinished business, such as removing `setTimeouts` and freeing trapped prey. 
 
@@ -245,7 +245,7 @@ Honestly, these four lines of code are probably what I'm proudest of in the whol
 
 ```
 
-###Corpses
+### Corpses
 
 But wait! did you notice that some creatures leave behind corpses when they die? How is that handled?
 
@@ -295,7 +295,7 @@ Dead creatures will slowly drift to the bottom of the sea where they will be eat
     }
 ```
 
-##Traps and Trappers
+## Traps and Trappers
 
 We talked about trappers freeing prey - But how does trapping work?
 
@@ -345,7 +345,7 @@ Finally, the trapper calls `afterITrapCB()`, which allows for any variances or s
     }
 ```
 
-##Quadtree and Collision Detection
+## Quadtree and Collision Detection
 
 Enough about simulating ecosystem behavior, let's talk about the `Quadtree`!
 
@@ -353,7 +353,7 @@ The first type of collision detection I built was a brute force method where eac
 
 I asked ChatGPT for an example and it gladly gave me broken code. I examined the code example, parsed what it was trying to do, and fixed the bugs (subdivision logic and rectangle collision logic were broken). I then extended it to detect different types of collision. 
 
-###How it Works
+### How it Works
 
 A Quadtree is made of two classes, `Quadtree` and `Rectangle`.
 
@@ -366,7 +366,7 @@ To Query collisions in a Quadtree, you pass in a Rectangle to the query, which i
 
 ![quadtree](https://user-images.githubusercontent.com/110189879/230804507-d5ca5515-33ca-460a-bed3-68fb5652c8db.gif)
 
-###Chat GPT's Basic Quadtree
+### Chat GPT's Basic Quadtree
 
 ```javascript
 
@@ -477,7 +477,7 @@ export class Rectangle {
 ```
 With this basis, I was able to extend the functions of both these classes in order to detect different types of collision, and leverage the data structure for other uses. 
 
-###Quadtree Extensions
+### Quadtree Extensions
 queryType allows me to pull all of a specific species out of a quadtree. 
 
 ```javascript
@@ -522,7 +522,7 @@ A refactor of `QueryRange` allows me to extend the functionality of Rectangle co
 
 ```
 
-###Rectangle Extensions
+### Rectangle Extensions
 The original Quadtree came with the contains method, which evaluates whether a specific point is inside a rectangle. Since the XY Coordinate on canvas refers to the top-left point of the Denizen, this caused visual bugs and undesired behavior. I built the overlaps and fullyOverlaps methods to detect partial and full overlaps, which are useful for behavior such as a shark eating prey vs a jellyfish trapping a fish. 
 
 ```javascript
