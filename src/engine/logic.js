@@ -84,7 +84,7 @@ export default class Logic {
 
 
 
-        this.garabaldiCount = 10
+        this.garabaldiCount = 100
         this.garabaldiBabyCount =  10
 
         this.bassCount = 4

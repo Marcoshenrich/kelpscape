@@ -39,7 +39,7 @@ export default class DeadCreature extends Denizen {
 
     draw() {
         this.ctx.globalAlpha = this.energyVal > 5 ? 1 : (this.energyVal + 5) / 10
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
         this.ctx.globalAlpha = 1
 
         if (this.view.debugging) {

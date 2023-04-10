@@ -23,8 +23,10 @@ export default class Fishegg extends Denizen {
     }
 
     coreloop() {
+        this.ctx.draw
         this.floater.coreloop()
         this.deathChecker()
+        this.drawDenizen()
     }
 
     deathChecker() {

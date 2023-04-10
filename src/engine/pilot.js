@@ -13,7 +13,7 @@ export default class Pilot {
 
         this.touch = null
         this.collisionArr = null
-        this.showIntro = true
+        this.showIntro = false
         
         this.animate()
 

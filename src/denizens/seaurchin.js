@@ -17,7 +17,7 @@ export default class SeaUrchin extends Denizen {
     }
 
     coreloop() {
-        this.ctx.drawImage(this.img, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1], this.width, this.height)
+        this.drawDenizen()
         if (this.seaweed.dead) this.logic.recentlyDeadDenizens.push(this)
         if (this.trapped) {
             this.pos[0] = this.trapped[0] - this.trappedPosDelta[0]
