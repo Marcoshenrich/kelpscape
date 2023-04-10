@@ -42,8 +42,8 @@ export default class Pilot {
 
         // this.ctx.fillText(`t: ${this.touch}`, 200, 200)
         // this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
-        this.ctx.fillText(`m: ${this.mobile}`, 200, 300)
-        this.ctx.fillText(`deploy test 3`, 200, 350)
+
+        this.ctx.fillText(`deploy test 4`, 200, 350)
 
 
 
