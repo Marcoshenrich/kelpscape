@@ -1,6 +1,6 @@
 # Kelpscape
 
-Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - they seek out food and mates, they avoid predators, and their actions impact the other denizens in an interwoven ecosystem. 
+Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - they seek out food and mates, they avoid predators, and their actions impact the other denizens in an interwoven ecosystem. The chill atmosphere and slow pace of the sim invites the user to visit this underwater world for a while, watch the denizens do their thing, and maybe learn a thing or two about a slice of the world most will never get to see. 
 
 Kelpscape was built using vanilla javascript and the Canvas API. 
 
@@ -14,7 +14,8 @@ Kelpscape was built using vanilla javascript and the Canvas API.
 * Chill vibes
 
 ## Technology and Approach
-![UML](https://user-images.githubusercontent.com/110189879/230788501-04927c2a-590c-4a73-bb3e-80adb50bfe37.png)
+
+<img width="601" alt="Screen Shot 2023-04-09 at 5 51 31 PM" src="https://user-images.githubusercontent.com/110189879/230805194-209baeba-77dc-4d48-95ae-045c81a9c5e0.png">
 
 At the top level, a `Pilot` controller manages the state changes between the opening cinematic and initializing the Sim. It also contains the `Sound` class to manage music looping and volume. 
 
@@ -54,7 +55,7 @@ Each frame, denizens that can mate evalute if they meet their mating conditions.
 
 Once these conditions are met, they add themselves to Logic's `matingDenizensObj` where they can be checked for collisions. They also delete themsleves from the mating object when they no longer meet the required conditions. 
 
-![mating](https://user-images.githubusercontent.com/110189879/230789148-c2c6f629-e7ac-43b9-be59-1f8c85fbe330.gif)
+![mating](https://user-images.githubusercontent.com/110189879/230805631-efaf168e-c887-421f-87b6-7c902dba0d34.gif)
 
 ```javascript
     //Swimmer.behaviorChanger()
@@ -129,9 +130,13 @@ When mating, fish will temporarily stop in place and trigger a heart animation (
     }
 ```
 
+###Spawning
+
 `Logic.spawnDenizen` is a factory method that manages all the reproductive cycles in Kelpscape. A switch case evaluates the parent and sets variables that trickle down to a catch-all spawn pattern.
 
 Most denizens only spawn one other type of denizen, but all fish spawn fish eggs, which can spawn various types of baby fish. A helper method is needed that evaluates the parent of the fishegg, and spawns the appropiate baby fish.
+
+![eggs](https://user-images.githubusercontent.com/110189879/230805661-e10330ec-d0dc-46d5-904b-f54f02851aa4.gif)
 
 ```javascript
 //Logic.spawnDenizen()
@@ -196,11 +201,15 @@ Most denizens only spawn one other type of denizen, but all fish spawn fish eggs
 
 ```
 
+###Growing Up
+
 To complete the cycle, let's look at how baby fish become big fish. 
 
 All denizens have an `afterIEatCB()` which triggers specific events after a meal. Baby fish grow into big fish after they eat a set number of times. 
 
 `FishBaby.growUp()` inserts the baby fish to `Logic.recentlyDeadDenizens()` which removes it from memory. Then, we call the `Logic.spawnDenizen()` factory to spawn a brand-new adult fish in its current position.
+
+![growup](https://user-images.githubusercontent.com/110189879/230805673-119a1575-a55d-4ad0-94ca-fc2597c9a0c7.gif)
 
 ```javascript
 
@@ -218,6 +227,8 @@ All denizens have an `afterIEatCB()` which triggers specific events after a meal
 
 ```
 
+###Death and Dying
+
 On each frame, any denizens in `Logic.recentlyDeadDenizens` are removed from their species object, deleting them from memory. `DeadDenizen.beforeIDieCB()` clears up any unfinished business, such as removing `setTimeouts` and freeing trapped prey. 
 
 Honestly, these four lines of code are probably what I'm proudest of in the whole project. It's so clean!
@@ -234,11 +245,16 @@ Honestly, these four lines of code are probably what I'm proudest of in the whol
 
 ```
 
+###Corpses
+
 But wait! did you notice that some creatures leave behind corpses when they die? How is that handled?
 
 We call a different logic method under death conditions where we want to leave a corpse behind. A `DeadCreature` instance is created, and the dynamic attributes are set in a factory-like pattern.
 
 Dead creatures will slowly drift to the bottom of the sea where they will be eaten by scavengers. Gnarly!
+
+![deadfish](https://user-images.githubusercontent.com/110189879/230805744-fcf273ad-480f-4320-b18d-4ea2178b0646.gif)
+
 
 ```javascript
     //Swimmer.consumeEnergy
@@ -294,6 +310,7 @@ Next, we check that the denizen inside the trap is something the trapper actuall
 Finally, the trapper calls `afterITrapCB()`, which allows for any variances or specific behaviors needed from specific trappers. For example, Otters have rotating images, and therefore need rotating traps. This extra callback allows me to encapsulate the additional Otter trap logic. 
 
 ![trappedFish](https://user-images.githubusercontent.com/110189879/230758713-5e989d0c-e1c5-497c-a7d2-88ad03f5a857.gif)
+![ottertrap](https://user-images.githubusercontent.com/110189879/230805765-77bd8298-161e-4520-8ff4-6ee5eb757602.gif)
 
 ```javascript
     //logic.behaviorController
@@ -328,7 +345,6 @@ Finally, the trapper calls `afterITrapCB()`, which allows for any variances or s
     }
 ```
 
-
 ##Quadtree and Collision Detection
 
 Enough about simulating ecosystem behavior, let's talk about the `Quadtree`!
@@ -347,6 +363,8 @@ A Quadtree is made of two classes, `Quadtree` and `Rectangle`.
 The Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child based on spatial location and area.
 
 To Query collisions in a Quadtree, you pass in a Rectangle to the query, which is compared against the Quadtree's Rectangle (and those of its children) until an appropriate match is found. All Quadtrees that spatially match query their Denizens (or or those of its children), and are then returned in an Array.
+
+![quadtree](https://user-images.githubusercontent.com/110189879/230804507-d5ca5515-33ca-460a-bed3-68fb5652c8db.gif)
 
 ###Chat GPT's Basic Quadtree
 
