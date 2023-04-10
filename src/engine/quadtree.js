@@ -124,12 +124,25 @@ export class Rectangle {
         return this.recOverlapCheck(recA, recB) || this.recOverlapCheck(recB, recA)
     }
 
+    partialOverlap(denizen) {
+        let recA = { left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height }
+        let recB = { left: denizen.pos[0], right: denizen.pos[0] + denizen.width, top: denizen.pos[1], bottom: denizen.pos[1] + denizen.height }
+        return (this.recOverlapCheck(recA, recB) || this.recOverlapCheck(recB, recA) ||
+            this.rectFullyInside(recA, recB) || this.rectFullyInside(recB, recA)
+        )
+    }
+
     fullyOverlaps(denizen) {
         let recA = { left: this.x, right: this.x + this.width, top: this.y, bottom: this.y + this.height }
         let recB = { left: denizen.pos[0], right: denizen.pos[0] + denizen.width, top: denizen.pos[1], bottom: denizen.pos[1] + denizen.height }
         return this.rectFullyInside(recA, recB) || this.rectFullyInside(recB, recA)
     }
 
+    recPartialOverlap(a, b) {
+        return ((b.left <= a.left) && (b.right >= a.right) && (b.top <= a.top) && (b.bottom >= a.bottom) || 
+            (b.left >= a.left) && (b.right <= a.right) && (b.top >= a.top) && (b.bottom <= a.bottom) 
+        )
+    }
 
     recOverlapCheck(a, b) {
         return ((b.left <= a.right) && (b.right >= a.left) && (b.top <= a.bottom) && (b.bottom >= a.top))
