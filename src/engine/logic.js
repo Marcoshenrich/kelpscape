@@ -101,7 +101,7 @@ export default class Logic {
         this.deadCreatureCount = 0
         this.crabCount = 10
         this.crabBabyCount = 6
-        this.jellyfishCount = 25
+        this.jellyfishCount = 20
         this.rockCount = 20
         this.otterCount = 0
         this.polypCount = 0
@@ -234,7 +234,7 @@ export default class Logic {
                 babyObj = this.jellyfish
                 typeString = "Jellyfish"
                 className = Jellyfish
-                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1]] }
+                options = { pos: [parentDenizen.pos[0], parentDenizen.pos[1] - 10] }
                 break
 
 

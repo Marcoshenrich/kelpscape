@@ -18,8 +18,8 @@ const mobileDetector = () => {
         || navigator.userAgent.match(/Windows Phone/i))
 }
 
-
-let pilot = new Pilot(canvas, mobileDetector())
+const mobile = mobileDetector()
+let pilot = new Pilot(canvas, mobile)
 
 
 const soundButton = document.getElementById('sound-button')
@@ -50,10 +50,6 @@ window.addEventListener('keydown', e => {
         pilot.intro.sequenceStep = 1
     }
 });
-
-//mobile size
-//w: 980
-//h: 1793
 
 
 

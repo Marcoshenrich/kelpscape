@@ -31,14 +31,12 @@ export default class NatureController {
 
         this.logic = logic
         this.algaeSpawnInterval= 1000
-        // this.algaeSpawnInterval = 5
         this.denizensSpawnInIncrements(this.algaeSpawnInterval, "algaeCount", "algae", Algae, { clustersObj: this.logic.seaweedClusters })
 
         this.otterDiveInterval = 15000
         this.denizensSpawnInIncrements(this.otterDiveInterval, "otterCount", "otters", Otter)
 
-        this.clusterSpawnInterval = 20000
-        // this.clusterSpawnInterval = 1000
+        this.clusterSpawnInterval = 25000
         this.denizensSpawnInIncrements(this.clusterSpawnInterval, "seaweedClusterCount", "seaweedClusters", SeaweedCluster, {})
 
         this.turtleSpawnInterval = 20000

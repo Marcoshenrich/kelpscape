@@ -115,7 +115,6 @@ export default class View {
 
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
-        this.quadtree.draw()
         if (this.debugging) this.quadtree.draw()
     }
 

@@ -8,13 +8,26 @@ export default class Polyp extends Denizen {
         super(ctx, canvas, view, logic)
         this.type = "Polyp"
         this.id = this.type + id
-        this.width = 20
-        this.height = 20
+        this.width = 1
+        this.height = 1
         this.pos = [options.pos[0], this.arenaHeight - this.height]
         this.img = new Image()
         this.img.src = './dist/art/polyp.png'
-        this.dieEventually()
-        this.spawnJellyFish()
+        this.mature = false
+
+        
+    }
+
+    growUp() {
+        this.width += .005
+        this.height += .005
+        this.pos[1] = [this.arenaHeight - this.height]
+
+        if (this.width > 20) {
+            this.mature = true
+            this.dieEventually()
+            this.spawnJellyFish()
+        }
     }
 
     spawnJellyFish() {
@@ -33,6 +46,7 @@ export default class Polyp extends Denizen {
     }
 
     coreloop(){
+        if (!this.mature) this.growUp() 
         this.drawDenizen()
     }
 
