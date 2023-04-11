@@ -357,7 +357,7 @@ I asked ChatGPT for an example and it gladly gave me broken code. I examined the
 
 A Quadtree is made of two classes, `Quadtree` and `Rectangle`.
 
-* `Rectangle` - Defines an area by an XY coordinate, a width, and a length. Mangages collision logic.
+* `Rectangle` - Defines an area by an XY coordinate, a width, and a length. Manages collision logic.
 * `Quadtree` - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
 
 The Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child based on spatial location and area.
