@@ -21,7 +21,6 @@ export default class TextBox {
         this.startTextAtY = this.ctx.measureText(this.type).actualBoundingBoxDescent + this.textBoxInnerMargin
 
         this.font = 24
-
         
         this.img = new Image()
         this.img.src = `./dist/images/${path}`
@@ -124,7 +123,7 @@ export default class TextBox {
 
                     if (i === textArr.length - 1) {
                         this.indexTracker = i + 1
-                        if (bottomPosOfText < this.bottomLimitOfText - this.textBoxInnerMargin * 3) {
+                        if (bottomPosOfText < this.bottomLimitOfText - (this.canvas.height/10)) {
                             this.font += 1
                             this.leading += 2.5
                         }

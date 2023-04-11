@@ -84,14 +84,14 @@ export default class Logic {
 
 
 
-        this.garabaldiCount = 10
-        this.garabaldiBabyCount =  10
+        this.garabaldiCount = 12
+        this.garabaldiBabyCount =  12
 
-        this.bassCount = 4
-        this.bassBabyCount = 6
+        this.bassCount = 5
+        this.bassBabyCount = 7
 
-        this.rockfishCount = 10
-        this.rockfishBabyCount = 10
+        this.rockfishCount = 12
+        this.rockfishBabyCount = 12
 
         this.algaeCount = 100
         this.sharkCount = 2
