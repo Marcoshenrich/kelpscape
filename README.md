@@ -71,7 +71,7 @@ Once these conditions are met, they add themselves to Logic's `matingDenizensObj
     }
 ```
 
-On each frame, `BehaviorController` loops through the mating object and checks collisions for all eligible bachelors using the `Quadtree`. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectanlge of denizen B. This was the most visually appealing approach. 
+On each frame, `BehaviorController` loops through the mating object and checks collisions for all eligible bachelors using the `Quadtree`. The type of collision being detected is point insertion, which checks that the XY (top left) coordinate of denizen A is inside the full rectangle of denizen B. This was the most visually appealing approach. 
 
 The Quadtree returns an array of all creatures the bachelor is colliding with. We loop through the array and check if they are colliding with a member of the same species, and if that denizen is also ready to mate. 
 
@@ -357,7 +357,7 @@ I asked ChatGPT for an example and it gladly gave me broken code. I examined the
 
 A Quadtree is made of two classes, `Quadtree` and `Rectangle`.
 
-* `Rectangle` - Defines an area by an XY coordinate, a width, and a length. Mangages collision logic.
+* `Rectangle` - Defines an area by an XY coordinate, a width, and a length. Manages collision logic.
 * `Quadtree` - Its area is defined by a rectangle. It holds references to the denizens within its area, OR it holds 4 child quadtrees that partition it. A Quadtree can never have both denizens and child Quadtrees. 
 
 The Quadtree has a defined limit on how many denizens can be within its area before it subdivides. If a Quadtree with a cap of 6 receives a 7th denizen, it will subdivide itself into 4 child Quadtrees, and pass its denizens onto the appropriate child based on spatial location and area.
@@ -499,7 +499,7 @@ queryType allows me to pull all of a specific species out of a quadtree.
 
 ```
 
-A refactor of `QueryRange` allows me to extend the functionality of Rectangle collision detection, and dynamically call different collision methods on the Rectnagle by using the type parameter.
+A refactor of `QueryRange` allows me to extend the functionality of Rectangle collision detection, and dynamically call different collision methods on the Rectangle by using the type parameter.
 
 ```javascript
 
