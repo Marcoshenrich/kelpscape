@@ -59,6 +59,8 @@ export default class Turtle extends Swimmer {
     leaveTimer() {
         let id = setTimeout(() => {
             this.timeToLeave = true
+            this.eatingSeagrass = false
+            this.playingSeagrassEffect = false
         }, Math.floor(Math.random() * 60000) + 60000)
         this.clearOnDeath.push(id)
     }
@@ -83,12 +85,14 @@ export default class Turtle extends Swimmer {
         // this.ctx.font = "16px serif";
         // this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
         // this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-
         // this.ctx.fillText(`${this.hunting}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30)
     }
 
     deleteTurtle() {
-        //delete turtle after leaving the arena
+        if (this.pos[0] + this.width < 0 || this.pos[0] > this.arenaWidth) {
+            this.dead = true
+            this.logic.recentlyDeadDenizens.push(this)
+        }
     }
 
     seagrassEffect() {

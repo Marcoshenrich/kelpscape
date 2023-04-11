@@ -47,7 +47,6 @@ export default class DeadCreature extends Denizen {
             this.ctx.font = "12px serif";
             this.ctx.fillText(`${this.energyVal}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillText(`[${Math.floor(this.pos[0])},${Math.floor(this.pos[1])}]`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - this.height)
-
         }
     }
 
@@ -69,7 +68,7 @@ export default class DeadCreature extends Denizen {
                 this.energyVal = 10
                 break
 
-            case GarabaldiBaby : // temp until new image can be found
+            case GarabaldiBaby :
                 this.img.src = './dist/art/fishes/garabaldidead.png'
                 this.width = 15
                 this.height = 8
