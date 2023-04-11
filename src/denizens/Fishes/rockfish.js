@@ -18,7 +18,7 @@ export default class Rockfish extends Fish {
         this.energyUseCoef = .005
         this.matingThreshold = 15
         this.matingEnergyCost = 5
-        this.maxSpeed = .4
+        this.maxSpeed = .35
 
         this.energyVal = 20
         this.mateThreshold = 10
