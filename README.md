@@ -1,5 +1,7 @@
 # Kelpscape
 
+[Live Link](https://marcoshenrich.github.io/kelpscape/)
+
 Kelpscape simulates a Pacific Kelp Forest ecosystem in a light-hearted 2d environment with a pixel art aesthetic. Each denizen of the biome takes care of its own needs - they seek out food and mates, they avoid predators, and their actions impact the other denizens in an interwoven ecosystem. The chill atmosphere and slow pace of the sim invites the user to visit this underwater world for a while, watch the denizens do their thing, and maybe learn a thing or two about a slice of the world most will never get to see. 
 
 Kelpscape was built using vanilla javascript and the Canvas API. 
