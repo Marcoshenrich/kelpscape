@@ -67,10 +67,6 @@ export default class View {
         this.introFader = 1
 
         this.textBox = null
-        // this.textBox = this.logic.textContentObj["Fish"]
-
-
-
     }
 
     populateQuad() {
@@ -100,19 +96,15 @@ export default class View {
     animate() {
         this.gameFrame++ 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
-        // if (this.gameFrame % 100 === 0) this.populateQuad() 
         this.populateQuad() 
         this.updateCamera(this.input.keys) 
         this.drawBackround()
-        // this.drawTextBox()
         this.denizenCoreloop()
         this.drawInfoText()
         // if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
         // this.drawEcosystemGraph()
 
-
         if (this.showScore && !this.textBox && !this.mobile) this.drawScore()
-
         if (this.introFader > 0) this.fadeInStart()
         this.logic.coreloop()
         if (this.debugging) this.quadtree.draw()
@@ -133,7 +125,6 @@ export default class View {
         this.ctx.fillText(text, startX, startY)
         let centerText = this.ctx.measureText(text).width / 2
 
-        
         //score
         let maxScore = Object.values(this.logic.scoreTrackObj).length
         let score = 0
@@ -148,19 +139,14 @@ export default class View {
         this.ctx.font = `24px Georgia`;
         this.ctx.fillText(maxScore, startX + 93, startY + 93)
 
-
         //score line
         this.ctx.beginPath();
         this.ctx.moveTo(startX + 67, startY + 93);
         this.ctx.lineTo(startX + 103, startY + 57);
-        // this.ctx.fillStyle = `rgba(255,255,255,${.1 * this.fadeInScore})`;
-
         this.ctx.lineWidth = 3
         this.ctx.stroke();
 
-
         //fill circle
-
         this.ctx.beginPath();
         this.ctx.arc(startX + centerText, startY + 75, 50 + this.scoreFontSize/2 - 12, 0, 2 * Math.PI);
         this.ctx.fillStyle = `rgba(255,255,255,${.4 * this.fadeInScore})`;
@@ -175,7 +161,7 @@ export default class View {
     }
 
     captureEcosystemGraphData() { 
-
+=
         // if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
 
         // let totalDenizens = Object.values(this.logic.algae).length + Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length + Object.values(this.logic.crabs).length + + Object.values(this.logic.crabBabies).length
@@ -227,15 +213,10 @@ export default class View {
         // this.ctx.fillText(`Crabs: ${Object.values(this.logic.crabs).length + Object.values(this.logic.crabBabies).length}`, 25, 170)
         // this.ctx.fillText(`Jellies: ${Object.values(this.logic.jellyfish).length}`, 25, 200)
         // this.ctx.fillText(`Corpses: ${Object.values(this.logic.deadCreatures).length}`, 25, 230)
-
     }
 
 
     updateCamera(input) {
-        let xSpeed = 0;
-        let ySpeed = 0;
-        let speed = 0
-
         if ((this.cameraSpeedX || this.cameraSpeedY) && !input.length) {
             this.inputTracker++
             if (this.inputTracker > 200) {
@@ -307,14 +288,6 @@ export default class View {
 
         this.offset[0] += this.cameraSpeedX;
         this.offset[1] += this.cameraSpeedY;
-
-        // this.cameraSpeedX += this.cameraSpeedX > 0 ? -.05 : .05
-        // this.cameraSpeedY += this.cameraSpeedY > 0 ? -.05 : .05
-
-//         this.ctx.fillStyle = `rgba(0,0,0,1)`;
-
-//         this.ctx.fillText(`${ [(Math.round(this.cameraSpeedX * 100) / 100).toFixed(2), (Math.round(this.cameraSpeedY * 100) / 100).toFixed(2)] }
-// `, 200,200)
     }
 
     denizenCoreloop() {
