@@ -161,7 +161,6 @@ export default class View {
     }
 
     captureEcosystemGraphData() { 
-=
         // if (this.ecosystemGraphData.length > 100) this.ecosystemGraphData.shift()
 
         // let totalDenizens = Object.values(this.logic.algae).length + Object.values(this.logic.fishes).length + Object.values(this.logic.fishBabies).length + Object.values(this.logic.crabs).length + + Object.values(this.logic.crabBabies).length
