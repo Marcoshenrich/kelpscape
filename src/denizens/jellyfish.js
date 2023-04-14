@@ -19,8 +19,8 @@ export default class Jellyfish extends Swimmer {
         this.width =  15
         this.pos = options.pos || this.placer()
 
-        this.maxSpeed = .5
-        this.speed = rand(1, 5) / 100
+        this.maxSpeed = .04
+        this.speed = rand(1, 4) / 100
 
         this.maxEnergy = 5
         this.energy = this.maxEnergy
