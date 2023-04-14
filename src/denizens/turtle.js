@@ -31,7 +31,6 @@ export default class Turtle extends Swimmer {
         this.huntingThreshold = 13
         this.mouthSize = 8
         this.hunting = false
-
         
         this.width = 80
         this.height = 32

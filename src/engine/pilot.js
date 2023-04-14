@@ -47,8 +47,6 @@ export default class Pilot {
         // this.ctx.fillText(`w: ${this.collisionArr}`, 200, 250)
         // this.ctx.fillText(`deploy test 8`, 200, 350)
 
-
-
         requestAnimationFrame(this.animate.bind(this))
     }
 
