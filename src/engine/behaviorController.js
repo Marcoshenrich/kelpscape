@@ -168,7 +168,7 @@ export default class BehaviorController {
     }
 
     fishFleeFromSharks() {
-        let allFish = [...Object.values(this.logic.garabaldi), ...Object.values(this.logic.garabaldiBabies), ...Object.values(this.logic.bass), ...Object.values(this.logic.bassBabies)]
+        let allFish = [...Object.values(this.logic.garabaldi), ...Object.values(this.logic.garabaldiBabies), ...Object.values(this.logic.bass), ...Object.values(this.logic.bassBabies), ...Object.values(this.logic.garabaldiBabies), ...Object.values(this.logic.rockfish), ...Object.values(this.logic.rockfishBabies)]
         for (let i = 0; i < allFish.length; i++) {
             let fish = allFish[i]
             if (fish.mating) continue

@@ -156,8 +156,6 @@ export default class View {
 
     drawBackround() {
         this.ctx.drawImage(this.background, this.backgroundPos[0], this.backgroundPos[1], this.arenaWidth, this.arenaHeight)
-        this.ctx.fillStyle = 'rgba(0,0,0,.3)';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
     }
 
     captureEcosystemGraphData() { 

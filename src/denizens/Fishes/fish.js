@@ -1,8 +1,8 @@
+import MouthEater from "../../behaviors/moutheater"
+import SwimmerExt from "../../behaviors/swimmerExt"
 import Swimmer from "../swimmer"
 
-import MouthEater from "../../behaviors/moutheater"
-
-export default class Fish extends Swimmer {
+export default class Fish extends SwimmerExt {
 
     constructor(ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
@@ -39,7 +39,11 @@ export default class Fish extends Swimmer {
 
         this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) })
 
-        
+        this.swimmer = new SwimmerExt()
+    }
+
+    coreloop() {
+        this.swimmer.coreloop()
     }
 
     
