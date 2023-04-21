@@ -3,11 +3,14 @@ import Effect from "./effect";
 import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater";
 import MouthEater from "../behaviors/moutheater";
+import Metabolism from "../behaviors/metabolism";
+
+import SwimmerExt from "../behaviors/swimmerExt";
+
 
 export default class Turtle extends Swimmer {
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
-        this.floater = new Floater(this)
         this.textBox = this.logic.textContentObj["Turtle"]
         this.type = "Turtle"
         this.id = this.type + id
@@ -44,14 +47,11 @@ export default class Turtle extends Swimmer {
 
         this.eatingSeagrass = false
         this.consumptionRate = .005
-        this.recentlyAte = false
 
-        this.movement1 = this.moveSelector()
-        this.movement2 = this.moveSelector()
-        this.moveChangerOne()
-        this.moveChangerTwo()
-
+        this.floater = new Floater(this)
         this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2) - 8, leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) - 8 })
+        this.swimmer = new SwimmerExt(this, { facing: true })
+        this.metabolism = new Metabolism(this, {})
 
     }
 
@@ -80,11 +80,11 @@ export default class Turtle extends Swimmer {
     }
 
     debugger() {
-        // this.ctx.fillStyle = 'rgba(255,225,225,1)';
-        // this.ctx.font = "16px serif";
-        // this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-        // this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
-        // this.ctx.fillText(`${this.hunting}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30)
+        this.ctx.fillStyle = 'rgba(255,225,225,1)';
+        this.ctx.font = "16px serif";
+        this.ctx.fillText(`${(Math.round(this.energy * 100) / 100).toFixed(2)}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 60)
+        this.ctx.fillText(`${this.eatingSeagrass}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1] - 30) 
+        this.ctx.fillText(`${this.hunting.id}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
     }
 
     deleteTurtle() {
@@ -108,43 +108,38 @@ export default class Turtle extends Swimmer {
     }
 
     coreloop() {
-        if (this.inDangerZone && this.escapingDangerZone) {
-            if (this.pos[0] < 0 + this.width) {
-                this.pos[0] += .3
-            } else {
-                this.pos[0] -= .3
-            }
-        }
-        this.mouthEater.coreloop()
-
-        if (!this.hunting) this.eatingSeagrass = false
-        if (this.hunting && this.eatingSeagrass && !this.playingSeagrassEffect) this.seagrassEffect()
-
+        // this.debugger()
 
         this.drawDenizen()
         this.speedModulator()
-        this.debugger()
+
         if (this.timeToLeave) {
             this.enterArena()
             this.deleteTurtle()
             return
         }
 
-        if (this.inArena) {
-            if (!this.eatingSeagrass) this.move()
+        this.mouthEater.coreloop()
+        this.metabolism.coreloop()
 
+        if (this.inArena) {
+            if (!this.eatingSeagrass) this.swimmer.coreloop()
         } else {
             this.enterArena()
         }
 
-        this.consumeEnergy()
-        if (this.hunting) this.consumeFood()
-        this.behaviorChanger()
-        this.dangerZoneProtocol()
-        // this.ctx.fillRect(this.mouthPos[0] + this.offset[0], this.mouthPos[1] + this.offset[1], this.mouthSize, this.mouthSize)
+        if (this.energy > this.maxEnergy - 1) {
+            this.hunting = false
+            this.eatingSeagrass = false
+        }
+
+        if (!this.hunting) this.eatingSeagrass = false
+        if (this.hunting && this.eatingSeagrass && !this.playingSeagrassEffect) this.seagrassEffect()
+
+        if (this.hunting) this.consumeSeagrass()
     }
 
-    consumeFood() {
+    consumeSeagrass() {
         if (!this.eatingSeagrass || this.hunting.type !== "Seaweed") return
         this.floater.coreloop()
         this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)

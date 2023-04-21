@@ -3,9 +3,13 @@ import Effect from "./effect";
 import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater"
 import Trapper from "../behaviors/trapper";
+import Denizen from "./denizen";
+import SwimmerExt from "../behaviors/swimmerExt";
 
-export default class Jellyfish extends Swimmer {
+
+export default class Jellyfish extends Denizen {
     constructor(id, ctx, canvas, view, logic, options){
+
         super(ctx, canvas, view, logic)
         this.floater = new Floater(this)
         this.trapper = new Trapper(this, { trapHeight: 18, trapWidth: 18, trapYAdjustment: 10, trapXAdjustment: 0, denizenEatsImmediately: true})
@@ -30,12 +34,9 @@ export default class Jellyfish extends Swimmer {
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
 
-        this.movement1 = this.moveSelector()
-        this.movement2 = this.moveSelector()
-        this.moveChangerOne()
-        this.moveChangerTwo()
-
         this.dropGametes()
+
+        this.swimmer = new SwimmerExt(this,{})
     }
 
     dropGametes() {
@@ -60,7 +61,8 @@ export default class Jellyfish extends Swimmer {
     coreloop() {
         this.trapper.coreloop()
         this.floater.coreloop()
-        this.move()
+        this.swimmer.coreloop()
+        // this.move()
         this.draw()
 
         if (this.view.debugging) {
@@ -71,17 +73,16 @@ export default class Jellyfish extends Swimmer {
         }
     }
     
-    move() {
-        if (this.timeToSwitchMovement) {
-            Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
-            this.timeToSwitchMovement = false
-        }    
-        if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
-        if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
-        this.trapper.coreloop()
-        this.movement1();
-        this.movement2();
-    }
+    // move() {
+    //     if (this.timeToSwitchMovement) {
+    //         Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+    //         this.timeToSwitchMovement = false
+    //     }    
+    //     if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
+    //     if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
+    //     this.movement1();
+    //     this.movement2();
+    // }
 
     movementSwitches = {
         reverseUp: () => {
@@ -104,7 +105,7 @@ export default class Jellyfish extends Swimmer {
     draw() {
         this.drawDenizen()
     }
-    
+
 }
 
 

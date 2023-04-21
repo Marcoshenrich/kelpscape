@@ -60,11 +60,6 @@ export default class SwimmerExt {
 
     behaviorChanger() {
         if (!this.denizen.hunting && this.denizen.energy < this.denizen.huntingThreshold) this.denizen.logic.hungryDenizenArr.push(this.denizen)
-       
-        if (this.denizen.energy > this.denizen.maxEnergy - 1) {
-            this.denizen.hunting = false
-            this.denizen.eatingSeagrass = false
-        }
 
     }
 
@@ -97,7 +92,7 @@ export default class SwimmerExt {
             return
         }
 
-        if (this.denizen.pos[0] > this.denizen.arenaWidth - this.denizen.width || this.denizen.pos[0] < 0) {
+        if (this.facing && (this.denizen.pos[0] > this.denizen.arenaWidth - this.denizen.width || this.denizen.pos[0] < 0)) {
             this.switchDirections()
         }
 
@@ -121,7 +116,8 @@ export default class SwimmerExt {
         }
 
         if (this.timeToSwitchMovement) {
-            Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+            let moves = this.denizen.movementSwitches ? this.denizen.movementSwitches : this.movementSwitches 
+            Object.values(moves)[Math.floor(Math.random() * Object.values(moves).length)]()
             this.timeToSwitchMovement = false
         }
 
@@ -205,7 +201,7 @@ export default class SwimmerExt {
 
         reverseSide: () => {
             this.denizen.right = !this.denizen.right;
-            this.denizen.img = this.imgSelector();
+            if (this.facing) this.denizen.img = this.imgSelector();
         },
 
         speedUp: () => {
@@ -224,6 +220,7 @@ export default class SwimmerExt {
 
     swimmerOrienter() {
         if (this.recentlySwitchedDirections) return
+        if (!this.facing) return
         if (this.denizen.oldPos[0] < this.denizen.pos[0]) {
             this.denizen.right = true
             this.denizen.img = this.imgSelector();
