@@ -12,8 +12,6 @@ export default class BassBaby extends FishBaby {
 
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
 
-        this.mouthPos = this.mouthPlacer()
-
         this.maxEnergy = 12
         this.energy = this.maxEnergy
 

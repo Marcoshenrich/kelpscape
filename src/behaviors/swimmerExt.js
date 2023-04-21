@@ -4,11 +4,6 @@ export default class SwimmerExt {
 
     constructor(denizen, options) {
         this.denizen = denizen
-        this.up = [true, false][Math.floor(Math.random() * 2)]
-        this.right = [true, false][Math.floor(Math.random() * 2)]
-        this.leftImg = new Image()
-        this.rightImg = new Image()
-        this.img = this.imgSelector()
         this.recentlySwitchedDirections = false
         this.movementSwitchTimer()
         this.timeToSwitchMovement = false
@@ -16,6 +11,15 @@ export default class SwimmerExt {
         this.evaluateDangerZone = false
         this.inDangerZone = false
         this.escapingDangerZone = false
+
+        if (options.facing) {
+            this.denizen.img = this.imgSelector()
+        }
+
+        this.movement1 = this.moveSelector()
+        this.movement2 = this.moveSelector()
+        this.moveChangerOne()
+        this.moveChangerTwo()
     }
 
     coreloop() {
@@ -29,18 +33,17 @@ export default class SwimmerExt {
             this.move()
         }
         if (this.denizen.mouthEater) this.denizen.mouthEater.coreloop()
-        
-        
+        if (this.denizen.mater) this.denizen.mater.coreloop()
+
         this.consumeEnergy()
-        this.draw()
-        if (this.denizen.dead && !(this.denizen.spawn && this.denizen.foodEaten === this.denizen.growUpThreshold)) this.denizen.logic.denizenCorpse(this)
+        if (this.denizen.dead && !(this.denizen.spawn && this.denizen.foodEaten === this.denizen.growUpThreshold)) this.denizen.logic.denizenCorpse(this.denizen)
         this.behaviorChanger()
         this.dangerZoneProtocol()
     }
 
 
     dangerZoneProtocol() {
-        if (this.denizen.pos[0] < this.dangerZone[0] || this.pos[1] > this.dangerZone[1]) {
+        if (this.denizen.pos[0] < this.dangerZone[0] || this.denizen.pos[1] > this.dangerZone[1]) {
             if (!this.inDangerZone) {
                 setTimeout(() => {
                     if (this.inDangerZone) this.escapingDangerZone = true
@@ -58,15 +61,7 @@ export default class SwimmerExt {
 
 
     behaviorChanger() {
-        if (!this.denizen.hunting && this.denizen.energy < this.denizen.huntingThreshold) this.denizen.logic.hungryDenizenArr.push(this)
-
-        if (!this.denizen.spawn && !this.denizen.seekingMate && this.denizen.energy > this.denizen.matingThreshold) {
-            this.denizen.logic.matingDenizensObj[this.denizen.id] = this.denizen
-            this.denizen.seekingMate = true
-        } else if (!this.denizen.spawn && this.denizen.seekingMate && this.denizen.energy < this.denizen.matingThreshold) {
-            delete this.denizen.logic.matingDenizensObj[this.denizen.id]
-            this.denizen.seekingMate = false
-        }
+        if (!this.denizen.hunting && this.denizen.energy < this.denizen.huntingThreshold) this.denizen.logic.hungryDenizenArr.push(this.denizen)
 
         if (this.denizen.energy > this.denizen.maxEnergy - 1) {
             this.denizen.hunting = false
@@ -84,20 +79,16 @@ export default class SwimmerExt {
     }
 
     imgSelector() {
-        return this.right ? this.rightImg : this.leftImg
+        return this.denizen.right ? this.denizen.rightImg : this.denizen.leftImg
     }
 
 
     switchDirections() {
         if (this.recentlySwitchedDirections) return
-        this.right = !this.right;
+        this.denizen.right = !this.denizen.right;
         this.denizen.img = this.imgSelector();
         this.recentlySwitchedDirections = true
         setTimeout(() => { this.recentlySwitchedDirections = false }, 1500)
-    }
-
-    imgSelector() {
-        return this.right ? this.rightImg : this.leftImg
     }
 
     move() {
@@ -117,7 +108,7 @@ export default class SwimmerExt {
 
         this.denizen.oldPos = [this.denizen.pos[0], this.denizen.pos[1]]
 
-        if (!this.denizen.mating && this.denizen.hunting) {
+        if (!this.denizen.mater.mating && this.denizen.hunting) {
             this.moveTowardsFood()
             this.swimmerOrienter()
             return
@@ -129,7 +120,7 @@ export default class SwimmerExt {
             return
         }
 
-        if (!this.denizen.mating && !this.denizen.hunting) {
+        if (!this.denizen.mater.mating && !this.denizen.hunting) {
             if (this.timeToSwitchMovement) {
                 Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
                 this.timeToSwitchMovement = false
@@ -191,7 +182,7 @@ export default class SwimmerExt {
 
     movementPatterns = {
         scan: () => {
-            if (this.right) {
+            if (this.denizen.right) {
                 this.denizen.pos[0] += (this.denizen.speed / 2)
             } else {
                 this.denizen.pos[0] -= (this.denizen.speed / 2)
@@ -218,7 +209,7 @@ export default class SwimmerExt {
         },
 
         reverseSide: () => {
-            this.right = !this.right;
+            this.denizen.right = !this.denizen.right;
             this.denizen.img = this.imgSelector();
         },
 
@@ -239,12 +230,12 @@ export default class SwimmerExt {
     swimmerOrienter() {
         if (this.recentlySwitchedDirections) return
         if (this.denizen.oldPos[0] < this.denizen.pos[0]) {
-            this.right = true
+            this.denizen.right = true
             this.denizen.img = this.imgSelector();
             this.recentlySwitchedDirections = true
             setTimeout(() => { this.recentlySwitchedDirections = false }, 1500)
         } else {
-            this.right = false
+            this.denizen.right = false
             this.denizen.img = this.imgSelector();
             this.recentlySwitchedDirections = true
             setTimeout(() => { this.recentlySwitchedDirections = false }, 1500)
@@ -295,21 +286,11 @@ export default class SwimmerExt {
         this.denizen.energy -= this.denizen.energyUseCoef * this.denizen.speed
         if (this.denizen.energy < .05) {
             this.denizen.dead = true
-            this.denizen.logic.recentlyDeadDenizens.push(denizen)
-            this.denizen.logic.denizenCorpse(denizen)
+            this.denizen.logic.recentlyDeadDenizens.push(this.denizen)
+            this.denizen.logic.denizenCorpse(this.denizen)
         }
     }
 
-
-    mouthPlacer() {
-        let mouthPos = []
-        if (!this.right) {
-            mouthPos = [this.denizen.pos[0], this.denizen.pos[1] + (this.denizen.height / 2)]
-        } else {
-            mouthPos = [this.denizen.pos[0] + (this.denizen.width - this.denizen.mouthSize), this.denizen.pos[1] + (this.denizen.height / 2)]
-        }
-        return mouthPos
-    }
 
 
 }

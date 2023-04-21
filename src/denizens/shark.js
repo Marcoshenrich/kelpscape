@@ -70,11 +70,6 @@ export default class Shark extends Swimmer {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > this.fadeThreshold ? 1 : (this.energy + Math.abs(this.fadeThreshold - 10)) / 10
         this.drawDenizen()
-
-        if (this.view.debugging) {
-            this.drawMouths()
-            this.drawId()
-        }
         this.ctx.globalAlpha = 1
     }
 
