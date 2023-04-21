@@ -1,10 +1,9 @@
 import { rand } from "../engine/utils";
 import Effect from "./effect";
-import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater"
 import Trapper from "../behaviors/trapper";
 import Denizen from "./denizen";
-import SwimmerExt from "../behaviors/swimmerExt";
+import swimmer from "../behaviors/swimmer";
 
 
 export default class Jellyfish extends Denizen {
@@ -36,7 +35,7 @@ export default class Jellyfish extends Denizen {
 
         this.dropGametes()
 
-        this.swimmer = new SwimmerExt(this,{})
+        this.swimmer = new swimmer(this,{})
     }
 
     dropGametes() {

@@ -1,22 +1,22 @@
 import { rand } from "../engine/utils";
 import Effect from "./effect";
-import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater";
 import MouthEater from "../behaviors/moutheater";
 import Metabolism from "../behaviors/metabolism";
+import Denizen from "./denizen";
+import swimmer from "../behaviors/swimmer";
 
-import SwimmerExt from "../behaviors/swimmerExt";
 
-
-export default class Turtle extends Swimmer {
+export default class Turtle extends Denizen {
     constructor(id, ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Turtle"]
         this.type = "Turtle"
         this.id = this.type + id
+        this.leftImg = new Image()
+        this.rightImg = new Image()
         this.leftImg.src = './dist/art/turtleleft.png'
         this.rightImg.src = './dist/art/turtleright.png'
-        this.img = this.imgSelector()
 
         this.bobCoef = Math.floor(Math.random() * 10) + 4
         this.bobSpeed = (Math.floor(Math.random() * 3) + .1) / 30
@@ -50,7 +50,7 @@ export default class Turtle extends Swimmer {
 
         this.floater = new Floater(this)
         this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2) - 8, leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) - 8 })
-        this.swimmer = new SwimmerExt(this, { facing: true })
+        this.swimmer = new swimmer(this, { facing: true })
         this.metabolism = new Metabolism(this, {})
 
     }

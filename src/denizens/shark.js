@@ -1,8 +1,7 @@
 
 import Effect from "./effect"
-import Swimmer from "./swimmer"
 import MouthEater from "../behaviors/moutheater"
-import SwimmerExt from "../behaviors/swimmerExt"
+import swimmer from "../behaviors/swimmer"
 import Denizen from "./denizen"
 import Metabolism from "../behaviors/metabolism"
 
@@ -54,7 +53,7 @@ export default class Shark extends Denizen {
             this.logic.effects["Effect" + this.logic.effectCount] = new Effect(this.logic.effectCount, this.ctx, this.canvas, this.view, this.logic, {type: "bloodSpurt", pos: [this.mouthEater.mouthPos[0], this.mouthEater.mouthPos[1]], size: 10})
         }
 
-        this.swimmer = new SwimmerExt(this,{facing:true})
+        this.swimmer = new swimmer(this,{facing:true})
         this.mouthEater = new MouthEater(this, { mouthHeight: 12, mouthWidth: 12, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 5, rightMouthXAdjustment: (this.width - 12) - 5, rightMouthYAdjustment: (this.height / 2) })
         this.metabolism = new Metabolism(this)
 

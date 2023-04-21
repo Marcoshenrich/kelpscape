@@ -1,10 +1,8 @@
-import CrabBaby from "./crabbaby";
-import DeadCreature from "./deadCreature";
-import Swimmer from "./swimmer";
-import { rand } from "../engine/utils";
 import Trapper from "../behaviors/trapper";
+import Denizen from "./denizen";
+import Metabolism from "../behaviors/metabolism";
 
-export default class Crab extends Swimmer {
+export default class Crab extends Denizen {
 
     constructor(id, ctx, canvas, view, logic, options) {
 
@@ -55,6 +53,7 @@ export default class Crab extends Swimmer {
         this.totalEnergyConsumed = 0
 
         this.trapper = options.spawn ? null : new Trapper(this, { trapHeight: 10, trapWidth: this.width + 10, trapYAdjustment: 0, trapXAdjustment: -5, denizenEatsImmediately: true })
+        this.metabolism =  new Metabolism(this)
 
     }
 
@@ -84,7 +83,8 @@ export default class Crab extends Swimmer {
         }
         if (!this.scavenging) this.move()
 
-        this.consumeEnergy()
+        this.metabolism.coreloop()
+
         this.behaviorChanger()
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
@@ -132,16 +132,6 @@ export default class Crab extends Swimmer {
         }, 3000)
 
         this.clearOnDeath.push(baseId)
-    }
-
-    consumeEnergy() {
-
-        this.energy -= this.energyUseCoef * this.speed
-        if (this.energy < .01) {
-            this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
-        }
-
     }
 
 

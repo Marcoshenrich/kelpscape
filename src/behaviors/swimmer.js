@@ -1,6 +1,6 @@
 import Denizen from "../denizens/denizen"
 
-export default class SwimmerExt {
+export default class swimmer {
 
     constructor(denizen, options) {
         this.denizen = denizen
