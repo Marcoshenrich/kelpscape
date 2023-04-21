@@ -4,6 +4,7 @@ import SwimmerExt from "../../behaviors/swimmerExt"
 import Denizen from "../denizen"
 import Swimmer from "../swimmer"
 import { rand } from "../../engine/utils";
+import Metabolism from "../../behaviors/metabolism"
 
 export default class Fish extends Denizen {
 
@@ -43,10 +44,14 @@ export default class Fish extends Denizen {
         this.swimmer = new SwimmerExt(this,{facing:true})
         this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) })
         this.mater = new Mater(this,{})
+        this.metabolism = new Metabolism(this)
     }
 
     coreloop() {
         this.swimmer.coreloop()
+        this.metabolism.coreloop()
+        this.mouthEater.coreloop()
+        this.mater.coreloop()
         this.draw()
     }
 

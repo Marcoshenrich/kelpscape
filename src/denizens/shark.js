@@ -4,6 +4,7 @@ import Swimmer from "./swimmer"
 import MouthEater from "../behaviors/moutheater"
 import SwimmerExt from "../behaviors/swimmerExt"
 import Denizen from "./denizen"
+import Metabolism from "../behaviors/metabolism"
 
 
 export default class Shark extends Denizen {
@@ -55,11 +56,15 @@ export default class Shark extends Denizen {
 
         this.swimmer = new SwimmerExt(this,{facing:true})
         this.mouthEater = new MouthEater(this, { mouthHeight: 12, mouthWidth: 12, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 5, rightMouthXAdjustment: (this.width - 12) - 5, rightMouthYAdjustment: (this.height / 2) })
+        this.metabolism = new Metabolism(this)
 
     }
 
     coreloop(){
         this.swimmer.coreloop()
+        this.mouthEater.coreloop()
+        this.metabolism.coreloop()
+        this.draw()
     }
 
     draw() {

@@ -11,8 +11,9 @@ export default class SwimmerExt {
         this.evaluateDangerZone = false
         this.inDangerZone = false
         this.escapingDangerZone = false
+        this.facing = options.facing
 
-        if (options.facing) {
+        if (this.facing) {
             this.denizen.img = this.imgSelector()
         }
 
@@ -23,7 +24,8 @@ export default class SwimmerExt {
     }
 
     coreloop() {
-        if (this.inDangerZone && this.escapingDangerZone) {
+        if (this.facing) this.dangerZoneProtocol()
+        if (this.facing && this.inDangerZone && this.escapingDangerZone) {
             if (this.denizen.pos[0] < 0 + this.denizen.width) {
                 this.denizen.pos[0] += .3
             } else {
@@ -32,13 +34,9 @@ export default class SwimmerExt {
         } else {
             this.move()
         }
-        if (this.denizen.mouthEater) this.denizen.mouthEater.coreloop()
-        if (this.denizen.mater) this.denizen.mater.coreloop()
 
-        this.consumeEnergy()
         if (this.denizen.dead && !(this.denizen.spawn && this.denizen.foodEaten === this.denizen.growUpThreshold)) this.denizen.logic.denizenCorpse(this.denizen)
         this.behaviorChanger()
-        this.dangerZoneProtocol()
     }
 
 
@@ -49,7 +47,7 @@ export default class SwimmerExt {
                     if (this.inDangerZone) this.escapingDangerZone = true
                     setTimeout(() => {
                         this.escapingDangerZone = false
-                    }, 1000)
+                    }, 2000)
                 }, 1000)
 
                 this.inDangerZone = true
@@ -130,14 +128,10 @@ export default class SwimmerExt {
         this.movement1();
         this.movement2();
         this.swimmerOrienter()
-    
-
-
     }
 
     fleeFromPredator() {
         let [xhigh, xlow, yhigh, ylow] = this.inBounds()
-
 
         if (this.denizen.pos[0] > this.denizen.fleeFromCoords[0]) {
             if (xhigh) {
@@ -281,15 +275,6 @@ export default class SwimmerExt {
             this.moveChangerTwo()
         }, Math.floor(Math.random() * 3000))
         this.denizen.clearOnDeath.push(id)
-    }
-
-    consumeEnergy() {
-        this.denizen.energy -= this.denizen.energyUseCoef * this.denizen.speed
-        if (this.denizen.energy < .05) {
-            this.denizen.dead = true
-            this.denizen.logic.recentlyDeadDenizens.push(this.denizen)
-            this.denizen.logic.denizenCorpse(this.denizen)
-        }
     }
 
 

@@ -58,21 +58,16 @@ export default class Jellyfish extends Swimmer {
     }
 
     coreloop() {
-
         this.trapper.coreloop()
         this.floater.coreloop()
         this.move()
         this.draw()
-        // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
-
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
             this.ctx.font = "12px serif";
             this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
-            
-            
         }
     }
     
@@ -109,22 +104,7 @@ export default class Jellyfish extends Swimmer {
     draw() {
         this.drawDenizen()
     }
-
-    // trapPlacer() {
-    //     this.trapPos[0] = this.pos[0]
-    //     this.trapPos[1] = this.pos[1] + 10
-    // }
-
-    // consumeFood(foodSource, foodType) {
-    //     this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-    //     foodSource.energy -= this.consumptionRate
-    //     this.totalEnergyConsumed += this.consumptionRate
-
-    //     if (foodSource.dead) {
-    //         this.speed = .2
-    //         this.trappedPrey = false
-    //     }
-    // }
+    
 }
 
 
