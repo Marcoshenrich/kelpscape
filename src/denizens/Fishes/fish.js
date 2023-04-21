@@ -59,9 +59,9 @@ export default class Fish extends Denizen {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
         this.ctx.globalAlpha = this.energy > 7 ? 1 : (this.energy + 3) / 10
         this.drawDenizen()
-        this.ctx.fillRect(this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1], this.mouthEater.mouthHeight, this.mouthEater.mouthWidth)
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1] - this.width, 15, 15)
         if (this.view.debugging) {
+            this.ctx.fillRect(this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1], this.mouthEater.mouthHeight, this.mouthEater.mouthWidth)
         }
         this.drawId()
         this.ctx.globalAlpha = 1
