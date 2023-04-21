@@ -57,11 +57,6 @@ export default class Jellyfish extends Swimmer {
         return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
     }
 
-    placer() {
-        let pos = [rand(1, this.arenaWidth - this.width), rand(1, this.arenaHeight - this.height)]
-        return pos
-    }
-
     coreloop() {
 
         this.trapper.coreloop()

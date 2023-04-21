@@ -99,8 +99,8 @@ export default class Logic {
         this.effectCount = 0
         this.turtleCount = 1
         this.deadCreatureCount = 0
-        this.crabCount = 10
-        this.crabBabyCount = 6
+        this.crabCount = 0
+        this.crabBabyCount = 0
         this.jellyfishCount = 20
         this.rockCount = 20
         this.otterCount = 0

@@ -150,18 +150,18 @@ export default class BehaviorController {
 
             for (const bumpedDenizen of collisionArray) {
                 if (bachelorFish.constructor === bumpedDenizen.constructor &&
-                    bumpedDenizen.seekingMate) {
+                    bumpedDenizen.mater.seekingMate) {
                     foundMate = bumpedDenizen
                     break
                 }
             }
             if (foundMate) {
                 bachelorFish.mate(true)
-                bachelorFish.seekingMate = false
+                bachelorFish.mater.seekingMate = false
                 delete this.logic.matingDenizensObj[bachelorFish.id]
 
                 foundMate.mate()
-                foundMate.seekingMate = false
+                foundMate.mater.seekingMate = false
                 delete this.logic.matingDenizensObj[foundMate.id]
             }
         }

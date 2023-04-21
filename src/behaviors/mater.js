@@ -5,7 +5,6 @@ export default class Mater {
         this.denizen = denizen
         this.mating = false
         this.seekingMate = false
-
     }
 
     coreloop() {
@@ -13,6 +12,7 @@ export default class Mater {
     }
 
     evaluateBacherlorhood() {
+        // fish, crab is likely different
         if (!this.denizen.spawn && !this.denizen.seekingMate && this.denizen.energy > this.denizen.matingThreshold) {
             this.denizen.logic.matingDenizensObj[this.denizen.id] = this.denizen
             this.denizen.seekingMate = true

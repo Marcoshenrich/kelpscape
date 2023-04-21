@@ -1,3 +1,6 @@
+import { rand } from "../engine/utils"
+
+
 export default class Denizen {
 
     constructor(ctx, canvas, view, logic) {
@@ -22,6 +25,13 @@ export default class Denizen {
         this.clearOnDeath.forEach((timerId)=>{
             clearTimeout(timerId)
         })
+    }
+
+    placer() {
+        let pos = []
+        pos[0] = rand(this.arenaWidth - this.width)
+        pos[1] = rand(this.arenaHeight - this.height)
+        return pos
     }
 
     drawDenizen() {

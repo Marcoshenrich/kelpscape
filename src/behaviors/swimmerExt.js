@@ -62,7 +62,7 @@ export default class SwimmerExt {
 
     behaviorChanger() {
         if (!this.denizen.hunting && this.denizen.energy < this.denizen.huntingThreshold) this.denizen.logic.hungryDenizenArr.push(this.denizen)
-
+       
         if (this.denizen.energy > this.denizen.maxEnergy - 1) {
             this.denizen.hunting = false
             this.denizen.eatingSeagrass = false
@@ -102,13 +102,15 @@ export default class SwimmerExt {
         if (this.denizen.pos[0] > this.denizen.arenaWidth - this.denizen.width || this.denizen.pos[0] < 0) {
             this.switchDirections()
         }
-        if (this.denizen.pos[1] > this.denizen.arenaHeight - this.denizen.height || this.denizen.pos[1] < 0) this.up = !this.up
 
-        if (this.denizen.speed < .01) this.denizen.speed = .3
+        if (this.denizen.mater && this.denizen.mater.mating) return
+        
+        if (this.denizen.pos[1] > this.denizen.arenaHeight - this.denizen.height || this.denizen.pos[1] < 0) this.up = !this.up
+        if (this.denizen.speed < .01) this.denizen.speed = (this.denizen.maxSpeed * .25) 
 
         this.denizen.oldPos = [this.denizen.pos[0], this.denizen.pos[1]]
 
-        if (!this.denizen.mater.mating && this.denizen.hunting) {
+        if (this.denizen.hunting) {
             this.moveTowardsFood()
             this.swimmerOrienter()
             return
@@ -120,16 +122,15 @@ export default class SwimmerExt {
             return
         }
 
-        if (!this.denizen.mater.mating && !this.denizen.hunting) {
-            if (this.timeToSwitchMovement) {
-                Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
-                this.timeToSwitchMovement = false
-            }
-
-            this.movement1();
-            this.movement2();
-            this.swimmerOrienter()
+        if (this.timeToSwitchMovement) {
+            Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+            this.timeToSwitchMovement = false
         }
+
+        this.movement1();
+        this.movement2();
+        this.swimmerOrienter()
+    
 
 
     }

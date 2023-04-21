@@ -50,13 +50,6 @@ export default class Fish extends Denizen {
         this.draw()
     }
 
-    placer() {
-        let pos = []
-        pos[0] = rand(this.arenaWidth - this.width)
-        pos[1] = rand(this.arenaHeight - this.height)
-        return pos
-    }
-
 
     draw() {
         this.ctx.fillStyle = 'rgba(0,225,225,1)';
