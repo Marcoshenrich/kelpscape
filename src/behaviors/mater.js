@@ -13,10 +13,10 @@ export default class Mater {
 
     evaluateBacherlorhood() {
         if (this.denizen.type === "Crab") {
-            if (!this.spawn && !this.hasGivenBirth && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte && !this.carryingEggs) {
+            if (!this.denizen.spawn && !this.denizen.hasGivenBirth && !this.seekingMate && this.denizen.energy > this.denizen.matingThreshold && this.denizen.recentlyAte && !this.denizen.carryingEggs) {
                 this.logic.matingDenizensObj[this.id] = this
                 this.seekingMate = true
-            } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
+            } else if (!this.denizen.spawn && this.seekingMate && this.denizen.energy < this.denizen.matingThreshold) {
                 delete this.logic.matingDenizensObj[this.id]
                 this.seekingMate = false
             }
