@@ -69,6 +69,11 @@ export default class View {
         this.textBox = null
     }
 
+    mouseCollisionDetector(x,y) {
+        return this.quadtree.queryRange(new Rectangle(x - this.offset[0] - 5, y - this.offset[1] - 5, 10, 10), "partialOverlap", { id: null }, true)
+
+    }
+
     populateQuad() {
         this.quadtree = new Quadtree(this.bounds, 6, this);
         this.allDenizensArr.forEach((denizenObj)=>{
@@ -101,6 +106,7 @@ export default class View {
         this.drawBackround()
         this.denizenCoreloop()
         this.drawInfoText()
+        this.input.coreloop()
         // if (this.gameFrame % 10 === 0) this.captureEcosystemGraphData()
         // this.drawEcosystemGraph()
 

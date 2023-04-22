@@ -86,7 +86,7 @@ canvas.addEventListener("click", (e) => {
         pilot.view.textBox.resetTextBox()
         pilot.view.textBox = null
     } else {
-        let collisionArr = pilot.view.quadtree.queryRange(new Rectangle(e.x - pilot.view.offset[0] - 5, e.y - pilot.view.offset[1] - 5, 10, 10), "partialOverlap", { id: null }, true)
+        let collisionArr = pilot.view.mouseCollisionDetector(e.x, e.y)
         if (collisionArr.length) {
             let textBox;
             for (let i = 0; i < collisionArr.length; i++) {
@@ -107,6 +107,17 @@ canvas.addEventListener("click", (e) => {
         }
     }
 })
+
+const enableHover = () => {
+    var style = document.createElement('style');
+    console.log("yo")
+    style.innerHTML = `
+        #canvas {
+            width:500
+        }
+        `;
+    document.head.appendChild(style);
+}
 
 window.addEventListener("resize", (e) => {
     canvas.height = e.currentTarget.innerHeight
