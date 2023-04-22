@@ -12,7 +12,7 @@ export default class View {
         this.background.src = './dist/art/background.jpeg'
 
         this.arenaHeight = (Math.max(window.innerHeight, 1700))
-        this.arenaWidth = this.arenaHeight * 1.5
+        this.arenaWidth = this.arenaHeight * 3
         this.backgroundPos = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
         this.offset = [(this.canvas.width / 2) - (this.arenaWidth / 2), (this.canvas.height / 2) - (this.arenaHeight / 2),]
 
@@ -155,7 +155,7 @@ export default class View {
     }
 
     drawBackround() {
-        this.ctx.drawImage(this.background, this.backgroundPos[0], this.backgroundPos[1], this.arenaWidth, this.arenaHeight)
+        this.ctx.drawImage(this.background, this.backgroundPos[0], this.backgroundPos[1], this.arenaWidth/2, this.arenaHeight)
     }
 
     captureEcosystemGraphData() { 
@@ -230,9 +230,9 @@ export default class View {
         if (this.offset[1] >= 0) this.offset[1] = 0;
         if (this.offset[1] <= (-this.arenaHeight + this.canvas.height)) this.offset[1] = (-this.arenaHeight + this.canvas.height);
 
-        this.backgroundPos[0] = this.offset[0];
+        this.backgroundPos[0] = this.offset[0] / 2 + (this.canvas.width / 2 * Math.abs(((this.offset[0]) / (this.arenaWidth - this.canvas.width)))); // the percentage of offset x such that 100% to the right === canvas.width/2
         this.backgroundPos[1] = this.offset[1];
-    
+
         if (!this.inputTracker && !input.length) return
 
         if (input.includes('ArrowRight')) {
@@ -278,7 +278,6 @@ export default class View {
                 }
             }
         }
-
 
         if (Math.abs(this.cameraSpeedX) > this.cameraMaxSpeed) this.cameraSpeedX = this.cameraMaxSpeed * (this.cameraSpeedX > 0 ? 1: -1)
         if (Math.abs(this.cameraSpeedY) > this.cameraMaxSpeed) this.cameraSpeedY = this.cameraMaxSpeed * (this.cameraSpeedY > 0 ? 1 : -1)
