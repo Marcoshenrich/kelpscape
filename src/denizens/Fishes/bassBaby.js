@@ -15,13 +15,13 @@ export default class BassBaby extends FishBaby {
         this.maxEnergy = 12
         this.energy = this.maxEnergy
 
-        this.energyUseCoef = .003
+        this.energyUseCoef = .002
         this.maxSpeed = .25
         this.energyVal = 5
 
 
-        this.eatFoodThreshold = 9
-        this.huntingThreshold = 7
+        this.eatFoodThreshold = 10
+        this.huntingThreshold = 10
 
     }
 }

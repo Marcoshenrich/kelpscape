@@ -20,6 +20,6 @@ export default class RockfishBaby extends FishBaby {
         this.energyVal = 5
 
         this.eatFoodThreshold = 8
-        this.huntingThreshold = 6
+        this.huntingThreshold = 8
     }
 }
