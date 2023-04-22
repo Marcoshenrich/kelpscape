@@ -90,7 +90,7 @@ export default class Logic {
         this.bassCount = 10
         this.bassBabyCount = 14
 
-        this.rockfishCount = 100
+        this.rockfishCount = 24
         this.rockfishBabyCount = 24
 
         this.algaeCount = 200
@@ -99,8 +99,8 @@ export default class Logic {
         this.effectCount = 0
         this.turtleCount = 2
         this.deadCreatureCount = 0
-        this.crabCount = 24
-        this.crabBabyCount = 12
+        this.crabCount = 18
+        this.crabBabyCount = 6
         this.jellyfishCount = 35
         this.rockCount = 40
         this.otterCount = 0

@@ -107,11 +107,14 @@ export default class NatureController {
             "GarabaldiBaby": this.logic.garabaldiBabies,
             "Bass": this.logic.bass,
             "BassBaby": this.logic.bassBabies,
+            "Rockfish": this.logic.rockfish,
+            "RockfishBaby": this.logic.rockfishBabies,
             "Turtle": this.logic.turtles
         }
 
         Crab.prototype.preySpecies =
         {
+            "RockfishBaby": this.logic.rockfishBabies,
             "GarabaldiBaby": this.logic.garabaldiBabies,
             "BassBaby": this.logic.bassBabies
         }
