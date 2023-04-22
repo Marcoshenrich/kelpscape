@@ -15,7 +15,7 @@ export default class Garabaldi extends Fish{
         this.maxEnergy = 20
         this.energy = this.maxEnergy
 
-        this.energyUseCoef = .005
+        this.energyUseCoef = .003
         this.matingThreshold = 15
         this.matingEnergyCost = 5
         this.maxSpeed = .7
@@ -24,7 +24,7 @@ export default class Garabaldi extends Fish{
         this.mateThreshold = 10
 
         this.eatFoodThreshold = 15
-        this.huntingThreshold = 7
+        this.huntingThreshold = 10
     }
 
 }

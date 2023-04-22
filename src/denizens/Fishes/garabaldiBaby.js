@@ -13,8 +13,6 @@ export default class GarabaldiBaby extends FishBaby {
 
         this.speed = (Math.floor(Math.random() * 5) + 1) / 10
    
-        this.mouthPos = this.mouthPlacer()
-
         this.maxEnergy = 10
         this.energy = this.maxEnergy
 
@@ -23,6 +21,6 @@ export default class GarabaldiBaby extends FishBaby {
         this.energyVal = 5
 
         this.eatFoodThreshold = 8
-        this.huntingThreshold = 6
+        this.huntingThreshold = 8
     }
 }

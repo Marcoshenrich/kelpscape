@@ -6,6 +6,7 @@ class Rock extends Denizen {
         super(ctx, canvas, view, logic)
         this.textBox = this.logic.textContentObj["Rock"]
 
+        this.type = "Rock"
         this.id = "Rock" + id
         this.img = new Image()
         this.rockKeys = ["small_rock", "small_rock_2", "small_green", "med_rock", "med_rock_2", "rock_pile", "tall_med", "boulder_1", "boulder_2", "arch"]

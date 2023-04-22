@@ -75,6 +75,7 @@ export default class Effect {
         if (!this.parent.eatingSeagrass) {
             this.dead = true
             this.logic.recentlyDeadDenizens.push(this)
+            this.parent.playingSeagrassEffect = false
         }
 
     }

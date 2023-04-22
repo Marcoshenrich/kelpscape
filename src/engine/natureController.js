@@ -30,16 +30,16 @@ export default class NatureController {
     constructor(logic) {
 
         this.logic = logic
-        this.algaeSpawnInterval= 1000
+        this.algaeSpawnInterval= 500
         this.denizensSpawnInIncrements(this.algaeSpawnInterval, "algaeCount", "algae", Algae, { clustersObj: this.logic.seaweedClusters })
 
-        this.otterDiveInterval = 15000
+        this.otterDiveInterval = 7500
         this.denizensSpawnInIncrements(this.otterDiveInterval, "otterCount", "otters", Otter)
 
         this.clusterSpawnInterval = 25000
         this.denizensSpawnInIncrements(this.clusterSpawnInterval, "seaweedClusterCount", "seaweedClusters", SeaweedCluster, {})
 
-        this.turtleSpawnInterval = 20000
+        this.turtleSpawnInterval = 12000
         this.denizensSpawnInIncrements(this.turtleSpawnInterval, "turtleCount", "turtles", Turtle, {})
 
         
@@ -107,11 +107,14 @@ export default class NatureController {
             "GarabaldiBaby": this.logic.garabaldiBabies,
             "Bass": this.logic.bass,
             "BassBaby": this.logic.bassBabies,
+            "Rockfish": this.logic.rockfish,
+            "RockfishBaby": this.logic.rockfishBabies,
             "Turtle": this.logic.turtles
         }
 
         Crab.prototype.preySpecies =
         {
+            "RockfishBaby": this.logic.rockfishBabies,
             "GarabaldiBaby": this.logic.garabaldiBabies,
             "BassBaby": this.logic.bassBabies
         }

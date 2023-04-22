@@ -9,6 +9,10 @@ width: 100%;
 height: 100%;
 }
 
+.hover-class:hover {
+    cursor: pointer;
+}
+
 #sound-button{
     top: 20px;
     right: 20px;

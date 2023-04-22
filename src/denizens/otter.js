@@ -15,14 +15,10 @@ export default class Otter extends Denizen{
         this.view = view
         this.logic = logic
 
-        this.upRight = new Image()
-        this.upRight.src = './dist/art/otter/otterUpRight.png'
-        this.upLeft = new Image()
-        this.upLeft.src = './dist/art/otter/otterUpLeft.png'
-        this.downRight = new Image()
-        this.downRight.src = './dist/art/otter/otterDownRight.png'
-        this.downLeft = new Image()
-        this.downLeft.src = './dist/art/otter/otterDownLeft.png'
+        this.rightImg = new Image()
+        this.rightImg.src = './dist/art/otter/otterDownRight.png'
+        this.leftImg = new Image()
+        this.leftImg.src = './dist/art/otter/otterDownLeft.png'
         this.height = 60
         this.width = 30
 
@@ -55,7 +51,7 @@ export default class Otter extends Denizen{
 
 
     imgSelector() {
-        this.img = this.right ? this.downRight : this.downLeft
+        this.img = this.right ? this.rightImg : this.leftImg
     }
 
     moveInACircle() {

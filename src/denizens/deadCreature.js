@@ -101,8 +101,8 @@ export default class DeadCreature extends Denizen {
 
             case RockfishBaby: 
                 this.img.src = './dist/art/fishes/fishdead.png'
-                this.width = 30
-                this.height = 19
+                this.width = 15
+                this.height = 8
                 this.energyVal = 4
                 break
 

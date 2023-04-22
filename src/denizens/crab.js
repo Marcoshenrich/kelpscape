@@ -1,10 +1,9 @@
-import CrabBaby from "./crabbaby";
-import DeadCreature from "./deadCreature";
-import Swimmer from "./swimmer";
-import { rand } from "../engine/utils";
 import Trapper from "../behaviors/trapper";
+import Denizen from "./denizen";
+import Metabolism from "../behaviors/metabolism";
+import Mater from "../behaviors/mater";
 
-export default class Crab extends Swimmer {
+export default class Crab extends Denizen {
 
     constructor(id, ctx, canvas, view, logic, options) {
 
@@ -55,6 +54,8 @@ export default class Crab extends Swimmer {
         this.totalEnergyConsumed = 0
 
         this.trapper = options.spawn ? null : new Trapper(this, { trapHeight: 10, trapWidth: this.width + 10, trapYAdjustment: 0, trapXAdjustment: -5, denizenEatsImmediately: true })
+        this.metabolism =  new Metabolism(this)
+        this.mater = new Mater(this)
 
     }
 
@@ -84,24 +85,15 @@ export default class Crab extends Swimmer {
         }
         if (!this.scavenging) this.move()
 
-        this.consumeEnergy()
-        this.behaviorChanger()
+        this.mater.coreloop()
+        this.metabolism.coreloop()  
+        
         this.draw()
         // if (this.view.gameFrame % 10 !== 0) return
         if (this.dead && !(this.spawn && this.totalEnergyConsumed > this.growUpThreshold)) this.logic.denizenCorpse(this)
         
 
     } 
-
-    behaviorChanger(){
-        if (!this.spawn && !this.hasGivenBirth && !this.seekingMate && this.energy > this.matingThreshold && this.recentlyAte && !this.carryingEggs) {
-            this.logic.matingDenizensObj[this.id] = this
-            this.seekingMate = true
-        } else if (!this.spawn && this.seekingMate && this.energy < this.matingThreshold) {
-            delete this.logic.matingDenizensObj[this.id]
-            this.seekingMate = false
-        }
-    }
 
     mate(spawnBool) {
         this.mating = true
@@ -132,16 +124,6 @@ export default class Crab extends Swimmer {
         }, 3000)
 
         this.clearOnDeath.push(baseId)
-    }
-
-    consumeEnergy() {
-
-        this.energy -= this.energyUseCoef * this.speed
-        if (this.energy < .01) {
-            this.dead = true
-            this.logic.recentlyDeadDenizens.push(this)
-        }
-
     }
 
 

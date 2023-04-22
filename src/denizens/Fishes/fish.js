@@ -1,28 +1,30 @@
-import Swimmer from "../swimmer"
-
+import Mater from "../../behaviors/mater"
 import MouthEater from "../../behaviors/moutheater"
+import swimmer from "../../behaviors/swimmer"
+import Denizen from "../denizen"
+import { rand } from "../../engine/utils";
+import Metabolism from "../../behaviors/metabolism"
 
-export default class Fish extends Swimmer {
+export default class Fish extends Denizen {
 
     constructor(ctx, canvas, view, logic, options) {
         super(ctx, canvas, view, logic)
         this.spawn = false
- 
-        this.movement1 = this.moveSelector()
-        this.movement2 = this.moveSelector()
-        this.moveChangerOne()
-        this.moveChangerTwo()
+
+        this.up = [true, false][Math.floor(Math.random() * 2)]
+        this.right = [true, false][Math.floor(Math.random() * 2)]
 
         this.width = options.width
         this.height = options.height
         this.mouthSize = options.mouthSize
 
+        this.leftImg = new Image()
+        this.rightImg = new Image()
+        this.img = null
+
         this.pos = options.pos || this.placer()
 
         this.fadeThreshold = 7
-
-        this.mating = false
-        this.seekingMate = false
         this.foodEaten = 0
 
         this.hunting = false
@@ -37,17 +39,19 @@ export default class Fish extends Swimmer {
             //nothing required, spawn grow up separately
         }
 
-        this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) })
-
         
+        this.swimmer = new swimmer(this,{facing:true})
+        this.mouthEater = new MouthEater(this, { mouthHeight: this.mouthSize, mouthWidth: this.mouthSize, leftMouthYAdjustment: (this.height / 2), leftMouthXAdjustment: 0, rightMouthXAdjustment: (this.width - this.mouthSize), rightMouthYAdjustment: (this.height / 2) })
+        this.mater = new Mater(this,{})
+        this.metabolism = new Metabolism(this)
     }
 
-    
-    placer() {
-        let pos = []
-        pos[0] = Math.floor(Math.random() * (this.arenaWidth- this.width))
-        pos[1] = Math.floor(Math.random() * (this.arenaHeight - this.height)) 
-        return pos
+    coreloop() {
+        this.swimmer.coreloop()
+        this.metabolism.coreloop()
+        this.mouthEater.coreloop()
+        this.mater.coreloop()
+        this.draw()
     }
 
 
@@ -57,6 +61,7 @@ export default class Fish extends Swimmer {
         this.drawDenizen()
         if (this.mating) this.ctx.drawImage(this.mateHeart, this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1] - this.width, 15, 15)
         if (this.view.debugging) {
+            this.ctx.fillRect(this.mouthEater.mouthPos[0] + this.offset[0], this.mouthEater.mouthPos[1] + this.offset[1], this.mouthEater.mouthHeight, this.mouthEater.mouthWidth)
         }
         this.drawId()
         this.ctx.globalAlpha = 1

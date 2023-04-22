@@ -24,7 +24,7 @@ export default class Rockfish extends Fish {
         this.mateThreshold = 10
 
         this.eatFoodThreshold = 15
-        this.huntingThreshold = 7
+        this.huntingThreshold = 10
     }
 
 }

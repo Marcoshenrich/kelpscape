@@ -1,11 +1,14 @@
 import { rand } from "../engine/utils";
 import Effect from "./effect";
-import Swimmer from "./swimmer";
 import Floater from "../behaviors/floater"
 import Trapper from "../behaviors/trapper";
+import Denizen from "./denizen";
+import swimmer from "../behaviors/swimmer";
 
-export default class Jellyfish extends Swimmer {
+
+export default class Jellyfish extends Denizen {
     constructor(id, ctx, canvas, view, logic, options){
+
         super(ctx, canvas, view, logic)
         this.floater = new Floater(this)
         this.trapper = new Trapper(this, { trapHeight: 18, trapWidth: 18, trapYAdjustment: 10, trapXAdjustment: 0, denizenEatsImmediately: true})
@@ -30,12 +33,9 @@ export default class Jellyfish extends Swimmer {
         this.up = [true,false][rand(2)]
         this.right = [true, false][rand(2)]
 
-        this.movement1 = this.moveSelector()
-        this.movement2 = this.moveSelector()
-        this.moveChangerOne()
-        this.moveChangerTwo()
-
         this.dropGametes()
+
+        this.swimmer = new swimmer(this,{})
     }
 
     dropGametes() {
@@ -57,41 +57,31 @@ export default class Jellyfish extends Swimmer {
         return Object.values(this.movementPatterns)[Math.floor(Math.random() * 2)]
     }
 
-    placer() {
-        let pos = [rand(1, this.arenaWidth - this.width), rand(1, this.arenaHeight - this.height)]
-        return pos
-    }
-
     coreloop() {
-
         this.trapper.coreloop()
         this.floater.coreloop()
-        this.move()
+        this.swimmer.coreloop()
+        // this.move()
         this.draw()
-        // this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
-
 
         if (this.view.debugging) {
             this.ctx.fillStyle = 'rgba(0,0,0,1)';
             this.ctx.font = "12px serif";
             this.ctx.fillText(`${[Math.floor(this.pos[0]), Math.floor(this.pos[1])]}`, this.pos[0] + this.offset[0], this.pos[1] + this.offset[1])
             this.ctx.fillRect(this.trapPos[0] + this.offset[0], this.trapPos[1] + this.offset[1], this.trapWidth, this.trapHeight)
-            
-            
         }
     }
     
-    move() {
-        if (this.timeToSwitchMovement) {
-            Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
-            this.timeToSwitchMovement = false
-        }    
-        if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
-        if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
-        this.trapper.coreloop()
-        this.movement1();
-        this.movement2();
-    }
+    // move() {
+    //     if (this.timeToSwitchMovement) {
+    //         Object.values(this.movementSwitches)[Math.floor(Math.random() * Object.values(this.movementSwitches).length)]()
+    //         this.timeToSwitchMovement = false
+    //     }    
+    //     if (this.pos[0] > this.arenaWidth - this.width || this.pos[0] < 0) this.right = !this.right;
+    //     if (this.pos[1] > this.arenaHeight - this.height || this.pos[1] < 0) this.up = !this.up
+    //     this.movement1();
+    //     this.movement2();
+    // }
 
     movementSwitches = {
         reverseUp: () => {
@@ -115,21 +105,6 @@ export default class Jellyfish extends Swimmer {
         this.drawDenizen()
     }
 
-    // trapPlacer() {
-    //     this.trapPos[0] = this.pos[0]
-    //     this.trapPos[1] = this.pos[1] + 10
-    // }
-
-    // consumeFood(foodSource, foodType) {
-    //     this.energy = Math.min(this.maxEnergy, this.energy + this.consumptionRate)
-    //     foodSource.energy -= this.consumptionRate
-    //     this.totalEnergyConsumed += this.consumptionRate
-
-    //     if (foodSource.dead) {
-    //         this.speed = .2
-    //         this.trappedPrey = false
-    //     }
-    // }
 }
 
 
