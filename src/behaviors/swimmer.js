@@ -96,7 +96,7 @@ export default class swimmer {
             this.switchDirections()
         }
 
-        if (this.denizen.mater && this.denizen.mater.mating) return
+        if (this.denizen.mating) return
         
         if (this.denizen.pos[1] > this.denizen.arenaHeight - this.denizen.height || this.denizen.pos[1] < 0) this.up = !this.up
         if (this.denizen.speed < .01) this.denizen.speed = (this.denizen.maxSpeed * .25) 

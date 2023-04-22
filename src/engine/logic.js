@@ -73,7 +73,7 @@ export default class Logic {
             "Crab": new TextBox(ctx, canvas, view, this, "Crab", "Crabs are a common sight in the Pacific kelp forest, where they play an important role in the ecosystem. One of the most well-known species is the Dungeness crab (Metacarcinus magister), which is prized by humans for its sweet, tender meat. Dungeness crabs can be found in shallow waters and prefer to feed on small fish and crustaceans, but will also eat kelp and other algae if food is scarce. Another common species is the graceful kelp crab (Pugettia gracilis), which is named for its slender legs and preference for living among the kelp fronds. These crabs are expert at camouflaging themselves among the kelp, making them difficult to spot. ", "crab.jpeg"),
         }
 
-        this.seaweedClusterCount = 25
+        this.seaweedClusterCount = 50
         this.seaUrchinCount = 0
         this.seaUrchins = {}
         this.seaweedClusters = this.tankPopulator(this.seaweedClusterCount, SeaweedCluster, { start: true })
@@ -84,25 +84,25 @@ export default class Logic {
 
 
 
-        this.garabaldiCount = 12
-        this.garabaldiBabyCount =  12
+        this.garabaldiCount = 24
+        this.garabaldiBabyCount =  24
 
-        this.bassCount = 5
-        this.bassBabyCount = 7
+        this.bassCount = 10
+        this.bassBabyCount = 14
 
-        this.rockfishCount = 12
-        this.rockfishBabyCount = 12
+        this.rockfishCount = 100
+        this.rockfishBabyCount = 24
 
-        this.algaeCount = 100
-        this.sharkCount = 2
+        this.algaeCount = 200
+        this.sharkCount = 3
         this.eggCount = 0
         this.effectCount = 0
-        this.turtleCount = 1
+        this.turtleCount = 2
         this.deadCreatureCount = 0
-        this.crabCount = 12
-        this.crabBabyCount = 6
-        this.jellyfishCount = 20
-        this.rockCount = 20
+        this.crabCount = 24
+        this.crabBabyCount = 12
+        this.jellyfishCount = 35
+        this.rockCount = 40
         this.otterCount = 0
         this.polypCount = 0
 

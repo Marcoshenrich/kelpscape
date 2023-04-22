@@ -14,19 +14,19 @@ export default class Mater {
     evaluateBacherlorhood() {
         if (this.denizen.type === "Crab") {
             if (!this.denizen.spawn && !this.denizen.hasGivenBirth && !this.seekingMate && this.denizen.energy > this.denizen.matingThreshold && this.denizen.recentlyAte && !this.denizen.carryingEggs) {
-                this.logic.matingDenizensObj[this.id] = this
+                this.denizen.logic.matingDenizensObj[this.denizen.id] = this.denizen
                 this.seekingMate = true
             } else if (!this.denizen.spawn && this.seekingMate && this.denizen.energy < this.denizen.matingThreshold) {
-                delete this.logic.matingDenizensObj[this.id]
+                delete this.denizen.logic.matingDenizensObj[this.denizen.id]
                 this.seekingMate = false
             }
         } else {
-            if (!this.denizen.spawn && !this.denizen.seekingMate && this.denizen.energy > this.denizen.matingThreshold) {
+            if (!this.denizen.spawn && !this.seekingMate && this.denizen.energy > this.denizen.matingThreshold) {
                 this.denizen.logic.matingDenizensObj[this.denizen.id] = this.denizen
-                this.denizen.seekingMate = true
-            } else if (!this.denizen.spawn && this.denizen.seekingMate && this.denizen.energy < this.denizen.matingThreshold) {
+                this.seekingMate = true
+            } else if (!this.denizen.spawn && this.seekingMate && this.denizen.energy < this.denizen.matingThreshold) {
                 delete this.denizen.logic.matingDenizensObj[this.denizen.id]
-                this.denizen.seekingMate = false
+                this.seekingMate = false
             }
         }
     }
