@@ -8,8 +8,9 @@ export default class Pilot {
         this.canvas = canvas
         this.sound = new Sound()
         this.view = new View(canvas, mobile)
-        this.intro = new Intro(canvas, mobile)
+        this.intro = new Intro(canvas, mobile, this)
         this.mobile = mobile
+        this.viewStart = false
 
         this.touch = null
         this.collisionArr = null

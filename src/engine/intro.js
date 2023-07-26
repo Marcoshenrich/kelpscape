@@ -1,7 +1,8 @@
 
 export default class Intro {
-    constructor(canvas, mobile) {
+    constructor(canvas, mobile, pilot) {
         this.canvas = canvas
+        this.pilot = pilot
         this.ctx = this.canvas.getContext('2d')
         this.background = new Image()
         this.background.src = './dist/art/intro.png'
@@ -10,8 +11,8 @@ export default class Intro {
         this.xOffset = 0
         this.yOffset = 0
         this.looptracker = 0 
-        this.simTransition = false
         this.simStart = false
+        this.skipped = false
         this.fader = 0
         this.mobile = mobile
         this.textMargin = mobile ? 25 : 100
@@ -32,7 +33,6 @@ export default class Intro {
         this.updatePos()
         this.drawDynamicBackground()
         this.drawIntroSequence()
-        if (this.simTransition) this.simStarter()
     }
 
     fadeManger() { 
@@ -79,7 +79,7 @@ export default class Intro {
         const centerX = this.canvas.width / 2
         const centerY = this.canvas.height / 2
 
-        this.drawContinue()
+        if (this.sequenceStep !== 0 && this.sequenceStep !== 1 && !this.skipped) this.drawContinue()
 
         if (this.sequenceStep === 0) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
@@ -170,6 +170,7 @@ export default class Intro {
             this.ctx.fillStyle = `rgba(0,0,0,${this.fader})`;
             this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height)
             this.simStart = true
+            this.pilot.viewStart = true
         }
 
 
@@ -185,10 +186,10 @@ export default class Intro {
 
     drawContinue() {
         let text = "Skip"
-        this.ctx.font =`26px Georgia`;
+        this.ctx.font =`30px Georgia`;
         this.ctx.fillStyle = `rgba(0,0,0,100)`
 
-        const centerX = this.canvas.width / 2;
+        const centerX = (this.canvas.width / 2) - 7.5;
         const centerY = this.canvas.height - 100
 
         const textWidth = this.ctx.measureText(text).width;
@@ -199,9 +200,9 @@ export default class Intro {
 
 
         this.ctx.beginPath();
-        this.ctx.moveTo(centerX + 55, centerY);
-        this.ctx.lineTo(centerX + 35, centerY - 10);
-        this.ctx.lineTo(centerX + 35, centerY + 10);
+        this.ctx.moveTo(centerX + 55, centerY - 5);
+        this.ctx.lineTo(centerX + 35, centerY - 15);
+        this.ctx.lineTo(centerX + 35, centerY + 5);
         this.ctx.fill();
 
         this.ctx.fillText(text, x, y);

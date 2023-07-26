@@ -78,6 +78,15 @@ canvas.addEventListener("click", (e) => {
     if (!pilot.sound.kickOffIntroScore && pilot.showIntro) {
         pilot.sound.playIntroScore()
         pilot.intro.sequenceStep = 1
+        return
+    }
+
+    if (!pilot.viewStart && pilot.showIntro) {
+        if (pilot.intro.skipped) return
+        pilot.intro.sequenceStep = 6
+        pilot.intro.fader = 0
+        pilot.intro.textFader = 0
+        pilot.intro.skipped = true
     }
     
     if (pilot.intro && !pilot.intro.simStart && pilot.showIntro) return
