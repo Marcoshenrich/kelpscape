@@ -79,6 +79,8 @@ export default class Intro {
         const centerX = this.canvas.width / 2
         const centerY = this.canvas.height / 2
 
+        this.drawContinue()
+
         if (this.sequenceStep === 0) {
             this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
             this.ctx.font = `${this.fontSize}px Georgia`;
@@ -181,6 +183,32 @@ export default class Intro {
         this.looptracker += .5
     }
 
+    drawContinue() {
+        let text = "Skip"
+        this.ctx.font =`26px Georgia`;
+        this.ctx.fillStyle = `rgba(0,0,0,100)`
+
+        const centerX = this.canvas.width / 2;
+        const centerY = this.canvas.height - 100
+
+        const textWidth = this.ctx.measureText(text).width;
+        const textHeight = 10;
+
+        const x = centerX - (textWidth / 2);
+        const y = centerY + (textHeight / 2);
+
+
+        this.ctx.beginPath();
+        this.ctx.moveTo(centerX + 55, centerY);
+        this.ctx.lineTo(centerX + 35, centerY - 10);
+        this.ctx.lineTo(centerX + 35, centerY + 10);
+        this.ctx.fill();
+
+        this.ctx.fillText(text, x, y);
+        this.ctx.fillStyle = `rgba(0,0,0,${this.textFader})`
+        this.ctx.font = this.fontSize
+    }
+
     drawText(text, triangleBool) {
         const centerX = this.canvas.width / 2;
         const centerY = this.canvas.height / 2;
@@ -198,7 +226,6 @@ export default class Intro {
             this.ctx.lineTo(centerX - 25, centerY + 75);
             this.ctx.fill();
         }
-
 
         this.ctx.fillText(text, x, y);
     }
